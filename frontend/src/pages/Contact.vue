@@ -88,18 +88,18 @@ const handleSubmit = async () => {
   <div class="bg-slate-50/60 min-h-screen pb-20">
     
     <!-- Hero Header Banner -->
-    <div class="bg-white border-b border-slate-200/80 pt-12 pb-14 relative overflow-hidden">
+    <div class="bg-white border-b border-slate-200/80 pt-8 sm:pt-12 pb-10 sm:pb-14 relative overflow-hidden">
       <!-- Ambient Lighting Orbs -->
       <div class="absolute -top-24 -right-24 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
       <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200/60 mb-3 shadow-2xs">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-[10px] sm:text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200/60 mb-2 sm:mb-3 shadow-2xs">
           <Sparkles class="w-3.5 h-3.5 text-indigo-600" />
           <span>24/7 Customer Care & Assistance</span>
         </div>
 
-        <h1 class="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight leading-tight">
+        <h1 class="text-2xl sm:text-5xl font-black text-slate-900 tracking-tight leading-tight">
           We’re Here to Help You Style Better
         </h1>
         <p class="text-slate-500 text-sm sm:text-base mt-3 max-w-2xl mx-auto leading-relaxed">
@@ -178,59 +178,59 @@ const handleSubmit = async () => {
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
         
         <!-- Left Side (5 cols): Store Hub Details & FAQs -->
-        <div class="lg:col-span-5 space-y-6">
+        <div class="lg:col-span-5 space-y-4 sm:space-y-6">
           
           <!-- Physical Location & Pickup Hub Card -->
-          <div class="bg-white p-6 sm:p-7 rounded-3xl border border-slate-200/80 shadow-xs">
-            <div class="flex items-center gap-3 mb-4">
-              <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold">
-                <MapPin class="w-5 h-5" />
+          <div class="bg-white p-5 sm:p-7 rounded-3xl border border-slate-200/80 shadow-xs">
+            <div class="flex items-center gap-3 mb-3 sm:mb-4">
+              <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold shrink-0">
+                <MapPin class="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
               <div>
-                <h3 class="text-base font-bold text-slate-900">Boutique & Pickup Hub</h3>
-                <p class="text-xs text-slate-400">Flagship showroom in Phnom Penh</p>
+                <h3 class="text-sm sm:text-base font-bold text-slate-900">Boutique & Pickup Hub</h3>
+                <p class="text-[10px] sm:text-xs text-slate-400">Flagship showroom in Phnom Penh</p>
               </div>
             </div>
 
-            <p class="text-xs text-slate-600 leading-relaxed">
+            <p class="text-[11px] sm:text-xs text-slate-600 leading-relaxed">
               Street 302, Boeung Keng Kang 1 (BKK1), Khan Chamkarmon, Phnom Penh, Cambodia 120102.
             </p>
 
-            <div class="mt-4 pt-4 border-t border-slate-100 flex items-center justify-between text-xs">
+            <div class="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-slate-100 flex items-center justify-between text-[11px] sm:text-xs">
               <div class="flex items-center gap-1.5 text-slate-600 font-medium">
-                <Clock class="w-4 h-4 text-indigo-500" />
+                <Clock class="w-3 h-3 sm:w-4 sm:h-4 text-indigo-500" />
                 <span>Open Daily: 8:00 AM - 9:00 PM</span>
               </div>
-              <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+              <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 shrink-0">
                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Open Now
               </span>
             </div>
           </div>
 
           <!-- Courier & Payment Badges -->
-          <div class="bg-gradient-to-br from-indigo-900 to-slate-950 text-white p-6 rounded-3xl shadow-sm space-y-4">
-            <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-indigo-300">
-              <Truck class="w-4 h-4" />
+          <div class="bg-gradient-to-br from-indigo-900 to-slate-950 text-white p-5 sm:p-6 rounded-3xl shadow-sm space-y-3 sm:space-y-4">
+            <div class="flex items-center gap-2 text-[11px] sm:text-xs font-bold uppercase tracking-wider text-indigo-300">
+              <Truck class="w-3 h-3 sm:w-4 sm:h-4" />
               <span>Official Delivery Network</span>
             </div>
-            <p class="text-xs text-slate-300 leading-relaxed">
+            <p class="text-[11px] sm:text-xs text-slate-300 leading-relaxed">
               We partner with Vireak Buntham Express and J&T Express for door-to-door delivery across all provinces with live SMS updates.
             </p>
-            <div class="pt-2 flex items-center gap-3">
-              <span class="px-3 py-1 bg-white/10 rounded-lg text-xs font-bold backdrop-blur-md">
+            <div class="pt-2 flex items-center gap-2 sm:gap-3 flex-wrap">
+              <span class="px-2 sm:px-3 py-1 bg-white/10 rounded-lg text-[10px] sm:text-xs font-bold backdrop-blur-md">
                 Vireak Buntham
               </span>
-              <span class="px-3 py-1 bg-white/10 rounded-lg text-xs font-bold backdrop-blur-md">
+              <span class="px-2 sm:px-3 py-1 bg-white/10 rounded-lg text-[10px] sm:text-xs font-bold backdrop-blur-md">
                 J&T Express
               </span>
-              <span class="px-3 py-1 bg-white/10 rounded-lg text-xs font-bold backdrop-blur-md">
+              <span class="px-2 sm:px-3 py-1 bg-white/10 rounded-lg text-[10px] sm:text-xs font-bold backdrop-blur-md">
                 GrabExpress
               </span>
             </div>
           </div>
 
           <!-- Frequently Asked Questions Accordion -->
-          <div class="bg-white p-6 sm:p-7 rounded-3xl border border-slate-200/80 shadow-xs">
+          <div class="bg-white p-5 sm:p-7 rounded-3xl border border-slate-200/80 shadow-xs">
             <div class="flex items-center gap-2 mb-4">
               <HelpCircle class="w-4 h-4 text-indigo-600" />
               <h3 class="text-sm font-black uppercase tracking-wider text-slate-900">
@@ -264,17 +264,17 @@ const handleSubmit = async () => {
         </div>
 
         <!-- Right Side (7 cols): Modern Contact Message Form -->
-        <div class="lg:col-span-7 bg-white p-6 sm:p-10 rounded-3xl border border-slate-200/80 shadow-sm">
+        <div class="lg:col-span-7 bg-white p-5 sm:p-10 rounded-3xl border border-slate-200/80 shadow-sm">
           
-          <div class="mb-6">
-            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200/60 mb-2">
+          <div class="mb-5 sm:mb-6">
+            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] sm:text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200/60 mb-2">
               <Mail class="w-3.5 h-3.5 text-indigo-600" />
               <span>Direct Support Message</span>
             </div>
-            <h2 class="text-2xl font-black text-slate-900 tracking-tight">
+            <h2 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
               Send us a Message
             </h2>
-            <p class="text-xs text-slate-500 mt-1">
+            <p class="text-[11px] sm:text-xs text-slate-500 mt-1">
               Fill in your inquiry below and our support staff will respond promptly.
             </p>
           </div>
@@ -366,18 +366,18 @@ const handleSubmit = async () => {
             </div>
 
             <!-- Submit Action -->
-            <div class="pt-3">
+            <div class="pt-2 sm:pt-3">
               <button
                 type="submit"
                 :disabled="isSubmitting"
-                class="w-full flex items-center justify-center gap-2 py-3.5 px-6 bg-gradient-to-r from-indigo-600 via-indigo-700 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white rounded-xl text-xs font-bold shadow-lg shadow-indigo-600/25 transition-all transform active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                class="w-full flex items-center justify-center gap-2 py-3 sm:py-3.5 px-6 bg-gradient-to-r from-indigo-600 via-indigo-700 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white rounded-xl text-xs font-bold shadow-lg shadow-indigo-600/25 transition-all transform active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
               >
                 <template v-if="isSubmitting">
                   <div class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
                   <span>Sending Message...</span>
                 </template>
                 <template v-else>
-                  <Send class="w-4 h-4" />
+                  <Send class="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                   <span>Submit Inquiry</span>
                 </template>
               </button>

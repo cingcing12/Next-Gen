@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted, onUnmounted, computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { Star, ShieldCheck, MapPin, Check, Heart, ChevronRight, ThumbsUp, MessageSquare, Send, Sparkles, UserCheck, Award, ArrowRight } from 'lucide-vue-next'
+import { Star, ShieldCheck, MapPin, Check, Heart, ChevronRight, ChevronDown, ChevronUp, ThumbsUp, MessageSquare, Send, Sparkles, UserCheck, Award, ArrowRight } from 'lucide-vue-next'
 import { useCartStore } from '../stores/cart'
 import { useWishlistStore } from '../stores/wishlist'
 import { useAuthStore } from '../stores/auth'
@@ -317,6 +317,8 @@ const toggleWishlist = async () => {
 const isInWishlist = computed(() => {
   return wishlistStore.items.some(item => item._id === product.value?._id)
 })
+
+const isReviewsExpanded = ref(false)
 </script>
 
 <template>
@@ -411,27 +413,27 @@ const isInWishlist = computed(() => {
     </div>
     <div v-else-if="product">
       <!-- Breadcrumb -->
-      <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 border-b border-slate-100 flex items-center text-base text-slate-500">
+      <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4 border-b border-slate-100 flex items-center text-[10px] sm:text-sm text-slate-500">
         <router-link to="/" class="hover:text-indigo-600 transition-colors">Home</router-link>
-        <ChevronRight class="w-4 h-4 mx-2 text-slate-400" />
+        <ChevronRight class="w-3 h-3 sm:w-4 sm:h-4 mx-1 sm:mx-2 text-slate-400" />
         <router-link :to="`/shop/${product.category.toLowerCase()}`" class="hover:text-indigo-600 transition-colors capitalize">{{ product.category }}</router-link>
-        <ChevronRight class="w-4 h-4 mx-2 text-slate-400" />
-        <span class="text-slate-900 uppercase">{{ product.name }}</span>
+        <ChevronRight class="w-3 h-3 sm:w-4 sm:h-4 mx-1 sm:mx-2 text-slate-400" />
+        <span class="text-slate-900 uppercase truncate">{{ product.name }}</span>
       </nav>
 
       <!-- Product Layout -->
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12 lg:py-16">
         <div class="lg:grid lg:grid-cols-2 lg:gap-x-12 xl:gap-x-16 items-start">
           
           <!-- Image Gallery (Sticky on Desktop) -->
-          <div class="flex flex-col-reverse lg:flex-row gap-4 lg:gap-6 lg:sticky lg:top-24 self-start">
-            <div class="flex lg:flex-col gap-4 overflow-x-auto lg:overflow-visible lg:w-24 flex-shrink-0 hide-scrollbar p-1 lg:p-0">
+          <div class="flex flex-col-reverse lg:flex-row gap-3 sm:gap-4 lg:gap-6 lg:sticky lg:top-24 self-start">
+            <div class="flex lg:flex-col gap-2 sm:gap-4 overflow-x-auto lg:overflow-visible lg:w-24 flex-shrink-0 hide-scrollbar py-2 px-2 lg:p-0">
               <button 
                 v-for="(img, idx) in activeGalleryImages" 
                 :key="idx"
                 @click="selectedImage = idx"
                 :class="[
-                  'relative w-20 h-24 lg:w-full lg:h-32 rounded-xl overflow-hidden flex-shrink-0 focus:outline-none transition-all cursor-pointer',
+                  'relative w-16 h-20 sm:w-20 sm:h-24 lg:w-full lg:h-32 rounded-lg sm:rounded-xl overflow-hidden flex-shrink-0 focus:outline-none transition-all cursor-pointer',
                   selectedImage === idx ? 'ring-2 ring-indigo-600 ring-offset-2 scale-[1.02] z-10' : 'opacity-70 hover:opacity-100'
                 ]"
               >
@@ -439,7 +441,7 @@ const isInWishlist = computed(() => {
               </button>
             </div>
             
-            <div class="flex-grow rounded-3xl overflow-hidden bg-slate-100 aspect-[3/4] lg:aspect-auto lg:h-[620px] relative border border-slate-100 shadow-sm">
+            <div class="flex-grow rounded-2xl sm:rounded-3xl overflow-hidden bg-slate-100 aspect-[4/5] lg:aspect-auto lg:h-[620px] relative border border-slate-100 shadow-sm">
               <transition name="fade">
                 <img :key="selectedImage" :src="activeGalleryImages[selectedImage] || activeGalleryImages[0]" class="absolute inset-0 w-full h-full object-cover object-center transition-all duration-200" alt="Product image" />
               </transition>
@@ -447,9 +449,9 @@ const isInWishlist = computed(() => {
           </div>
 
           <!-- Product Info -->
-          <div class="mt-10 px-4 sm:px-0 lg:mt-0 lg:sticky lg:top-24 self-start">
-            <div class="flex items-center gap-3 flex-wrap">
-              <h1 class="text-3xl font-extrabold tracking-tight text-slate-900">{{ product.name }}</h1>
+          <div class="mt-6 sm:mt-10 px-0 lg:mt-0 lg:sticky lg:top-24 self-start">
+            <div class="flex items-center gap-2 sm:gap-3 flex-wrap">
+              <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">{{ product.name }}</h1>
               <span
                 v-if="product.createdAt && new Date(product.createdAt) > new Date(Date.now() - 3 * 24 * 60 * 60 * 1000)"
                 class="bg-rose-500 text-white text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow-sm"
@@ -458,67 +460,67 @@ const isInWishlist = computed(() => {
               </span>
             </div>
           <div class="mt-3 flex items-center justify-between">
-            <div class="flex items-baseline gap-3">
-              <p class="text-3xl font-bold text-slate-900">${{ (product.discount > 0 ? product.price * (1 - product.discount / 100) : product.price).toFixed(2) }}</p>
-              <p v-if="product.discount > 0" class="text-xl font-semibold text-slate-400 line-through decoration-rose-500/50">${{ product.price.toFixed(2) }}</p>
-              <span v-if="product.discount > 0" class="bg-indigo-600 text-white text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-full shadow-sm">
+            <div class="flex items-baseline gap-2 sm:gap-3">
+              <p class="text-2xl sm:text-3xl font-bold text-slate-900">${{ (product.discount > 0 ? product.price * (1 - product.discount / 100) : product.price).toFixed(2) }}</p>
+              <p v-if="product.discount > 0" class="text-lg sm:text-xl font-semibold text-slate-400 line-through decoration-rose-500/50">${{ product.price.toFixed(2) }}</p>
+              <span v-if="product.discount > 0" class="bg-indigo-600 text-white text-[10px] sm:text-xs font-bold uppercase tracking-wider px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full shadow-sm">
                 -{{ product.discount }}%
               </span>
             </div>
             
-            <div class="flex items-center space-x-2">
+            <div class="flex items-center space-x-1 sm:space-x-2">
               <div class="flex items-center text-yellow-400">
-                <Star v-for="i in 5" :key="i" :class="[i <= Math.round(product.rating) ? 'fill-yellow-400' : 'text-slate-200']" class="w-5 h-5" />
+                <Star v-for="i in 5" :key="i" :class="[i <= Math.round(product.rating) ? 'fill-yellow-400' : 'text-slate-200']" class="w-3.5 h-3.5 sm:w-5 sm:h-5" />
               </div>
-              <a href="#reviews" class="text-sm font-medium text-indigo-600 hover:text-indigo-500">
+              <a href="#reviews" class="text-xs sm:text-sm font-medium text-indigo-600 hover:text-indigo-500">
                 {{ product.numReviews }} reviews
               </a>
             </div>
           </div>
 
-          <div class="mt-6">
+          <div class="mt-4 sm:mt-6">
             <h3 class="sr-only">Description</h3>
-            <p class="text-base text-slate-600 leading-relaxed">{{ product.description }}</p>
+            <p class="text-sm sm:text-base text-slate-600 leading-relaxed">{{ product.description }}</p>
           </div>
 
-          <div class="mt-8 border-t border-slate-100 pt-8">
+          <div class="mt-6 sm:mt-8 border-t border-slate-100 pt-6 sm:pt-8">
             <!-- Colors -->
-            <div class="mb-6">
+            <div class="mb-5 sm:mb-6">
               <div class="flex items-center justify-between mb-2">
-                <h3 class="text-sm font-bold uppercase tracking-wider text-slate-900">
+                <h3 class="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-900">
                   Color: <span class="text-indigo-600 font-semibold capitalize">{{ selectedColor }}</span>
                 </h3>
               </div>
-              <div class="mt-2 flex items-center space-x-3 flex-wrap gap-2">
+              <div class="mt-2 flex items-center space-x-2 sm:space-x-3 flex-wrap gap-2">
                 <button
                   v-for="color in (displayColors.length ? displayColors : product.colors)"
                   :key="color"
                   @click="selectColor(color)"
                   :class="[
-                    'relative w-10 h-10 rounded-full focus:outline-none transition-all flex items-center justify-center border shadow-sm',
+                    'relative w-8 h-8 sm:w-10 sm:h-10 rounded-full focus:outline-none transition-all flex items-center justify-center border shadow-sm',
                     selectedColor.toLowerCase() === color.toLowerCase() ? 'ring-2 ring-indigo-600 ring-offset-2 scale-110' : 'border-slate-200 hover:scale-105'
                   ]"
                   :style="{ backgroundColor: color.toLowerCase() === 'white' ? '#fff' : color.toLowerCase() === 'black' ? '#0f172a' : color.toLowerCase() === 'navy' ? '#1e3a8a' : color }"
                   :title="`Select ${color}`"
                 >
-                  <Check v-if="selectedColor.toLowerCase() === color.toLowerCase()" class="w-5 h-5" :class="color.toLowerCase() === 'white' ? 'text-slate-900' : 'text-white'" />
+                  <Check v-if="selectedColor.toLowerCase() === color.toLowerCase()" class="w-4 h-4 sm:w-5 sm:h-5" :class="color.toLowerCase() === 'white' ? 'text-slate-900' : 'text-white'" />
                 </button>
               </div>
             </div>
 
             <!-- Sizes -->
-            <div class="mb-8">
-              <div class="flex justify-between items-center mb-3">
-                <h3 class="text-sm font-medium text-slate-900">Size</h3>
-                <a href="#" class="text-sm font-medium text-indigo-600 hover:text-indigo-500">Size Guide</a>
+            <div class="mb-6 sm:mb-8">
+              <div class="flex justify-between items-center mb-2 sm:mb-3">
+                <h3 class="text-xs sm:text-sm font-medium text-slate-900">Size</h3>
+                <a href="#" class="text-xs sm:text-sm font-medium text-indigo-600 hover:text-indigo-500">Size Guide</a>
               </div>
-              <div class="grid grid-cols-4 gap-3">
+              <div class="grid grid-cols-4 gap-2 sm:gap-3">
                 <button
                   v-for="size in product.sizes"
                   :key="size"
                   @click="selectedSize = size"
                   :class="[
-                    'border rounded-xl py-3 px-4 flex items-center justify-center text-sm font-medium transition-all',
+                    'border rounded-lg sm:rounded-xl py-2 sm:py-3 px-2 sm:px-4 flex items-center justify-center text-xs sm:text-sm font-medium transition-all',
                     selectedSize === size ? 'border-indigo-600 bg-indigo-50 text-indigo-700' : 'border-slate-200 text-slate-900 hover:bg-slate-50'
                   ]"
                 >
@@ -528,20 +530,20 @@ const isInWishlist = computed(() => {
             </div>
             
             <!-- Quantity and Add to Cart -->
-            <div class="flex flex-col sm:flex-row gap-4">
-              <div class="flex items-center border border-slate-200 rounded-xl h-14 sm:w-32 bg-white" :class="{ 'opacity-50 pointer-events-none': maxAvailableStock === 0 }">
-                <button @click="quantity > 1 && quantity--" class="px-4 py-2 text-slate-500 hover:text-slate-900 transition-colors">-</button>
-                <span class="flex-grow text-center font-medium text-slate-900">{{ quantity }}</span>
-                <button @click="increaseQuantity" class="px-4 py-2 text-slate-500 hover:text-slate-900 transition-colors">+</button>
+            <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
+              <div class="flex items-center border border-slate-200 rounded-lg sm:rounded-xl h-12 sm:h-14 sm:w-32 bg-white" :class="{ 'opacity-50 pointer-events-none': maxAvailableStock === 0 }">
+                <button @click="quantity > 1 && quantity--" class="px-3 sm:px-4 py-2 text-slate-500 hover:text-slate-900 transition-colors">-</button>
+                <span class="flex-grow text-center font-medium text-sm sm:text-base text-slate-900">{{ quantity }}</span>
+                <button @click="increaseQuantity" class="px-3 sm:px-4 py-2 text-slate-500 hover:text-slate-900 transition-colors">+</button>
               </div>
               
               <!-- Action Buttons -->
-              <div class="flex space-x-4 flex-grow">
+              <div class="flex space-x-3 sm:space-x-4 flex-grow">
                 <button 
                   @click="addToCart"
                   :disabled="maxAvailableStock === 0"
                   :class="[
-                    'flex-1 border border-transparent rounded-xl py-4 px-8 flex items-center justify-center text-base font-semibold text-white focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all',
+                    'flex-1 border border-transparent rounded-lg sm:rounded-xl py-3 sm:py-4 px-4 sm:px-8 flex items-center justify-center text-sm sm:text-base font-semibold text-white focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all',
                     maxAvailableStock === 0 
                       ? 'bg-slate-400 cursor-not-allowed' 
                       : 'bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 shadow-lg shadow-indigo-600/30 hover:-translate-y-0.5'
@@ -553,9 +555,9 @@ const isInWishlist = computed(() => {
                 <button 
                   @click="toggleWishlist" 
                   :class="isInWishlist ? 'text-red-500 bg-red-50 border-red-200' : 'text-slate-600 bg-white border-slate-200 hover:bg-slate-50'" 
-                  class="w-14 h-14 flex-shrink-0 flex items-center justify-center border rounded-xl transition-colors shadow-sm"
+                  class="w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 flex items-center justify-center border rounded-lg sm:rounded-xl transition-colors shadow-sm"
                 >
-                  <Heart class="w-6 h-6" :class="{'fill-current': isInWishlist}" />
+                  <Heart class="w-5 h-5 sm:w-6 sm:h-6" :class="{'fill-current': isInWishlist}" />
                 </button>
               </div>
             </div>
@@ -573,24 +575,34 @@ const isInWishlist = computed(() => {
       </div>
       </div>
       <!-- Reviews Section -->
-      <div id="reviews" v-if="product" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-t border-slate-200 mt-16">
+      <div id="reviews" v-if="product" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 border-t border-slate-200 mt-10 sm:mt-16">
         <!-- Section Header -->
-        <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 pb-6 border-b border-slate-100 gap-4">
+        <div 
+          @click="isReviewsExpanded = !isReviewsExpanded"
+          class="flex flex-col md:flex-row md:items-center justify-between mb-6 sm:mb-10 pb-4 sm:pb-6 border-b border-slate-100 gap-4 cursor-pointer group select-none"
+        >
           <div>
-            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200/60 mb-2">
+            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] sm:text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200/60 mb-2 transition-colors group-hover:bg-amber-100">
               <Sparkles class="w-3.5 h-3.5 text-amber-500" />
               Customer Feedback
             </div>
-            <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">Customer Ratings & Reviews</h2>
-            <p class="text-sm text-slate-500 mt-1">Real feedback from verified Next-Gen shoppers</p>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight transition-colors group-hover:text-indigo-600">Customer Ratings & Reviews</h2>
+            <p class="text-xs sm:text-sm text-slate-500 mt-1">Real feedback from verified Next-Gen shoppers</p>
           </div>
 
-          <div class="flex items-center gap-3">
-            <span class="text-sm text-slate-500 font-medium">Total Reviews:</span>
-            <span class="px-3 py-1 bg-slate-900 text-white rounded-full text-xs font-bold">{{ product.reviews?.length || 0 }}</span>
+          <div class="flex items-center gap-4">
+            <div class="flex items-center gap-3">
+              <span class="text-xs sm:text-sm text-slate-500 font-medium">Total Reviews:</span>
+              <span class="px-3 py-1 bg-slate-900 text-white rounded-full text-xs font-bold shadow-sm">{{ product.reviews?.length || 0 }}</span>
+            </div>
+            <div class="w-10 h-10 flex items-center justify-center rounded-full bg-slate-50 text-slate-500 group-hover:bg-indigo-50 group-hover:text-indigo-600 transition-colors border border-slate-100 group-hover:border-indigo-100">
+              <ChevronUp v-if="isReviewsExpanded" class="w-5 h-5" />
+              <ChevronDown v-else class="w-5 h-5" />
+            </div>
           </div>
         </div>
         
+        <div v-show="isReviewsExpanded">
         <!-- Summary & Submission Top Grid -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12">
           
@@ -843,6 +855,8 @@ const isInWishlist = computed(() => {
               </div>
             </div>
           </div>
+        </div>
+        <!-- End Collapsible Content -->
         </div>
       </div>
 

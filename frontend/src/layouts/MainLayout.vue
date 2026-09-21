@@ -86,11 +86,6 @@ onMounted(() => {
           
           <!-- Brand Logo -->
           <router-link to="/" class="flex-shrink-0 flex items-center gap-3 group focus:outline-none">
-            <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-indigo-500 via-purple-600 to-fuchsia-500 flex items-center justify-center text-white shadow-lg shadow-purple-500/30 group-hover:shadow-purple-500/50 group-hover:scale-105 transition-all duration-300 border border-white/20">
-              <svg viewBox="0 0 100 100" class="w-5 h-5 fill-current drop-shadow-sm" xmlns="http://www.w3.org/2000/svg">
-                <path d="M50 0 C53 38, 62 47, 100 50 C62 53, 53 62, 50 100 C47 62, 38 53, 0 50 C38 47, 47 38, 50 0 Z" />
-              </svg>
-            </div>
             <div class="flex flex-col">
               <span class="text-xl font-black text-slate-900 tracking-tight leading-none uppercase" style="font-family: 'Montserrat', sans-serif;">
                 Next-Gen
@@ -145,7 +140,7 @@ onMounted(() => {
           </nav>
 
           <!-- Right Controls & User Hub -->
-          <div class="flex items-center space-x-5">
+          <div class="flex items-center gap-4 sm:gap-5">
             
             <!-- Quick Search Button -->
             <button
@@ -189,7 +184,7 @@ onMounted(() => {
             <!-- Notifications -->
             <NotificationDropdown v-if="authStore.isAuthenticated" />
 
-            <div class="h-4 w-px bg-slate-200 mx-2 hidden sm:block"></div>
+            <div class="h-4 w-px bg-slate-300 hidden sm:block"></div>
 
             <!-- User Auth Profile Actions -->
             <div v-if="!authStore.isAuthenticated" class="hidden sm:flex items-center gap-2">
@@ -202,7 +197,7 @@ onMounted(() => {
               </router-link>
             </div>
 
-            <div v-else class="hidden sm:flex items-center gap-5">
+            <div v-else class="hidden sm:flex items-center gap-4 sm:gap-5">
               <!-- Profile Link -->
               <router-link
                 to="/profile"
@@ -262,13 +257,15 @@ onMounted(() => {
       ]"
     >
       <!-- Mobile Drawer Header -->
-      <div class="h-18 px-6 border-b border-slate-100 flex items-center justify-between">
-        <div class="flex items-center gap-2">
-          <div class="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center font-bold">
-            <Sparkles class="w-4 h-4" />
-          </div>
-          <span class="font-extrabold text-lg text-slate-900">Next-Gen</span>
-        </div>
+      <div class="h-16 px-5 border-b border-slate-100 flex items-center justify-between bg-white">
+        <router-link to="/" @click="isMobileNavOpen = false" class="flex flex-col focus:outline-none">
+          <span class="text-lg font-black text-slate-900 tracking-tight leading-none uppercase" style="font-family: 'Montserrat', sans-serif;">
+            Next-Gen
+          </span>
+          <span class="text-[8px] font-bold uppercase tracking-[0.2em] text-slate-400 mt-0.5" style="font-family: 'Syncopate', sans-serif;">
+            Streetwear
+          </span>
+        </router-link>
         <button
           @click="isMobileNavOpen = false"
           class="p-2 text-slate-400 hover:text-slate-900 rounded-lg hover:bg-slate-100 transition"
@@ -280,57 +277,57 @@ onMounted(() => {
 
 
       <!-- Mobile Links List -->
-      <div class="flex-grow py-6 px-4 space-y-4 overflow-y-auto hide-scrollbar">
+      <div class="flex-grow py-4 px-3 space-y-4 overflow-y-auto hide-scrollbar">
         
         <div>
-          <div class="px-3 pb-3 text-[10px] font-black uppercase tracking-widest text-slate-400">
+          <div class="px-3 pb-2 text-[9px] font-black uppercase tracking-widest text-slate-400">
             Navigation
           </div>
-          <div class="flex flex-col">
+          <div class="flex flex-col space-y-1">
             <router-link
               to="/"
               @click="isMobileNavOpen = false"
-              exact-active-class="text-indigo-600 font-bold"
-              class="flex items-center gap-4 py-3.5 text-sm font-semibold text-slate-600 hover:text-indigo-600 transition-colors border-b border-slate-100"
+              exact-active-class="!text-indigo-700 !font-bold bg-indigo-50/80"
+              class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-50 hover:text-indigo-600 transition-colors"
             >
-              <Home class="w-5 h-5" />
+              <Home class="w-4 h-4" />
               <span class="flex-grow">Home</span>
             </router-link>
 
             <router-link
               to="/shop"
               @click="isMobileNavOpen = false"
-              exact-active-class="text-indigo-600 font-bold"
-              class="flex items-center gap-4 py-3.5 text-sm font-semibold text-slate-600 hover:text-indigo-600 transition-colors"
+              active-class="!text-indigo-700 !font-bold bg-indigo-50/80"
+              class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-50 hover:text-indigo-600 transition-colors"
             >
-              <Store class="w-5 h-5" />
+              <Store class="w-4 h-4" />
               <span class="flex-grow">All Products</span>
             </router-link>
           </div>
         </div>
 
         <div>
-          <div class="pt-4 pb-2 text-[10px] font-black uppercase tracking-widest text-slate-400 border-t border-slate-100">
+          <div class="px-3 pt-2 pb-2 text-[9px] font-black uppercase tracking-widest text-slate-400 border-t border-slate-100">
             Information
           </div>
-          <div class="flex flex-col">
+          <div class="flex flex-col space-y-1">
             <router-link
               to="/about"
               @click="isMobileNavOpen = false"
-              active-class="text-indigo-600 font-bold"
-              class="flex items-center gap-4 py-3.5 text-sm font-semibold text-slate-600 hover:text-indigo-600 transition-colors border-b border-slate-100"
+              active-class="!text-indigo-700 !font-bold bg-indigo-50/80"
+              class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-50 hover:text-indigo-600 transition-colors"
             >
-              <Info class="w-5 h-5" />
+              <Info class="w-4 h-4" />
               <span class="flex-grow">About Us</span>
             </router-link>
 
             <router-link
               to="/contact"
               @click="isMobileNavOpen = false"
-              active-class="text-indigo-600 font-bold"
-              class="flex items-center gap-4 py-3.5 text-sm font-semibold text-slate-600 hover:text-indigo-600 transition-colors"
+              active-class="!text-indigo-700 !font-bold bg-indigo-50/80"
+              class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-50 hover:text-indigo-600 transition-colors"
             >
-              <MessageSquare class="w-5 h-5" />
+              <MessageSquare class="w-4 h-4" />
               <span class="flex-grow">Contact</span>
             </router-link>
           </div>
@@ -338,24 +335,24 @@ onMounted(() => {
       </div>
 
       <!-- Mobile User Footer -->
-      <div class="p-4 border-t border-slate-100 bg-slate-50/50">
+      <div class="p-3 sm:p-4 border-t border-slate-100 bg-slate-50/50">
         <div v-if="authStore.isAuthenticated">
-          <div class="flex items-center gap-3 mb-3">
-            <div class="w-10 h-10 rounded-full bg-slate-100 text-slate-500 font-bold flex items-center justify-center uppercase overflow-hidden shrink-0">
+          <div class="flex items-center gap-2.5 mb-3 px-1">
+            <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-slate-100 text-slate-500 font-bold flex items-center justify-center uppercase overflow-hidden shrink-0 shadow-sm border border-slate-200">
               <img v-if="authStore.user?.image && !authStore.user.image.includes('via.placeholder')" :src="authStore.user.image" class="w-full h-full object-cover" />
-              <span v-else>{{ (authStore.user?.fullName || 'U').charAt(0) }}</span>
+              <span v-else class="text-xs sm:text-sm">{{ (authStore.user?.fullName || 'U').charAt(0) }}</span>
             </div>
             <div class="min-w-0">
-              <p class="text-sm font-bold text-slate-800 truncate">{{ authStore.user?.fullName }}</p>
-              <p class="text-xs text-slate-400 truncate">{{ authStore.user?.email }}</p>
+              <p class="text-xs sm:text-sm font-bold text-slate-800 truncate">{{ authStore.user?.fullName }}</p>
+              <p class="text-[10px] sm:text-xs text-slate-400 truncate">{{ authStore.user?.email }}</p>
             </div>
           </div>
 
-          <div class="grid grid-cols-2 gap-2 mb-2">
+          <div class="flex gap-2 mb-2">
             <router-link
               to="/profile"
               @click="isMobileNavOpen = false"
-              class="py-2 text-center text-xs font-bold bg-white border border-slate-200 rounded-xl text-slate-700 hover:bg-slate-50"
+              class="flex-1 flex items-center justify-center py-2 text-[11px] font-bold bg-white border border-slate-200 rounded-lg text-slate-700 hover:bg-slate-50 transition shadow-sm"
             >
               My Profile
             </router-link>
@@ -363,34 +360,34 @@ onMounted(() => {
               v-if="authStore.isAdmin"
               to="/admin"
               @click="isMobileNavOpen = false"
-              class="py-2 text-center text-xs font-bold bg-indigo-50 border border-indigo-200 rounded-xl text-indigo-600"
+              class="flex-1 flex items-center justify-center py-2 text-[11px] font-bold bg-indigo-50 border border-indigo-200 rounded-lg text-indigo-700 hover:bg-indigo-100 transition shadow-sm"
             >
-              Admin
+              Dashboard
             </router-link>
           </div>
 
           <button
             @click="handleLogout(); isMobileNavOpen = false"
-            class="w-full py-2.5 text-center text-xs font-bold text-slate-500 bg-slate-50 hover:bg-slate-100 rounded-xl transition cursor-pointer"
+            class="w-full py-2 flex items-center justify-center text-[11px] font-bold text-rose-600 bg-rose-50 border border-rose-100 hover:bg-rose-100 rounded-lg transition cursor-pointer shadow-sm"
           >
             Sign Out
           </button>
         </div>
 
-        <div v-else class="space-y-2">
+        <div v-else class="flex gap-2">
           <router-link
             to="/login"
             @click="isMobileNavOpen = false"
-            class="block w-full py-3 text-center text-xs font-bold text-white bg-slate-900 hover:bg-black rounded-xl transition"
+            class="flex-1 py-2 text-center text-[11px] font-bold text-white bg-slate-900 hover:bg-black rounded-lg transition"
           >
             Sign In
           </router-link>
           <router-link
             to="/register"
             @click="isMobileNavOpen = false"
-            class="block w-full py-3 text-center text-xs font-bold text-slate-700 bg-white border border-slate-200 hover:bg-slate-50 rounded-xl transition"
+            class="flex-1 py-2 text-center text-[11px] font-bold text-slate-700 bg-white border border-slate-200 hover:bg-slate-50 rounded-lg transition"
           >
-            Create Account
+            Register
           </router-link>
         </div>
       </div>
@@ -399,43 +396,43 @@ onMounted(() => {
     <!-- Quick Search Modal -->
     <div
       v-if="showSearchModal"
-      class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-start justify-center pt-24 px-4"
+      class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-start justify-center pt-16 sm:pt-24 px-4"
       @click="showSearchModal = false"
     >
       <div
-        class="bg-white rounded-3xl p-6 shadow-2xl border border-slate-100 w-full max-w-xl"
+        class="bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-6 shadow-2xl border border-slate-100 w-full max-w-xl"
         @click.stop
       >
-        <div class="flex items-center justify-between mb-4">
-          <h3 class="text-base font-bold text-slate-900">Search Next-Gen Store</h3>
+        <div class="flex items-center justify-between mb-3 sm:mb-4">
+          <h3 class="text-sm sm:text-base font-bold text-slate-900">Search Next-Gen Store</h3>
           <button @click="showSearchModal = false" class="text-slate-400 hover:text-slate-600 p-1">
-            <X class="w-5 h-5" />
+            <X class="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
         </div>
 
         <form @submit.prevent="handleSearch" class="relative">
-          <Search class="w-5 h-5 text-indigo-600 absolute left-4 top-1/2 -translate-y-1/2" />
+          <Search class="w-4 h-4 sm:w-5 sm:h-5 text-indigo-600 absolute left-3 sm:left-4 top-1/2 -translate-y-1/2" />
           <input
             v-model="searchQuery"
             type="text"
             autofocus
             placeholder="Type clothing name, color, or style..."
-            class="w-full pl-12 pr-24 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-sm text-slate-900 focus:bg-white focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 outline-none"
+            class="w-full pl-9 sm:pl-12 pr-20 sm:pr-24 py-2.5 sm:py-3.5 bg-slate-50 border border-slate-200 rounded-xl sm:rounded-2xl text-xs sm:text-sm text-slate-900 focus:bg-white focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 outline-none"
           />
           <button
             type="submit"
-            class="absolute right-2 top-1/2 -translate-y-1/2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition cursor-pointer"
+            class="absolute right-1.5 sm:right-2 top-1/2 -translate-y-1/2 px-3 sm:px-4 py-1.5 sm:py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg sm:rounded-xl text-[10px] sm:text-xs font-bold transition cursor-pointer"
           >
             Search
           </button>
         </form>
 
-        <div class="mt-4 flex items-center gap-2 text-xs text-slate-400">
+        <div class="mt-3 sm:mt-4 flex flex-wrap items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs text-slate-400">
           <span>Popular:</span>
           <router-link
             to="/shop?q=t-shirt"
             @click="showSearchModal = false"
-            class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg transition"
+            class="px-2 sm:px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-md sm:rounded-lg transition"
           >
             T-Shirt
           </router-link>
@@ -467,59 +464,54 @@ onMounted(() => {
     </main>
 
     <!-- Footer -->
-    <footer class="bg-white border-t border-slate-200 pt-20 pb-10">
+    <footer class="bg-white border-t border-slate-200 pt-10 sm:pt-20 pb-6 sm:pb-10">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <!-- Top Main Footer Area -->
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-8 pb-16">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 sm:gap-12 lg:gap-8 pb-8 sm:pb-16">
           
           <!-- Brand Info -->
           <div class="md:col-span-12 lg:col-span-5 pr-0 lg:pr-8">
-            <router-link to="/" class="flex items-center gap-3 group focus:outline-none inline-flex mb-6">
-              <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-500 via-purple-600 to-fuchsia-500 flex items-center justify-center text-white shadow-xl shadow-purple-500/30 group-hover:shadow-purple-500/50 group-hover:scale-105 transition-all duration-300 border border-white/20">
-                <svg viewBox="0 0 100 100" class="w-6 h-6 fill-current drop-shadow-sm" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M50 0 C53 38, 62 47, 100 50 C62 53, 53 62, 50 100 C47 62, 38 53, 0 50 C38 47, 47 38, 50 0 Z" />
-                </svg>
-              </div>
+            <router-link to="/" class="flex items-center gap-3 group focus:outline-none inline-flex mb-4 sm:mb-6">
               <div class="flex flex-col">
-                <span class="text-2xl font-black text-slate-900 tracking-tight leading-none uppercase" style="font-family: 'Montserrat', sans-serif;">
+                <span class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight leading-none uppercase" style="font-family: 'Montserrat', sans-serif;">
                   Next-Gen
                 </span>
-                <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 mt-0.5" style="font-family: 'Syncopate', sans-serif;">
+                <span class="text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 mt-0.5" style="font-family: 'Syncopate', sans-serif;">
                   Streetwear
                 </span>
               </div>
             </router-link>
-            <p class="text-slate-500 text-sm leading-relaxed max-w-sm mb-8">
+            <p class="text-slate-500 text-xs sm:text-sm leading-relaxed max-w-sm mb-6 sm:mb-8">
               Premium e-commerce platform for modern streetwear and everyday fashion. Redefining your style with instant Bakong KHQR checkout.
             </p>
             
             <!-- Contact Quick Links (Text-based minimal icons) -->
-            <div class="flex items-center gap-4 text-sm font-semibold text-slate-700">
-              <a href="#" class="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center hover:bg-slate-50 hover:text-indigo-600 transition-colors group">
-                 <span class="text-slate-400 group-hover:text-indigo-600 font-bold text-lg leading-none">f</span>
+            <div class="flex items-center gap-3 sm:gap-4 text-xs sm:text-sm font-semibold text-slate-700">
+              <a href="#" class="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-slate-200 flex items-center justify-center hover:bg-slate-50 hover:text-indigo-600 transition-colors group">
+                 <span class="text-slate-400 group-hover:text-indigo-600 font-bold text-base sm:text-lg leading-none">f</span>
               </a>
-              <a href="#" class="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center hover:bg-slate-50 hover:text-indigo-600 transition-colors group">
-                 <span class="text-slate-400 group-hover:text-indigo-600 font-bold text-lg leading-none">ig</span>
+              <a href="#" class="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-slate-200 flex items-center justify-center hover:bg-slate-50 hover:text-indigo-600 transition-colors group">
+                 <span class="text-slate-400 group-hover:text-indigo-600 font-bold text-base sm:text-lg leading-none">ig</span>
               </a>
-              <a href="#" class="w-10 h-10 rounded-full border border-slate-200 flex items-center justify-center hover:bg-slate-50 hover:text-indigo-600 transition-colors group">
-                 <span class="text-slate-400 group-hover:text-indigo-600 font-bold text-lg leading-none">x</span>
+              <a href="#" class="w-8 h-8 sm:w-10 sm:h-10 rounded-full border border-slate-200 flex items-center justify-center hover:bg-slate-50 hover:text-indigo-600 transition-colors group">
+                 <span class="text-slate-400 group-hover:text-indigo-600 font-bold text-base sm:text-lg leading-none">x</span>
               </a>
             </div>
           </div>
 
           <!-- Quick Links: Shop -->
           <div class="md:col-span-4 lg:col-span-2">
-            <h3 class="text-sm font-bold text-slate-900 uppercase tracking-widest mb-6">Shop</h3>
-            <ul class="space-y-4">
+            <h3 class="text-xs sm:text-sm font-bold text-slate-900 uppercase tracking-widest mb-4 sm:mb-6">Shop</h3>
+            <ul class="space-y-3 sm:space-y-4">
               <li v-for="cat in categoryStore.categories.slice(0, 4)" :key="cat._id">
-                <router-link :to="`/shop/${cat.name.toLowerCase()}`" class="text-sm font-medium text-slate-500 hover:text-indigo-600 transition-all flex items-center gap-2 group">
+                <router-link :to="`/shop/${cat.name.toLowerCase()}`" class="text-xs sm:text-sm font-medium text-slate-500 hover:text-indigo-600 transition-all flex items-center gap-2 group">
                   <span class="w-0 h-px bg-indigo-600 transition-all group-hover:w-3"></span>
                   {{ cat.name }}
                 </router-link>
               </li>
               <li>
-                <router-link to="/shop" class="text-sm font-medium text-slate-500 hover:text-indigo-600 transition-all flex items-center gap-2 group">
+                <router-link to="/shop" class="text-xs sm:text-sm font-medium text-slate-500 hover:text-indigo-600 transition-all flex items-center gap-2 group">
                   <span class="w-0 h-px bg-indigo-600 transition-all group-hover:w-3"></span>
                   All Products
                 </router-link>
@@ -529,28 +521,28 @@ onMounted(() => {
 
           <!-- Quick Links: Company -->
           <div class="md:col-span-4 lg:col-span-2">
-            <h3 class="text-sm font-bold text-slate-900 uppercase tracking-widest mb-6">Company</h3>
-            <ul class="space-y-4">
+            <h3 class="text-xs sm:text-sm font-bold text-slate-900 uppercase tracking-widest mb-4 sm:mb-6">Company</h3>
+            <ul class="space-y-3 sm:space-y-4">
               <li>
-                <router-link to="/about" class="text-sm font-medium text-slate-500 hover:text-indigo-600 transition-all flex items-center gap-2 group">
+                <router-link to="/about" class="text-xs sm:text-sm font-medium text-slate-500 hover:text-indigo-600 transition-all flex items-center gap-2 group">
                   <span class="w-0 h-px bg-indigo-600 transition-all group-hover:w-3"></span>
                   About Us
                 </router-link>
               </li>
               <li>
-                <router-link to="/contact" class="text-sm font-medium text-slate-500 hover:text-indigo-600 transition-all flex items-center gap-2 group">
+                <router-link to="/contact" class="text-xs sm:text-sm font-medium text-slate-500 hover:text-indigo-600 transition-all flex items-center gap-2 group">
                   <span class="w-0 h-px bg-indigo-600 transition-all group-hover:w-3"></span>
                   Contact
                 </router-link>
               </li>
               <li>
-                <a href="#" class="text-sm font-medium text-slate-500 hover:text-indigo-600 transition-all flex items-center gap-2 group">
+                <a href="#" class="text-xs sm:text-sm font-medium text-slate-500 hover:text-indigo-600 transition-all flex items-center gap-2 group">
                   <span class="w-0 h-px bg-indigo-600 transition-all group-hover:w-3"></span>
                   Privacy Policy
                 </a>
               </li>
               <li>
-                <a href="#" class="text-sm font-medium text-slate-500 hover:text-indigo-600 transition-all flex items-center gap-2 group">
+                <a href="#" class="text-xs sm:text-sm font-medium text-slate-500 hover:text-indigo-600 transition-all flex items-center gap-2 group">
                   <span class="w-0 h-px bg-indigo-600 transition-all group-hover:w-3"></span>
                   Terms of Service
                 </a>
@@ -560,12 +552,12 @@ onMounted(() => {
 
           <!-- Support & Trust -->
           <div class="md:col-span-4 lg:col-span-3">
-            <h3 class="text-sm font-bold text-slate-900 uppercase tracking-widest mb-6">Support</h3>
-            <div class="p-6 rounded-2xl bg-slate-50 border border-slate-100 mb-4 hover:border-indigo-100 hover:bg-indigo-50/50 transition-colors">
-               <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Customer Service</p>
-               <a href="tel:+85512345678" class="text-lg font-black text-slate-900 hover:text-indigo-600 transition-colors block mb-4">+855 12 345 678</a>
-               <p class="text-xs font-medium text-slate-500 mb-4 leading-relaxed">Available 24/7 for support and order inquiries.</p>
-               <router-link to="/contact" class="inline-flex items-center gap-2 text-xs font-bold text-indigo-600 hover:text-indigo-700 transition-colors group">
+            <h3 class="text-xs sm:text-sm font-bold text-slate-900 uppercase tracking-widest mb-4 sm:mb-6">Support</h3>
+            <div class="p-4 sm:p-6 rounded-xl sm:rounded-2xl bg-slate-50 border border-slate-100 mb-4 hover:border-indigo-100 hover:bg-indigo-50/50 transition-colors">
+               <p class="text-[9px] sm:text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Customer Service</p>
+               <a href="tel:+85512345678" class="text-base sm:text-lg font-black text-slate-900 hover:text-indigo-600 transition-colors block mb-3 sm:mb-4">+855 12 345 678</a>
+               <p class="text-[11px] sm:text-xs font-medium text-slate-500 mb-3 sm:mb-4 leading-relaxed">Available 24/7 for support and order inquiries.</p>
+               <router-link to="/contact" class="inline-flex items-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs font-bold text-indigo-600 hover:text-indigo-700 transition-colors group">
                   Contact Support <ChevronRight class="w-3 h-3 group-hover:translate-x-1 transition-transform" />
                </router-link>
             </div>
@@ -574,11 +566,11 @@ onMounted(() => {
         </div>
 
         <!-- Bottom Footer Bar -->
-        <div class="pt-8 border-t border-slate-200 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p class="text-sm font-medium text-slate-400">&copy; 2026 Next-Gen Streetwear. All rights reserved.</p>
-          <div class="flex items-center gap-3">
-            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Secure Payments by</span>
-            <span class="text-sm font-black text-slate-800 tracking-tight">Bakong KHQR</span>
+        <div class="pt-6 sm:pt-8 border-t border-slate-200 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p class="text-xs sm:text-sm font-medium text-slate-400 text-center sm:text-left">&copy; 2026 Next-Gen Streetwear. All rights reserved.</p>
+          <div class="flex items-center justify-center gap-2 sm:gap-3">
+            <span class="text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-widest">Secure Payments by</span>
+            <span class="text-xs sm:text-sm font-black text-slate-800 tracking-tight">Bakong KHQR</span>
           </div>
         </div>
 

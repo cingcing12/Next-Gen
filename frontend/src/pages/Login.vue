@@ -184,28 +184,28 @@ onMounted(() => {
           </div>
 
           <!-- Title & Subtitle -->
-          <div class="mb-8">
-            <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+          <div class="mb-6 sm:mb-8">
+            <h1 class="text-xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
               Welcome back
             </h1>
-            <p class="text-sm text-slate-500 mt-1">
+            <p class="text-xs sm:text-sm text-slate-500 mt-1">
               Please enter your details to access your orders and account.
             </p>
           </div>
 
           <!-- Google One-Tap / GSI Container -->
-          <div class="mb-6">
+          <div class="mb-5 sm:mb-6">
             <div class="flex justify-center">
               <div id="google-signin-btn" class="w-full flex justify-center"></div>
             </div>
           </div>
 
           <!-- Modern Divider -->
-          <div class="relative my-6">
+          <div class="relative my-5 sm:my-6">
             <div class="absolute inset-0 flex items-center">
               <div class="w-full border-t border-slate-200"></div>
             </div>
-            <div class="relative flex justify-center text-xs uppercase">
+            <div class="relative flex justify-center text-[10px] sm:text-xs uppercase">
               <span class="bg-white px-3 text-slate-400 font-semibold tracking-wider">
                 Or continue with email
               </span>
@@ -213,15 +213,15 @@ onMounted(() => {
           </div>
 
           <!-- Sign In Form -->
-          <form class="space-y-4" @submit.prevent="handleLogin">
+          <form class="space-y-3.5 sm:space-y-4" @submit.prevent="handleLogin">
             
             <!-- Email Input -->
             <div>
-              <label for="email" class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">
+              <label for="email" class="block text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-600 mb-1 sm:mb-1.5">
                 Email Address
               </label>
-              <div class="relative rounded-xl border border-slate-200 focus-within:border-indigo-600 focus-within:ring-2 focus-within:ring-indigo-600/20 transition-all bg-slate-50/60 focus-within:bg-white">
-                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+              <div class="relative rounded-lg sm:rounded-xl border border-slate-200 focus-within:border-indigo-600 focus-within:ring-2 focus-within:ring-indigo-600/20 transition-all bg-slate-50/60 focus-within:bg-white">
+                <div class="absolute inset-y-0 left-0 pl-3 sm:pl-3.5 flex items-center pointer-events-none text-slate-400">
                   <Mail class="w-4 h-4" />
                 </div>
                 <input
@@ -231,23 +231,23 @@ onMounted(() => {
                   autocomplete="email"
                   required
                   placeholder="name@example.com"
-                  class="w-full pl-10 pr-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 bg-transparent outline-none"
+                  class="w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2.5 sm:py-3 text-xs sm:text-sm text-slate-900 placeholder:text-slate-400 bg-transparent outline-none"
                 />
               </div>
             </div>
 
             <!-- Password Input -->
             <div>
-              <div class="flex items-center justify-between mb-1.5">
-                <label for="password" class="block text-xs font-bold uppercase tracking-wider text-slate-600">
+              <div class="flex items-center justify-between mb-1 sm:mb-1.5">
+                <label for="password" class="block text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-600">
                   Password
                 </label>
-                <a href="#" class="text-xs font-semibold text-indigo-600 hover:text-indigo-700">
+                <a href="#" class="text-[10px] sm:text-xs font-semibold text-indigo-600 hover:text-indigo-700">
                   Forgot password?
                 </a>
               </div>
-              <div class="relative rounded-xl border border-slate-200 focus-within:border-indigo-600 focus-within:ring-2 focus-within:ring-indigo-600/20 transition-all bg-slate-50/60 focus-within:bg-white">
-                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+              <div class="relative rounded-lg sm:rounded-xl border border-slate-200 focus-within:border-indigo-600 focus-within:ring-2 focus-within:ring-indigo-600/20 transition-all bg-slate-50/60 focus-within:bg-white">
+                <div class="absolute inset-y-0 left-0 pl-3 sm:pl-3.5 flex items-center pointer-events-none text-slate-400">
                   <Lock class="w-4 h-4" />
                 </div>
                 <input
@@ -257,12 +257,12 @@ onMounted(() => {
                   autocomplete="current-password"
                   required
                   placeholder="Enter your password"
-                  class="w-full pl-10 pr-10 py-3 text-sm text-slate-900 placeholder:text-slate-400 bg-transparent outline-none"
+                  class="w-full pl-9 sm:pl-10 pr-9 sm:pr-10 py-2.5 sm:py-3 text-xs sm:text-sm text-slate-900 placeholder:text-slate-400 bg-transparent outline-none"
                 />
                 <button
                   type="button"
                   @click="showPassword = !showPassword"
-                  class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 focus:outline-none cursor-pointer"
+                  class="absolute inset-y-0 right-0 pr-3 sm:pr-3.5 flex items-center text-slate-400 hover:text-slate-600 focus:outline-none cursor-pointer"
                 >
                   <EyeOff v-if="showPassword" class="w-4 h-4" />
                   <Eye v-else class="w-4 h-4" />
@@ -276,27 +276,27 @@ onMounted(() => {
                 id="remember-me"
                 v-model="rememberMe"
                 type="checkbox"
-                class="w-4 h-4 text-indigo-600 border-slate-300 rounded focus:ring-indigo-500 cursor-pointer"
+                class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-indigo-600 border-slate-300 rounded focus:ring-indigo-500 cursor-pointer"
               />
-              <label for="remember-me" class="ml-2 block text-xs font-medium text-slate-600 cursor-pointer">
+              <label for="remember-me" class="ml-2 block text-[10px] sm:text-xs font-medium text-slate-600 cursor-pointer">
                 Keep me signed in on this device
               </label>
             </div>
 
             <!-- Submit Button -->
-            <div class="pt-2">
+            <div class="pt-1.5 sm:pt-2">
               <button
                 type="submit"
                 :disabled="isSubmitting"
-                class="w-full flex items-center justify-center gap-2 py-3.5 px-4 bg-gradient-to-r from-indigo-600 via-indigo-700 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white rounded-xl text-sm font-bold shadow-lg shadow-indigo-500/25 transition-all transform active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                class="w-full flex items-center justify-center gap-2 py-2.5 sm:py-3.5 px-4 bg-gradient-to-r from-indigo-600 via-indigo-700 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white rounded-lg sm:rounded-xl text-xs sm:text-sm font-bold shadow-lg shadow-indigo-500/25 transition-all transform active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
               >
                 <template v-if="isSubmitting">
-                  <div class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                  <div class="w-3.5 h-3.5 sm:w-4 sm:h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
                   <span>Signing In...</span>
                 </template>
                 <template v-else>
                   <span>Sign In to Account</span>
-                  <ArrowRight class="w-4 h-4" />
+                  <ArrowRight class="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </template>
               </button>
             </div>

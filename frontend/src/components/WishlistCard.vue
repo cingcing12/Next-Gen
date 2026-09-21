@@ -111,7 +111,7 @@ const getColorStyle = (colorName) => {
     </router-link>
 
     <!-- Product Info (Card Body) -->
-    <div class="p-5 flex flex-col flex-grow relative bg-white">
+    <div class="p-3 sm:p-5 flex flex-col flex-grow relative bg-white">
       
       <!-- Stock Status -->
       <div class="flex items-center justify-between mb-2">
@@ -128,7 +128,7 @@ const getColorStyle = (colorName) => {
       </router-link>
       
       <!-- Colors Swatches -->
-      <div v-if="displayColors && displayColors.length > 0" class="mb-3">
+      <div v-if="displayColors && displayColors.length > 0" class="mb-2 sm:mb-3">
         <div class="flex items-center gap-1.5 flex-wrap">
           <span class="text-[10px] uppercase font-bold text-slate-400 mr-1">Color:</span>
           <button
@@ -155,7 +155,7 @@ const getColorStyle = (colorName) => {
       </div>
 
       <!-- Sizes Pills -->
-      <div v-if="item.sizes && item.sizes.length > 0" class="mb-4">
+      <div v-if="item.sizes && item.sizes.length > 0" class="mb-3 sm:mb-4">
         <div class="flex items-center gap-1.5 flex-wrap">
           <span class="text-[10px] uppercase font-bold text-slate-400 mr-1">Size:</span>
           <button
@@ -176,7 +176,7 @@ const getColorStyle = (colorName) => {
       </div>
       
       <!-- Bottom Row -->
-      <div class="mt-auto pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
+      <div class="mt-auto pt-3 sm:pt-4 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-3">
         <div class="flex flex-col">
           <span class="text-xs text-slate-400 font-medium">Price</span>
           <span class="text-xl font-black text-slate-900">${{ item.price?.toFixed(2) }}</span>
@@ -185,7 +185,7 @@ const getColorStyle = (colorName) => {
         <button 
           @click="confirmMoveToCart" 
           :disabled="!inStock || isMoving"
-          class="flex-1 max-w-[140px] py-2.5 px-3 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 font-bold text-xs transition-all shadow-md shadow-indigo-600/20 flex items-center justify-center gap-1.5 disabled:opacity-50 disabled:cursor-not-allowed group/btn"
+          class="w-full sm:flex-1 sm:max-w-[140px] py-2 sm:py-2.5 px-3 bg-indigo-600 text-white rounded-lg sm:rounded-xl hover:bg-indigo-700 font-bold text-[11px] sm:text-xs transition-all shadow-md shadow-indigo-600/20 flex items-center justify-center gap-1.5 disabled:opacity-50 disabled:cursor-not-allowed group/btn"
         >
           <ShoppingCart class="w-3.5 h-3.5 transition-transform group-hover/btn:-translate-y-0.5" /> 
           <span>{{ !inStock ? 'Out of Stock' : (isMoving ? 'Moving...' : 'Move to Cart') }}</span>

@@ -276,12 +276,12 @@ const getColorStyle = (colorName) => {
       </h3>
 
       <!-- Short Description -->
-      <p class="text-xs text-slate-500 line-clamp-1 mb-3">
+      <p class="hidden sm:block text-xs text-slate-500 line-clamp-1 mb-3">
         {{ product.description || 'Premium quality modern style.' }}
       </p>
 
       <!-- Colors Swatches Bar (If available) -->
-      <div v-if="displayColors && displayColors.length > 0" class="mb-3">
+      <div v-if="displayColors && displayColors.length > 0" class="mb-2 sm:mb-3">
         <div class="flex items-center gap-1.5 flex-wrap">
           <span class="text-[10px] uppercase font-bold text-slate-400 mr-1">Colors:</span>
           <button
@@ -309,7 +309,7 @@ const getColorStyle = (colorName) => {
       </div>
 
       <!-- Sizes Pills Bar (If available) -->
-      <div v-if="product.sizes && product.sizes.length > 0" class="mb-4">
+      <div v-if="product.sizes && product.sizes.length > 0" class="mb-3 sm:mb-4">
         <div class="flex items-center gap-1.5 flex-wrap">
           <span class="text-[10px] uppercase font-bold text-slate-400 mr-1">Sizes:</span>
           <button
@@ -330,15 +330,15 @@ const getColorStyle = (colorName) => {
       </div>
 
       <!-- Bottom Row: Price & Add to Cart Button -->
-      <div class="mt-auto pt-3 border-t border-slate-100 flex items-center justify-between gap-3">
+      <div class="mt-auto pt-3 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <!-- Price -->
         <div class="flex flex-col">
-          <span class="text-xs text-slate-400 font-medium">Price</span>
+          <span class="text-[10px] sm:text-xs text-slate-400 font-medium">Price</span>
           <div class="flex items-baseline gap-1.5">
-            <span class="text-xl font-black text-slate-900">
+            <span class="text-lg sm:text-xl font-black text-slate-900">
               ${{ (product.discount > 0 ? product.price * (1 - product.discount / 100) : product.price)?.toFixed(2) }}
             </span>
-            <span v-if="product.discount > 0" class="text-sm font-semibold text-slate-400 line-through decoration-rose-500/50">
+            <span v-if="product.discount > 0" class="text-xs sm:text-sm font-semibold text-slate-400 line-through decoration-rose-500/50">
               ${{ product.price?.toFixed(2) }}
             </span>
           </div>
@@ -349,7 +349,7 @@ const getColorStyle = (colorName) => {
           type="button"
           @click="handleQuickAddToCart"
           :disabled="isAdding || currentStock <= 0"
-          class="flex-1 max-w-[150px] py-2.5 px-3.5 bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white font-bold text-xs rounded-xl shadow-md shadow-indigo-600/20 flex items-center justify-center gap-1.5 transition-all disabled:opacity-50 disabled:cursor-not-allowed group/btn"
+          class="w-full sm:flex-1 sm:max-w-[150px] py-2 sm:py-2.5 px-3.5 bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white font-bold text-xs rounded-xl shadow-md shadow-indigo-600/20 flex items-center justify-center gap-1.5 transition-all disabled:opacity-50 disabled:cursor-not-allowed group/btn"
         >
           <ShoppingBag class="w-3.5 h-3.5 transition-transform group-hover/btn:-translate-y-0.5" />
           <span>{{ currentStock <= 0 ? 'Out of Stock' : (isAdding ? 'Added!' : 'Add to Cart') }}</span>

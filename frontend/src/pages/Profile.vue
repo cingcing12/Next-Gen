@@ -418,17 +418,17 @@ const formatDate = (dateString) => {
           <div class="flex flex-col md:flex-row items-center md:items-start justify-between gap-6 w-full">
             
             <!-- Left: Identity -->
-            <div class="flex flex-row items-center md:items-start gap-4 md:gap-6 w-full md:w-auto">
+            <div class="flex flex-row items-center md:items-start gap-3 sm:gap-4 md:gap-6 w-full md:w-auto">
               <!-- Avatar -->
               <div class="relative group/avatar cursor-pointer shrink-0">
-                <div class="w-16 h-16 md:w-24 md:h-24 rounded-2xl overflow-hidden bg-indigo-700 border-2 border-indigo-400/50 shadow-sm flex items-center justify-center relative transition-all duration-300">
+                <div class="w-12 h-12 sm:w-16 sm:h-16 md:w-24 md:h-24 rounded-xl sm:rounded-2xl overflow-hidden bg-indigo-700 border-2 border-indigo-400/50 shadow-sm flex items-center justify-center relative transition-all duration-300">
                 <img
                   v-if="profile.avatar"
                   :src="profile.avatar"
                   alt="Profile Avatar"
                   class="w-full h-full object-cover"
                 />
-                <div v-else class="w-full h-full flex items-center justify-center text-3xl sm:text-4xl font-bold text-white uppercase">
+                <div v-else class="w-full h-full flex items-center justify-center text-xl sm:text-3xl md:text-4xl font-bold text-white uppercase">
                   {{ profile.fullName ? profile.fullName.charAt(0) : 'U' }}
                 </div>
                 <!-- Uploading Spinner -->
@@ -445,71 +445,71 @@ const formatDate = (dateString) => {
               <div class="absolute -bottom-1 -right-1 md:-bottom-1.5 md:-right-1.5 w-4 h-4 md:w-5 md:h-5 rounded-full bg-emerald-400 border-[3px] md:border-4 border-indigo-600 flex items-center justify-center"></div>
             </div>
 
-            <!-- User Info -->
-            <div class="text-left flex-1 space-y-1.5 md:space-y-3 pt-1">
-              <div>
-                <h1 class="text-xl md:text-3xl font-bold tracking-tight text-white mb-1.5 md:mb-2.5">
-                  {{ profile.fullName || 'Customer Profile' }}
-                </h1>
-                <div class="flex flex-wrap items-center justify-start gap-2">
-                  <span
-                    v-if="profile.role === 'admin'"
-                    class="inline-flex items-center gap-1.5 px-2 md:px-2.5 py-0.5 md:py-1 rounded-md text-[10px] md:text-xs font-bold uppercase tracking-widest bg-yellow-400 text-black shadow-sm"
-                  >
-                    <Sparkles class="w-3 h-3 md:w-3.5 md:h-3.5" /> Admin
+              <!-- User Info -->
+              <div class="text-left flex-1 space-y-1 sm:space-y-1.5 md:space-y-3 pt-1">
+                <div>
+                  <h1 class="text-base sm:text-xl md:text-3xl font-bold tracking-tight text-white mb-1 sm:mb-1.5 md:mb-2.5">
+                    {{ profile.fullName || 'Customer Profile' }}
+                  </h1>
+                  <div class="flex flex-wrap items-center justify-start gap-1.5 sm:gap-2">
+                    <span
+                      v-if="profile.role === 'admin'"
+                      class="inline-flex items-center gap-1 sm:gap-1.5 px-1.5 sm:px-2 md:px-2.5 py-0.5 md:py-1 rounded sm:rounded-md text-[8px] sm:text-[10px] md:text-xs font-bold uppercase tracking-widest bg-yellow-400 text-black shadow-sm"
+                    >
+                      <Sparkles class="w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-3.5 md:h-3.5" /> Admin
+                    </span>
+                    <span
+                      v-else
+                      class="inline-flex items-center gap-1 sm:gap-1.5 px-1.5 sm:px-2 md:px-2.5 py-0.5 md:py-1 rounded sm:rounded-md text-[8px] sm:text-[10px] md:text-xs font-bold uppercase tracking-widest bg-white/20 text-white backdrop-blur-sm shadow-sm"
+                    >
+                      Member
+                    </span>
+                    <span class="inline-flex items-center gap-1 sm:gap-1.5 px-1.5 sm:px-2 md:px-2.5 py-0.5 md:py-1 rounded sm:rounded-md text-[8px] sm:text-[10px] md:text-xs font-medium bg-indigo-700/50 text-indigo-100 border border-indigo-400/30 backdrop-blur-sm">
+                      <Mail class="w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-3.5 md:h-3.5" /> {{ profile.email || 'loading...' }}
+                    </span>
+                  </div>
+                </div>
+
+                <div class="flex flex-wrap items-center justify-start gap-1.5 sm:gap-2 md:gap-3 text-[9px] sm:text-[10px] md:text-sm font-medium text-indigo-200">
+                  <span class="flex items-center gap-0.5 sm:gap-1 md:gap-1.5">
+                    <Calendar class="w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-4 md:h-4" />
+                    Joined {{ profile.createdAt ? new Date(profile.createdAt).getFullYear() : '2026' }}
                   </span>
-                  <span
-                    v-else
-                    class="inline-flex items-center gap-1.5 px-2 md:px-2.5 py-0.5 md:py-1 rounded-md text-[10px] md:text-xs font-bold uppercase tracking-widest bg-white/20 text-white backdrop-blur-sm shadow-sm"
-                  >
-                    Member
-                  </span>
-                  <span class="inline-flex items-center gap-1.5 px-2 md:px-2.5 py-0.5 md:py-1 rounded-md text-[10px] md:text-xs font-medium bg-indigo-700/50 text-indigo-100 border border-indigo-400/30 backdrop-blur-sm">
-                    <Mail class="w-3 h-3 md:w-3.5 md:h-3.5" /> {{ profile.email || 'loading...' }}
+                  <span class="w-1 h-1 rounded-full bg-indigo-400 hidden sm:block"></span>
+                  <span class="flex items-center gap-0.5 sm:gap-1 md:gap-1.5" :class="is2FAEnabled ? 'text-emerald-300' : 'text-amber-300'">
+                    <ShieldCheck v-if="is2FAEnabled" class="w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-4 md:h-4" />
+                    <ShieldAlert v-else class="w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-4 md:h-4" />
+                    2FA {{ is2FAEnabled ? 'Secured' : 'Inactive' }}
                   </span>
                 </div>
               </div>
-
-              <div class="flex flex-wrap items-center justify-start gap-2 md:gap-3 text-[10px] md:text-sm font-medium text-indigo-200">
-                <span class="flex items-center gap-1 md:gap-1.5">
-                  <Calendar class="w-3 h-3 md:w-4 md:h-4" />
-                  Joined {{ profile.createdAt ? new Date(profile.createdAt).getFullYear() : '2026' }}
-                </span>
-                <span class="w-1 h-1 rounded-full bg-indigo-400 hidden md:block"></span>
-                <span class="flex items-center gap-1 md:gap-1.5" :class="is2FAEnabled ? 'text-emerald-300' : 'text-amber-300'">
-                  <ShieldCheck v-if="is2FAEnabled" class="w-3 h-3 md:w-4 md:h-4" />
-                  <ShieldAlert v-else class="w-3 h-3 md:w-4 md:h-4" />
-                  2FA {{ is2FAEnabled ? 'Secured' : 'Inactive' }}
-                </span>
-              </div>
-            </div>
             </div> <!-- End Left -->
 
             <!-- Right: Stat Cards (Minimal on mobile) -->
-            <div class="flex w-full md:w-auto justify-around md:justify-start gap-2 md:gap-3 mt-2 md:mt-0 pt-4 md:pt-0 border-t border-indigo-500/30 md:border-0">
+            <div class="flex w-full md:w-auto justify-around md:justify-start gap-1 sm:gap-2 md:gap-3 mt-2 md:mt-0 pt-3 sm:pt-4 md:pt-0 border-t border-indigo-500/30 md:border-0">
               
-              <div class="flex flex-col items-center justify-center md:bg-indigo-700/40 md:border border-indigo-400/20 rounded-xl px-2 py-1 md:p-4 md:min-w-[100px]">
+              <div class="flex flex-col items-center justify-center md:bg-indigo-700/40 md:border border-indigo-400/20 rounded-xl px-1 sm:px-2 py-1 md:p-4 md:min-w-[100px]">
                 <div class="hidden md:flex w-10 h-10 mx-auto bg-indigo-600 border border-indigo-400/30 rounded-lg items-center justify-center mb-2 shadow-sm">
                   <ShoppingBag class="w-5 h-5 text-white" />
                 </div>
-                <p class="text-lg md:text-2xl font-bold text-white leading-none">{{ orders.length }}</p>
-                <p class="text-[9px] md:text-[11px] font-bold uppercase tracking-widest text-indigo-200 mt-1 md:mt-1.5">Orders</p>
+                <p class="text-base sm:text-lg md:text-2xl font-bold text-white leading-none">{{ orders.length }}</p>
+                <p class="text-[8px] sm:text-[9px] md:text-[11px] font-bold uppercase tracking-widest text-indigo-200 mt-1 md:mt-1.5">Orders</p>
               </div>
 
-              <div class="flex flex-col items-center justify-center md:bg-indigo-700/40 md:border border-indigo-400/20 rounded-xl px-2 py-1 md:p-4 md:min-w-[100px] border-l border-indigo-500/30 md:border-l-0">
+              <div class="flex flex-col items-center justify-center md:bg-indigo-700/40 md:border border-indigo-400/20 rounded-xl px-1 sm:px-2 py-1 md:p-4 md:min-w-[100px] border-l border-indigo-500/30 md:border-l-0">
                 <div class="hidden md:flex w-10 h-10 mx-auto bg-indigo-600 border border-indigo-400/30 rounded-lg items-center justify-center mb-2 shadow-sm">
                   <span class="font-bold text-white text-lg">$</span>
                 </div>
-                <p class="text-lg md:text-2xl font-bold text-white leading-none">${{ totalSpent }}</p>
-                <p class="text-[9px] md:text-[11px] font-bold uppercase tracking-widest text-indigo-200 mt-1 md:mt-1.5">Spent</p>
+                <p class="text-base sm:text-lg md:text-2xl font-bold text-white leading-none">${{ totalSpent }}</p>
+                <p class="text-[8px] sm:text-[9px] md:text-[11px] font-bold uppercase tracking-widest text-indigo-200 mt-1 md:mt-1.5">Spent</p>
               </div>
 
-              <div class="flex flex-col items-center justify-center md:bg-indigo-700/40 md:border border-indigo-400/20 rounded-xl px-2 py-1 md:p-4 md:min-w-[100px] border-l border-indigo-500/30 md:border-l-0">
+              <div class="flex flex-col items-center justify-center md:bg-indigo-700/40 md:border border-indigo-400/20 rounded-xl px-1 sm:px-2 py-1 md:p-4 md:min-w-[100px] border-l border-indigo-500/30 md:border-l-0">
                 <div class="hidden md:flex w-10 h-10 mx-auto bg-indigo-600 border border-indigo-400/30 rounded-lg items-center justify-center mb-2 shadow-sm">
                   <Package class="w-5 h-5 text-white" />
                 </div>
-                <p class="text-lg md:text-2xl font-bold text-white leading-none">{{ completedOrdersCount }}</p>
-                <p class="text-[9px] md:text-[11px] font-bold uppercase tracking-widest text-indigo-200 mt-1 md:mt-1.5">Delivered</p>
+                <p class="text-base sm:text-lg md:text-2xl font-bold text-white leading-none">{{ completedOrdersCount }}</p>
+                <p class="text-[8px] sm:text-[9px] md:text-[11px] font-bold uppercase tracking-widest text-indigo-200 mt-1 md:mt-1.5">Delivered</p>
               </div>
 
             </div>
@@ -519,17 +519,17 @@ const formatDate = (dateString) => {
       </div><!-- end hero -->
 
       <!-- TAB NAVIGATION (Classic Underline Style) -->
-      <div class="flex items-center gap-6 border-b border-gray-200 mb-8 overflow-x-auto hide-scrollbar px-2">
+      <div class="flex items-center gap-4 sm:gap-6 border-b border-gray-200 mb-6 sm:mb-8 overflow-x-auto hide-scrollbar px-2">
         <button
           @click="activeTab = 'orders'"
-          class="relative flex items-center gap-2 py-4 text-sm font-semibold transition-colors whitespace-nowrap"
+          class="relative flex items-center gap-1.5 sm:gap-2 py-3 sm:py-4 text-xs sm:text-sm font-semibold transition-colors whitespace-nowrap"
           :class="activeTab === 'orders' ? 'text-indigo-600 border-b-2 border-indigo-600' : 'text-gray-500 hover:text-indigo-600'"
         >
-          <ShoppingBag class="w-4 h-4" />
+          <ShoppingBag class="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           <span>Order History</span>
           <span
             v-if="orders.length > 0"
-            class="ml-1 px-2 py-0.5 text-xs rounded-full font-bold"
+            class="ml-1 px-1.5 sm:px-2 py-0.5 text-[9px] sm:text-xs rounded-full font-bold"
             :class="activeTab === 'orders' ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-700'"
           >
             {{ orders.length }}
@@ -538,28 +538,28 @@ const formatDate = (dateString) => {
 
         <button
           @click="activeTab = 'profile'"
-          class="relative flex items-center gap-2 py-4 text-sm font-semibold transition-colors whitespace-nowrap"
+          class="relative flex items-center gap-1.5 sm:gap-2 py-3 sm:py-4 text-xs sm:text-sm font-semibold transition-colors whitespace-nowrap"
           :class="activeTab === 'profile' ? 'text-indigo-600 border-b-2 border-indigo-600' : 'text-gray-500 hover:text-indigo-600'"
         >
-          <User class="w-4 h-4" />
+          <User class="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           <span>Personal Info</span>
         </button>
 
         <button
           @click="activeTab = 'security'"
-          class="relative flex items-center gap-2 py-4 text-sm font-semibold transition-colors whitespace-nowrap"
+          class="relative flex items-center gap-1.5 sm:gap-2 py-3 sm:py-4 text-xs sm:text-sm font-semibold transition-colors whitespace-nowrap"
           :class="activeTab === 'security' ? 'text-indigo-600 border-b-2 border-indigo-600' : 'text-gray-500 hover:text-indigo-600'"
         >
-          <Shield class="w-4 h-4" />
+          <Shield class="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           <span>Security</span>
         </button>
 
         <button
           @click="activeTab = 'address'"
-          class="relative flex items-center gap-2 py-4 text-sm font-semibold transition-colors whitespace-nowrap"
+          class="relative flex items-center gap-1.5 sm:gap-2 py-3 sm:py-4 text-xs sm:text-sm font-semibold transition-colors whitespace-nowrap"
           :class="activeTab === 'address' ? 'text-indigo-600 border-b-2 border-indigo-600' : 'text-gray-500 hover:text-indigo-600'"
         >
-          <MapPin class="w-4 h-4" />
+          <MapPin class="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           <span>Address</span>
         </button>
       </div>
@@ -569,13 +569,13 @@ const formatDate = (dateString) => {
       <div v-if="activeTab === 'orders'" class="space-y-6" key="orders">
         
         <!-- Controls Bar: Filter Chips & Search -->
-        <div class="bg-white rounded-xl p-4 border border-gray-200 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
+        <div class="bg-white rounded-xl p-3 sm:p-4 border border-gray-200 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3 sm:gap-4">
           <!-- Filter chips -->
-          <div class="flex items-center gap-2 overflow-x-auto hide-scrollbar">
+          <div class="flex items-center gap-1.5 sm:gap-2 overflow-x-auto hide-scrollbar pb-1 lg:pb-0">
             <button
               @click="orderStatusFilter = 'all'"
               :class="[
-                'px-4 py-2 rounded-lg text-xs font-bold transition-all whitespace-nowrap border',
+                'px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-[10px] sm:text-xs font-bold transition-all whitespace-nowrap border',
                 orderStatusFilter === 'all'
                   ? 'bg-indigo-600 text-white border-indigo-600'
                   : 'bg-white text-gray-600 border-gray-200 hover:border-indigo-300 hover:bg-indigo-50'
@@ -586,7 +586,7 @@ const formatDate = (dateString) => {
             <button
               @click="orderStatusFilter = 'paid'"
               :class="[
-                'px-4 py-2 rounded-lg text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1.5 border',
+                'px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-[10px] sm:text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1 sm:gap-1.5 border',
                 orderStatusFilter === 'paid'
                   ? 'bg-indigo-600 text-white border-indigo-600'
                   : 'bg-white text-gray-600 border-gray-200 hover:border-indigo-300 hover:bg-indigo-50'
@@ -598,7 +598,7 @@ const formatDate = (dateString) => {
             <button
               @click="orderStatusFilter = 'unpaid'"
               :class="[
-                'px-4 py-2 rounded-lg text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1.5 border',
+                'px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-[10px] sm:text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1 sm:gap-1.5 border',
                 orderStatusFilter === 'unpaid'
                   ? 'bg-indigo-600 text-white border-indigo-600'
                   : 'bg-white text-gray-600 border-gray-200 hover:border-indigo-300 hover:bg-indigo-50'
@@ -610,7 +610,7 @@ const formatDate = (dateString) => {
             <button
               @click="orderStatusFilter = 'processing'"
               :class="[
-                'px-4 py-2 rounded-lg text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1.5 border',
+                'px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-[10px] sm:text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1 sm:gap-1.5 border',
                 orderStatusFilter === 'processing'
                   ? 'bg-indigo-600 text-white border-indigo-600'
                   : 'bg-white text-gray-600 border-gray-200 hover:border-indigo-300 hover:bg-indigo-50'
@@ -622,13 +622,13 @@ const formatDate = (dateString) => {
             <button
               @click="orderStatusFilter = 'delivered'"
               :class="[
-                'px-4 py-2 rounded-lg text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1.5 border',
+                'px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-[10px] sm:text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1 sm:gap-1.5 border',
                 orderStatusFilter === 'delivered'
                   ? 'bg-indigo-600 text-white border-indigo-600'
                   : 'bg-white text-gray-600 border-gray-200 hover:border-indigo-300 hover:bg-indigo-50'
               ]"
             >
-              <Check v-if="orderStatusFilter === 'delivered'" class="w-3.5 h-3.5" />
+              <Check v-if="orderStatusFilter === 'delivered'" class="w-3 h-3 sm:w-3.5 sm:h-3.5" />
               Delivered ({{ completedOrdersCount }})
             </button>
           </div>
@@ -660,48 +660,48 @@ const formatDate = (dateString) => {
 
           <!-- Search Input -->
           <div class="relative min-w-[200px] lg:max-w-xs w-full flex-1 md:flex-none">
-            <Search class="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            <Search class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               v-model="orderSearchQuery"
               type="text"
               placeholder="Search by ID, item, or courier..."
-              class="w-full pl-10 pr-4 py-2 bg-white rounded-lg border border-gray-300 text-sm font-medium focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600 transition-all outline-none text-gray-900 placeholder-gray-400"
+              class="w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-1.5 sm:py-2 bg-white rounded-lg border border-gray-300 text-xs sm:text-sm font-medium focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600 transition-all outline-none text-gray-900 placeholder-gray-400"
             />
           </div>
         </div>
 
         <!-- Skeleton Loading state -->
-        <div v-if="loadingOrders" class="space-y-6">
+        <div v-if="loadingOrders" class="space-y-4 sm:space-y-6">
           <div v-for="i in 3" :key="i" class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden animate-pulse">
             <!-- Minimal Header Skeleton -->
-            <div class="px-4 md:px-6 pt-5 pb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div class="px-4 md:px-6 pt-4 pb-2 sm:pt-5 sm:pb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-3">
               <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-full bg-slate-100 shrink-0"></div>
+                <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-slate-100 shrink-0"></div>
                 <div class="space-y-2">
-                  <div class="w-24 h-4 bg-slate-100 rounded"></div>
-                  <div class="w-32 h-3 bg-slate-100 rounded"></div>
+                  <div class="w-20 sm:w-24 h-3 sm:h-4 bg-slate-100 rounded"></div>
+                  <div class="w-24 sm:w-32 h-2 sm:h-3 bg-slate-100 rounded"></div>
                 </div>
               </div>
-              <div class="flex gap-3">
-                <div class="w-16 h-4 bg-slate-100 rounded"></div>
-                <div class="w-16 h-4 bg-slate-100 rounded"></div>
+              <div class="flex gap-2 sm:gap-3">
+                <div class="w-12 sm:w-16 h-3 sm:h-4 bg-slate-100 rounded"></div>
+                <div class="w-12 sm:w-16 h-3 sm:h-4 bg-slate-100 rounded"></div>
               </div>
             </div>
             <!-- Minimal Body Skeleton -->
             <div class="px-4 md:px-6 py-2">
               <div class="flex items-center gap-3 md:gap-4 py-2">
-                <div class="w-16 h-16 md:w-20 md:h-20 rounded-xl bg-slate-100 shrink-0"></div>
-                <div class="flex-1 space-y-2.5">
-                  <div class="w-1/3 h-4 bg-slate-100 rounded"></div>
-                  <div class="w-1/4 h-3 bg-slate-100 rounded"></div>
+                <div class="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-xl bg-slate-100 shrink-0"></div>
+                <div class="flex-1 space-y-2 sm:space-y-2.5">
+                  <div class="w-1/3 h-3 sm:h-4 bg-slate-100 rounded"></div>
+                  <div class="w-1/4 h-2 sm:h-3 bg-slate-100 rounded"></div>
                 </div>
-                <div class="w-12 h-5 bg-slate-100 rounded"></div>
+                <div class="w-10 sm:w-12 h-4 sm:h-5 bg-slate-100 rounded"></div>
               </div>
             </div>
             <!-- Minimal Footer Skeleton -->
-            <div class="px-4 md:px-6 py-4 mt-2 bg-slate-50/50 flex flex-col md:flex-row justify-between gap-4 border-t border-slate-100">
-              <div class="w-1/2 h-8 bg-slate-100 rounded"></div>
-              <div class="w-full md:w-1/3 h-10 bg-slate-100 rounded"></div>
+            <div class="px-4 md:px-6 py-3 sm:py-4 mt-2 bg-slate-50/50 flex flex-col md:flex-row justify-between gap-3 sm:gap-4 border-t border-slate-100">
+              <div class="w-1/2 h-6 sm:h-8 bg-slate-100 rounded"></div>
+              <div class="w-full md:w-1/3 h-8 sm:h-10 bg-slate-100 rounded"></div>
             </div>
           </div>
         </div>
@@ -741,22 +741,22 @@ const formatDate = (dateString) => {
         </div>
 
         <!-- Orders List -->
-        <div v-else class="space-y-6">
+        <div v-else class="space-y-4 sm:space-y-6">
           <div
             v-for="order in paginatedOrders"
             :key="order._id"
             class="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden"
           >
             <!-- Minimal Order Card Header -->
-            <div class="px-4 md:px-6 pt-5 pb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div class="px-4 md:px-6 pt-4 pb-2 sm:pt-5 sm:pb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-3">
               <!-- Order ID and Date -->
-              <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center shrink-0">
-                  <ShoppingBag class="w-4 h-4 text-indigo-600" />
+              <div class="flex items-center gap-2 sm:gap-3">
+                <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center shrink-0">
+                  <ShoppingBag class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-indigo-600" />
                 </div>
                 <div>
-                  <div class="flex items-center gap-2 mb-0.5">
-                    <span class="font-mono text-sm font-bold text-slate-900 tracking-tight">
+                  <div class="flex items-center gap-1.5 sm:gap-2 mb-0.5">
+                    <span class="font-mono text-xs sm:text-sm font-bold text-slate-900 tracking-tight">
                       #{{ order._id.slice(-8).toUpperCase() }}
                     </span>
                     <button
@@ -764,32 +764,32 @@ const formatDate = (dateString) => {
                       title="Copy full Order ID"
                       class="text-slate-400 hover:text-indigo-600 transition-colors"
                     >
-                      <Check v-if="copiedOrderId === order._id" class="w-3.5 h-3.5 text-emerald-500" />
-                      <Copy v-else class="w-3.5 h-3.5" />
+                      <Check v-if="copiedOrderId === order._id" class="w-3 h-3 sm:w-3.5 sm:h-3.5 text-emerald-500" />
+                      <Copy v-else class="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                     </button>
                   </div>
-                  <span class="text-xs text-slate-500 flex items-center gap-1"><Clock class="w-3 h-3"/> {{ formatDate(order.createdAt) }}</span>
+                  <span class="text-[9px] sm:text-xs text-slate-500 flex items-center gap-1"><Clock class="w-2.5 h-2.5 sm:w-3 sm:h-3"/> {{ formatDate(order.createdAt) }}</span>
                 </div>
               </div>
               
               <!-- Badges - minimal dots -->
-              <div class="flex flex-wrap items-center gap-2 sm:gap-3">
-                <span class="text-[10px] md:text-[11px] font-bold text-slate-500 flex items-center gap-1 uppercase tracking-wider">
-                  <Truck class="w-3.5 h-3.5" /> {{ order.deliveryCompany || 'Standard' }}
+              <div class="flex flex-wrap items-center gap-1.5 sm:gap-3 mt-1 sm:mt-0">
+                <span class="text-[8px] sm:text-[10px] md:text-[11px] font-bold text-slate-500 flex items-center gap-1 uppercase tracking-wider">
+                  <Truck class="w-3 h-3 sm:w-3.5 sm:h-3.5" /> {{ order.deliveryCompany || 'Standard' }}
                 </span>
                 <span class="w-1 h-1 rounded-full bg-slate-200 hidden sm:block"></span>
-                <span v-if="order.isPaid" class="flex items-center gap-1.5 text-[10px] md:text-[11px] font-bold text-emerald-600 uppercase tracking-wider">
-                  <div class="w-1.5 h-1.5 rounded-full bg-emerald-500"></div> Paid
+                <span v-if="order.isPaid" class="flex items-center gap-1 sm:gap-1.5 text-[8px] sm:text-[10px] md:text-[11px] font-bold text-emerald-600 uppercase tracking-wider">
+                  <div class="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-emerald-500"></div> Paid
                 </span>
-                <span v-else class="flex items-center gap-1.5 text-[10px] md:text-[11px] font-bold text-amber-500 uppercase tracking-wider">
-                  <div class="w-1.5 h-1.5 rounded-full bg-amber-500"></div> Pending
+                <span v-else class="flex items-center gap-1 sm:gap-1.5 text-[8px] sm:text-[10px] md:text-[11px] font-bold text-amber-500 uppercase tracking-wider">
+                  <div class="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-amber-500"></div> Pending
                 </span>
                 
-                <span v-if="order.isDelivered" class="flex items-center gap-1.5 text-[10px] md:text-[11px] font-bold text-indigo-600 uppercase tracking-wider">
-                  <div class="w-1.5 h-1.5 rounded-full bg-indigo-500"></div> Delivered
+                <span v-if="order.isDelivered" class="flex items-center gap-1 sm:gap-1.5 text-[8px] sm:text-[10px] md:text-[11px] font-bold text-indigo-600 uppercase tracking-wider">
+                  <div class="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-indigo-500"></div> Delivered
                 </span>
-                <span v-else class="flex items-center gap-1.5 text-[10px] md:text-[11px] font-bold text-slate-500 uppercase tracking-wider">
-                  <div class="w-1.5 h-1.5 rounded-full bg-slate-400"></div> Transit
+                <span v-else class="flex items-center gap-1 sm:gap-1.5 text-[8px] sm:text-[10px] md:text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+                  <div class="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-slate-400"></div> Transit
                 </span>
               </div>
             </div>
@@ -800,10 +800,10 @@ const formatDate = (dateString) => {
                 <div
                   v-for="(item, idx) in order.orderItems"
                   :key="idx"
-                  class="flex items-center gap-3 md:gap-4 py-2"
+                  class="flex items-center gap-2.5 sm:gap-3 md:gap-4 py-1.5 sm:py-2"
                 >
                   <!-- Product Image -->
-                  <div class="w-16 h-16 md:w-20 md:h-20 rounded-xl overflow-hidden bg-slate-50 shrink-0 border border-slate-100">
+                  <div class="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-xl overflow-hidden bg-slate-50 shrink-0 border border-slate-100">
                     <img
                       :src="item.image || 'https://via.placeholder.com/150'"
                       :alt="item.name"
@@ -813,12 +813,12 @@ const formatDate = (dateString) => {
 
                   <!-- Details -->
                   <div class="min-w-0 flex-1">
-                    <h4 class="text-sm font-bold text-slate-900 truncate">{{ item.name }}</h4>
-                    <div class="flex flex-wrap items-center gap-2 mt-1.5">
-                      <span class="text-[11px] font-semibold text-slate-500">Qty: {{ item.qty }}</span>
-                      <span v-if="item.size" class="text-[11px] font-semibold text-slate-500 border-l border-slate-200 pl-2">{{ item.size }}</span>
-                      <span v-if="item.color" class="flex items-center gap-1 text-[11px] font-semibold text-slate-500 border-l border-slate-200 pl-2">
-                        <span class="w-2.5 h-2.5 rounded-full inline-block shadow-sm" :style="{ background: item.color }"></span>
+                    <h4 class="text-xs sm:text-sm font-bold text-slate-900 truncate">{{ item.name }}</h4>
+                    <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 mt-1 sm:mt-1.5">
+                      <span class="text-[9px] sm:text-[11px] font-semibold text-slate-500">Qty: {{ item.qty }}</span>
+                      <span v-if="item.size" class="text-[9px] sm:text-[11px] font-semibold text-slate-500 border-l border-slate-200 pl-1.5 sm:pl-2">{{ item.size }}</span>
+                      <span v-if="item.color" class="flex items-center gap-1 text-[9px] sm:text-[11px] font-semibold text-slate-500 border-l border-slate-200 pl-1.5 sm:pl-2">
+                        <span class="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full inline-block shadow-sm" :style="{ background: item.color }"></span>
                         {{ item.color }}
                       </span>
                     </div>
@@ -826,47 +826,47 @@ const formatDate = (dateString) => {
 
                   <!-- Price -->
                   <div class="text-right shrink-0">
-                    <p class="text-sm font-bold text-slate-900">${{ (item.price * item.qty).toFixed(2) }}</p>
-                    <p v-if="item.qty > 1" class="text-[10px] text-slate-400 mt-0.5">${{ item.price.toFixed(2) }} ea</p>
+                    <p class="text-xs sm:text-sm font-bold text-slate-900">${{ (item.price * item.qty).toFixed(2) }}</p>
+                    <p v-if="item.qty > 1" class="text-[8px] sm:text-[10px] text-slate-400 mt-0.5">${{ item.price.toFixed(2) }} ea</p>
                   </div>
                 </div>
               </div>
             </div>
 
             <!-- Minimal Combined Footer -->
-            <div class="px-4 md:px-6 py-4 mt-2 bg-slate-50/50 flex flex-col md:flex-row md:items-center justify-between gap-4 border-t border-slate-100">
-              <div class="flex items-start gap-2.5">
-                <MapPin class="w-4 h-4 text-slate-400 mt-0.5 shrink-0" />
+            <div class="px-4 md:px-6 py-3 sm:py-4 mt-2 bg-slate-50/50 flex flex-col md:flex-row md:items-center justify-between gap-3 sm:gap-4 border-t border-slate-100">
+              <div class="flex items-start gap-2 sm:gap-2.5">
+                <MapPin class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-400 mt-0.5 shrink-0" />
                 <div>
-                  <p class="font-bold text-slate-800 text-xs mb-0.5">
-                    {{ order.shippingAddress?.fullName || profile.fullName }} <span class="text-slate-500 font-normal ml-1">({{ order.shippingAddress?.phone || profile.phone || 'No phone' }})</span>
+                  <p class="font-bold text-slate-800 text-[10px] sm:text-xs mb-0.5">
+                    {{ order.shippingAddress?.fullName || profile.fullName }} <span class="text-slate-500 font-normal ml-0.5 sm:ml-1">({{ order.shippingAddress?.phone || profile.phone || 'No phone' }})</span>
                   </p>
-                  <p class="text-slate-500 text-[11px] max-w-[240px] sm:max-w-xs truncate">
+                  <p class="text-slate-500 text-[9px] sm:text-[11px] max-w-[240px] sm:max-w-xs truncate">
                     {{ order.shippingAddress?.address || 'Standard Address' }}
                   </p>
                 </div>
               </div>
               
-              <div class="flex items-center justify-between md:justify-end w-full md:w-auto gap-5">
+              <div class="flex items-center justify-between md:justify-end w-full md:w-auto gap-4 sm:gap-5 mt-1 sm:mt-0">
                 <div class="flex flex-col text-left md:text-right">
-                  <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-0.5">Total Paid</span>
-                  <div class="flex items-baseline gap-1.5">
-                    <span class="text-lg font-black text-slate-900 leading-none">${{ Number(order.totalPrice).toFixed(2) }}</span>
+                  <span class="text-[8px] sm:text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-0.5">Total Paid</span>
+                  <div class="flex items-baseline gap-1 sm:gap-1.5">
+                    <span class="text-base sm:text-lg font-black text-slate-900 leading-none">${{ Number(order.totalPrice).toFixed(2) }}</span>
                   </div>
                 </div>
                 <!-- Action buttons -->
-                <div class="flex items-center gap-2 shrink-0">
+                <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
                   <button
                     @click="openTrackingModal(order)"
-                    class="px-3 md:px-4 py-2 rounded-lg text-xs font-bold bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 transition-colors"
+                    class="px-2.5 sm:px-3 md:px-4 py-1.5 sm:py-2 rounded-lg text-[10px] sm:text-xs font-bold bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 transition-colors"
                   >
                     Track
                   </button>
                   <button
                     @click="openReceiptModal(order)"
-                    class="px-3 md:px-4 py-2 rounded-lg text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white transition-colors flex items-center gap-1.5"
+                    class="px-2.5 sm:px-3 md:px-4 py-1.5 sm:py-2 rounded-lg text-[10px] sm:text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white transition-colors flex items-center gap-1 sm:gap-1.5"
                   >
-                    <ExternalLink class="w-3.5 h-3.5" />
+                    <ExternalLink class="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                     <span class="hidden sm:inline">Receipt</span>
                   </button>
                 </div>
@@ -923,108 +923,108 @@ const formatDate = (dateString) => {
       <!-- TAB 2: PERSONAL INFO -->
       <transition name="fade" mode="out-in">
       <div v-if="activeTab === 'profile'" class="space-y-6" key="profile">
-        <div class="bg-white rounded-xl p-8 sm:p-10 border border-gray-200">
+        <div class="bg-white rounded-xl p-5 sm:p-10 border border-gray-200">
           
-          <div class="pb-6 mb-8 border-b border-gray-200">
-            <h2 class="text-xl font-bold text-black tracking-tight">Personal Information</h2>
-            <p class="text-sm text-gray-500 mt-1">Manage your personal identity, contact details, and account name.</p>
+          <div class="pb-4 sm:pb-6 mb-5 sm:mb-8 border-b border-gray-200">
+            <h2 class="text-lg sm:text-xl font-bold text-black tracking-tight">Personal Information</h2>
+            <p class="text-xs sm:text-sm text-gray-500 mt-1">Manage your personal identity, contact details, and account name.</p>
           </div>
 
-          <form @submit.prevent="saveProfile" class="space-y-6">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+          <form @submit.prevent="saveProfile" class="space-y-5 sm:space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-5 sm:gap-y-6">
               
               <!-- Full Name -->
-              <div class="space-y-2">
-                <label class="block text-xs font-bold uppercase tracking-widest text-gray-500">
+              <div class="space-y-1.5 sm:space-y-2">
+                <label class="block text-[10px] sm:text-xs font-bold uppercase tracking-widest text-gray-500">
                   Full Name
                 </label>
                 <div class="relative">
-                  <User class="w-5 h-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                  <User class="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
                   <input
                     v-model="profile.fullName"
                     type="text"
                     placeholder="e.g. John Doe"
-                    class="w-full pl-10 pr-4 py-3 bg-white rounded-lg border border-gray-300 text-sm font-semibold text-black focus:border-black focus:ring-1 focus:ring-black outline-none transition-all"
+                    class="w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-3 bg-white rounded-lg border border-gray-300 text-xs sm:text-sm font-semibold text-black focus:border-black focus:ring-1 focus:ring-black outline-none transition-all"
                   />
                 </div>
               </div>
 
               <!-- Email (Read only) -->
-              <div class="space-y-2">
+              <div class="space-y-1.5 sm:space-y-2">
                 <div class="flex items-center justify-between">
-                  <label class="block text-xs font-bold uppercase tracking-widest text-gray-500">
+                  <label class="block text-[10px] sm:text-xs font-bold uppercase tracking-widest text-gray-500">
                     Email Address
                   </label>
-                  <span class="text-[10px] font-bold text-gray-500 bg-gray-100 px-2 py-0.5 rounded uppercase">Locked</span>
+                  <span class="text-[9px] sm:text-[10px] font-bold text-gray-500 bg-gray-100 px-1.5 sm:px-2 py-0.5 rounded uppercase">Locked</span>
                 </div>
                 <div class="relative">
-                  <Mail class="w-5 h-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                  <Mail class="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
                   <input
                     v-model="profile.email"
                     type="email"
                     disabled
-                    class="w-full pl-10 pr-4 py-3 bg-gray-50 rounded-lg border border-gray-200 text-gray-500 text-sm font-semibold cursor-not-allowed outline-none"
+                    class="w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-3 bg-gray-50 rounded-lg border border-gray-200 text-gray-500 text-xs sm:text-sm font-semibold cursor-not-allowed outline-none"
                   />
                 </div>
               </div>
 
               <!-- Phone Number -->
-              <div class="space-y-2">
-                <label class="block text-xs font-bold uppercase tracking-widest text-gray-500">
+              <div class="space-y-1.5 sm:space-y-2">
+                <label class="block text-[10px] sm:text-xs font-bold uppercase tracking-widest text-gray-500">
                   Phone Number
                 </label>
                 <div class="relative">
-                  <Phone class="w-5 h-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                  <Phone class="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
                   <input
                     v-model="profile.phone"
                     type="tel"
                     placeholder="e.g. 012 345 678"
-                    class="w-full pl-10 pr-4 py-3 bg-white rounded-lg border border-gray-300 text-sm font-semibold text-black focus:border-black focus:ring-1 focus:ring-black outline-none transition-all"
+                    class="w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-3 bg-white rounded-lg border border-gray-300 text-xs sm:text-sm font-semibold text-black focus:border-black focus:ring-1 focus:ring-black outline-none transition-all"
                   />
                 </div>
-                <p class="text-xs text-gray-500">Used by courier drivers for delivery arrival notifications.</p>
+                <p class="text-[10px] sm:text-xs text-gray-500">Used by courier drivers for delivery arrival notifications.</p>
               </div>
 
               <!-- Telegram Username -->
-              <div class="space-y-2">
-                <label class="block text-xs font-bold uppercase tracking-widest text-gray-500">
+              <div class="space-y-1.5 sm:space-y-2">
+                <label class="block text-[10px] sm:text-xs font-bold uppercase tracking-widest text-gray-500">
                   Telegram Username
                 </label>
                 <div class="relative">
-                  <Send class="w-5 h-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                  <Send class="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
                   <input
                     v-model="profile.telegram"
                     type="text"
                     placeholder="e.g. @username"
-                    class="w-full pl-10 pr-4 py-3 bg-white rounded-lg border border-gray-300 text-sm font-semibold text-black focus:border-black focus:ring-1 focus:ring-black outline-none transition-all"
+                    class="w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-3 bg-white rounded-lg border border-gray-300 text-xs sm:text-sm font-semibold text-black focus:border-black focus:ring-1 focus:ring-black outline-none transition-all"
                   />
                 </div>
-                <p class="text-xs text-gray-500">Allows customer care to share dispatch tracking slips directly.</p>
+                <p class="text-[10px] sm:text-xs text-gray-500">Allows customer care to share dispatch tracking slips directly.</p>
               </div>
 
               <!-- Full Address -->
-              <div class="md:col-span-2 space-y-2">
-                <label class="block text-xs font-bold uppercase tracking-widest text-gray-500">
+              <div class="md:col-span-2 space-y-1.5 sm:space-y-2">
+                <label class="block text-[10px] sm:text-xs font-bold uppercase tracking-widest text-gray-500">
                   Primary Delivery Address
                 </label>
                 <div class="relative">
-                  <MapPin class="w-5 h-5 text-gray-400 absolute left-3 top-3" />
+                  <MapPin class="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 absolute left-3 top-2.5 sm:top-3" />
                   <textarea
                     v-model="profile.address"
                     rows="3"
                     placeholder="Street #, Sangkat/Khan, Province or City"
-                    class="w-full pl-10 pr-4 py-3 bg-white rounded-lg border border-gray-300 text-sm font-semibold text-black focus:border-black focus:ring-1 focus:ring-black outline-none transition-all resize-none"
+                    class="w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-3 bg-white rounded-lg border border-gray-300 text-xs sm:text-sm font-semibold text-black focus:border-black focus:ring-1 focus:ring-black outline-none transition-all resize-none"
                   ></textarea>
                 </div>
               </div>
 
             </div>
 
-            <div class="pt-8 border-t border-gray-200 flex justify-end">
+            <div class="pt-6 sm:pt-8 border-t border-gray-200 flex justify-end">
               <button
                 type="submit"
                 :disabled="isSaving"
-                class="inline-flex items-center gap-2 bg-black hover:bg-gray-800 disabled:opacity-50 text-white px-8 py-3 rounded-lg font-bold transition-all"
+                class="inline-flex items-center gap-2 bg-black hover:bg-gray-800 disabled:opacity-50 text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg text-sm sm:text-base font-bold transition-all"
               >
                 <Loader2 v-if="isSaving" class="w-4 h-4 animate-spin" />
                 <Save v-else class="w-4 h-4" />
@@ -1039,62 +1039,62 @@ const formatDate = (dateString) => {
       <!-- TAB 3: SECURITY & 2FA -->
       <transition name="fade" mode="out-in">
       <div v-if="activeTab === 'security'" class="space-y-6" key="security">
-        <div class="bg-white rounded-xl p-8 sm:p-10 border border-gray-200">
+        <div class="bg-white rounded-xl p-5 sm:p-10 border border-gray-200">
 
-          <div class="pb-6 mb-8 border-b border-gray-200">
-            <h2 class="text-xl font-bold text-black tracking-tight">Account Security</h2>
-            <p class="text-sm text-gray-500 mt-1">Protect your account and purchases with multi-factor verification.</p>
+          <div class="pb-4 sm:pb-6 mb-5 sm:mb-8 border-b border-gray-200">
+            <h2 class="text-lg sm:text-xl font-bold text-black tracking-tight">Account Security</h2>
+            <p class="text-xs sm:text-sm text-gray-500 mt-1">Protect your account and purchases with multi-factor verification.</p>
           </div>
 
           <!-- 2FA Card -->
-          <div class="p-6 sm:p-8 bg-white border border-gray-200 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 mb-6">
-            <div class="flex items-start gap-5">
+          <div class="p-5 sm:p-8 bg-white border border-gray-200 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6 mb-4 sm:mb-6">
+            <div class="flex items-start gap-4 sm:gap-5 w-full sm:w-auto">
               <div :class="[
-                'w-12 h-12 rounded-lg flex items-center justify-center shrink-0 border',
+                'w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center shrink-0 border',
                 is2FAEnabled ? 'bg-green-50 border-green-200 text-green-600' : 'bg-gray-50 border-gray-200 text-gray-500'
               ]">
-                <ShieldCheck v-if="is2FAEnabled" class="w-6 h-6" />
-                <ShieldAlert v-else class="w-6 h-6" />
+                <ShieldCheck v-if="is2FAEnabled" class="w-5 h-5 sm:w-6 sm:h-6" />
+                <ShieldAlert v-else class="w-5 h-5 sm:w-6 sm:h-6" />
               </div>
-              <div>
-                <div class="flex items-center gap-3 mb-1">
-                  <h3 class="text-base font-bold text-black">Two-Factor Authentication (2FA)</h3>
+              <div class="flex-1">
+                <div class="flex flex-wrap items-center gap-2 sm:gap-3 mb-1">
+                  <h3 class="text-sm sm:text-base font-bold text-black">Two-Factor Authentication (2FA)</h3>
                   <span
                     :class="[
-                      'px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-widest',
+                      'px-1.5 sm:px-2 py-0.5 rounded text-[9px] sm:text-[10px] font-bold uppercase tracking-widest',
                       is2FAEnabled ? 'bg-black text-white' : 'bg-gray-200 text-gray-600'
                     ]"
                   >
                     {{ is2FAEnabled ? 'Enabled' : 'Disabled' }}
                   </span>
                 </div>
-                <p class="text-sm text-gray-500 max-w-xl">
+                <p class="text-[11px] sm:text-sm text-gray-500 max-w-xl">
                   Require a dynamic one-time verification token on login attempts to keep your payment details and order deliveries protected.
                 </p>
               </div>
             </div>
 
             <!-- Toggle switch (Classic monochrome styling) -->
-            <label class="relative inline-flex items-center cursor-pointer shrink-0">
+            <label class="relative inline-flex items-center cursor-pointer shrink-0 self-end sm:self-auto mt-2 sm:mt-0">
               <input type="checkbox" v-model="is2FAEnabled" @change="saveProfile" class="sr-only peer">
-              <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-black"></div>
+              <div class="w-10 sm:w-11 h-5 sm:h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 sm:after:h-5 after:w-4 sm:after:w-5 after:transition-all peer-checked:bg-black"></div>
             </label>
           </div>
 
           <!-- Password Info -->
-          <div class="p-6 sm:p-8 bg-gray-50 rounded-xl border border-gray-200 flex flex-wrap items-center justify-between gap-4">
-            <div class="flex items-center gap-4">
-              <div class="w-10 h-10 rounded-lg bg-white border border-gray-200 flex items-center justify-center text-gray-700">
+          <div class="p-5 sm:p-8 bg-gray-50 rounded-xl border border-gray-200 flex flex-wrap items-center justify-between gap-4">
+            <div class="flex items-center gap-3 sm:gap-4">
+              <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-white border border-gray-200 flex items-center justify-center text-gray-700 shrink-0">
                 <Key class="w-4 h-4" />
               </div>
               <div>
-                <h4 class="text-sm font-bold text-black">Authentication Method</h4>
-                <p class="text-xs text-gray-500 mt-0.5">
+                <h4 class="text-xs sm:text-sm font-bold text-black">Authentication Method</h4>
+                <p class="text-[10px] sm:text-xs text-gray-500 mt-0.5">
                   Securely authenticated via Email or Google Sign-In.
                 </p>
               </div>
             </div>
-            <span class="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-md bg-white border border-gray-200 text-black">
+            <span class="inline-flex items-center gap-1.5 text-[10px] sm:text-xs font-bold px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-md bg-white border border-gray-200 text-black">
               <div class="w-1.5 h-1.5 rounded-full bg-green-500"></div>
               Active Session
             </span>
@@ -1106,61 +1106,61 @@ const formatDate = (dateString) => {
       <!-- TAB 4: SHIPPING ADDRESS -->
       <transition name="fade" mode="out-in">
       <div v-if="activeTab === 'address'" class="space-y-6" key="address">
-        <div class="bg-white rounded-xl p-8 sm:p-10 border border-gray-200">
+        <div class="bg-white rounded-xl p-5 sm:p-10 border border-gray-200">
           
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-6 mb-8 border-b border-gray-200 gap-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 sm:pb-6 mb-5 sm:mb-8 border-b border-gray-200 gap-3 sm:gap-4">
             <div>
-              <h2 class="text-xl font-bold text-black tracking-tight">Default Shipping Address</h2>
-              <p class="text-sm text-gray-500 mt-1">Used as your default destination for fast deliveries.</p>
+              <h2 class="text-lg sm:text-xl font-bold text-black tracking-tight">Default Shipping Address</h2>
+              <p class="text-xs sm:text-sm text-gray-500 mt-1">Used as your default destination for fast deliveries.</p>
             </div>
             <button
               @click="activeTab = 'profile'"
-              class="inline-flex items-center gap-2 bg-white border border-gray-300 hover:bg-gray-50 text-black text-sm font-bold px-4 py-2 rounded-lg transition-colors"
+              class="inline-flex items-center gap-1.5 sm:gap-2 bg-white border border-gray-300 hover:bg-gray-50 text-black text-xs sm:text-sm font-bold px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg transition-colors w-max"
             >
-              <Edit3 class="w-4 h-4" />
+              <Edit3 class="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               <span>Edit Address</span>
             </button>
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
             <!-- Address Card -->
-            <div class="p-6 sm:p-8 rounded-xl border-2 border-black bg-white relative">
-              <span class="absolute top-4 right-4 px-2 py-1 bg-black text-white rounded text-[10px] font-bold uppercase tracking-widest">
+            <div class="p-5 sm:p-8 rounded-xl border-2 border-black bg-white relative">
+              <span class="absolute top-3 right-3 sm:top-4 sm:right-4 px-1.5 sm:px-2 py-0.5 sm:py-1 bg-black text-white rounded text-[8px] sm:text-[10px] font-bold uppercase tracking-widest">
                 Primary
               </span>
-              <div class="flex items-center gap-3 text-black font-bold text-lg mb-3">
-                <MapPin class="w-5 h-5 text-gray-500" />
+              <div class="flex items-center gap-2 sm:gap-3 text-black font-bold text-base sm:text-lg mb-2 sm:mb-3">
+                <MapPin class="w-4 h-4 sm:w-5 sm:h-5 text-gray-500" />
                 <span>{{ profile.fullName || 'Default Contact' }}</span>
               </div>
-              <p class="text-sm text-gray-600 mb-6 whitespace-pre-line leading-relaxed min-h-[3rem]">
+              <p class="text-xs sm:text-sm text-gray-600 mb-4 sm:mb-6 whitespace-pre-line leading-relaxed min-h-[3rem]">
                 {{ profile.address || 'No full address specified yet. Click Edit Address to set your location.' }}
               </p>
-              <div class="pt-5 border-t border-gray-200 flex flex-wrap items-center gap-6 text-sm font-bold text-black">
-                <span class="flex items-center gap-2">
-                  <Phone class="w-4 h-4 text-gray-500" />
+              <div class="pt-4 sm:pt-5 border-t border-gray-200 flex flex-wrap items-center gap-4 sm:gap-6 text-xs sm:text-sm font-bold text-black">
+                <span class="flex items-center gap-1.5 sm:gap-2">
+                  <Phone class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-500" />
                   {{ profile.phone || 'No phone set' }}
                 </span>
-                <span v-if="profile.telegram" class="flex items-center gap-2">
-                  <Send class="w-4 h-4 text-gray-500" />
+                <span v-if="profile.telegram" class="flex items-center gap-1.5 sm:gap-2">
+                  <Send class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-500" />
                   @{{ profile.telegram.replace('@', '') }}
                 </span>
               </div>
             </div>
 
             <!-- Courier Info Box -->
-            <div class="p-6 sm:p-8 rounded-xl border border-gray-200 bg-gray-50 flex flex-col justify-between">
+            <div class="p-5 sm:p-8 rounded-xl border border-gray-200 bg-gray-50 flex flex-col justify-between">
               <div>
-                <div class="flex items-center gap-3 text-black font-bold text-lg mb-3">
-                  <Truck class="w-5 h-5 text-gray-500" />
+                <div class="flex items-center gap-2 sm:gap-3 text-black font-bold text-base sm:text-lg mb-2 sm:mb-3">
+                  <Truck class="w-4 h-4 sm:w-5 sm:h-5 text-gray-500" />
                   <span>Express Dispatch Ready</span>
                 </div>
-                <p class="text-sm text-gray-600 leading-relaxed">
+                <p class="text-xs sm:text-sm text-gray-600 leading-relaxed">
                   Orders are packaged and dispatched within 24 hours across all 25 provinces via Vireak Buntham & J&T Express.
                 </p>
               </div>
-              <div class="mt-6 pt-5 border-t border-gray-200 flex items-center justify-between">
-                <span class="text-xs font-bold uppercase tracking-widest text-gray-500">Standard Delivery Rate</span>
-                <span class="font-bold text-black text-sm">
+              <div class="mt-4 sm:mt-6 pt-4 sm:pt-5 border-t border-gray-200 flex items-center justify-between">
+                <span class="text-[9px] sm:text-xs font-bold uppercase tracking-widest text-gray-500">Standard Delivery Rate</span>
+                <span class="font-bold text-black text-xs sm:text-sm">
                   $1.50 (PP) / $2.00 (Prov)
                 </span>
               </div>
@@ -1321,106 +1321,106 @@ const formatDate = (dateString) => {
     <!-- ORDER TRACKING TIMELINE MODAL -->
     <div
       v-if="isTrackingModalOpen && selectedOrder"
-      class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60"
+      class="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-black/60"
     >
-      <div class="bg-white rounded-xl max-w-md w-full p-8 shadow-xl border border-gray-200">
+      <div class="bg-white rounded-xl max-w-md w-full p-5 sm:p-8 shadow-xl border border-gray-200">
         
-        <div class="flex items-start justify-between pb-6 border-b border-gray-200">
+        <div class="flex items-start justify-between pb-4 sm:pb-6 border-b border-gray-200">
           <div>
-            <h3 class="text-lg font-bold text-black">Track Order Delivery</h3>
-            <p class="text-xs text-gray-500 font-mono mt-1">#{{ selectedOrder._id.slice(-8).toUpperCase() }}</p>
+            <h3 class="text-base sm:text-lg font-bold text-black">Track Order Delivery</h3>
+            <p class="text-[10px] sm:text-xs text-gray-500 font-mono mt-0.5 sm:mt-1">#{{ selectedOrder._id.slice(-8).toUpperCase() }}</p>
           </div>
           <button
             @click="isTrackingModalOpen = false"
-            class="p-2 rounded-lg text-gray-400 hover:text-black hover:bg-gray-50 transition-colors"
+            class="p-1.5 sm:p-2 rounded-lg text-gray-400 hover:text-black hover:bg-gray-50 transition-colors"
           >
-            <X class="w-5 h-5" />
+            <X class="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
         </div>
 
         <!-- Stepper Timeline -->
-        <div class="py-8 space-y-6">
+        <div class="py-5 sm:py-8 space-y-4 sm:space-y-6">
           
           <!-- Step 1: Order Placed -->
-          <div class="flex gap-4">
+          <div class="flex gap-3 sm:gap-4">
             <div class="flex flex-col items-center">
-              <div class="w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center text-xs font-bold shrink-0">
-                <Check class="w-4 h-4" />
+              <div class="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center text-xs font-bold shrink-0">
+                <Check class="w-3 h-3 sm:w-4 sm:h-4" />
               </div>
-              <div class="w-0.5 h-full bg-indigo-600 min-h-[36px]"></div>
+              <div class="w-0.5 h-full bg-indigo-600 min-h-[24px] sm:min-h-[36px]"></div>
             </div>
-            <div>
-              <h4 class="text-sm font-bold text-black">Order Placed</h4>
-              <p class="text-xs text-gray-500 mt-1">Order received and logged in system.</p>
-              <p class="text-[11px] text-gray-400 mt-0.5">{{ formatDate(selectedOrder.createdAt) }}</p>
+            <div class="pb-2">
+              <h4 class="text-xs sm:text-sm font-bold text-black">Order Placed</h4>
+              <p class="text-[10px] sm:text-xs text-gray-500 mt-0.5 sm:mt-1">Order received and logged in system.</p>
+              <p class="text-[9px] sm:text-[11px] text-gray-400 mt-0.5">{{ formatDate(selectedOrder.createdAt) }}</p>
             </div>
           </div>
 
           <!-- Step 2: Payment Verified -->
-          <div class="flex gap-4">
+          <div class="flex gap-3 sm:gap-4">
             <div class="flex flex-col items-center">
               <div
                 :class="[
-                  'w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold shrink-0 border-2',
+                  'w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs font-bold shrink-0 border-2',
                   selectedOrder.isPaid ? 'bg-indigo-600 border-indigo-600 text-white' : 'bg-white border-gray-300 text-gray-400'
                 ]"
               >
-                <Check v-if="selectedOrder.isPaid" class="w-4 h-4" />
-                <Clock v-else class="w-4 h-4" />
+                <Check v-if="selectedOrder.isPaid" class="w-3 h-3 sm:w-4 sm:h-4" />
+                <Clock v-else class="w-3 h-3 sm:w-4 sm:h-4" />
               </div>
               <div
                 :class="[
-                  'w-0.5 h-full min-h-[36px]',
+                  'w-0.5 h-full min-h-[24px] sm:min-h-[36px]',
                   selectedOrder.isPaid ? 'bg-indigo-600' : 'bg-gray-200'
                 ]"
               ></div>
             </div>
-            <div>
-              <h4 class="text-sm font-bold text-black">
+            <div class="pb-2">
+              <h4 class="text-xs sm:text-sm font-bold text-black">
                 {{ selectedOrder.isPaid ? 'Payment Confirmed' : 'Payment Pending' }}
               </h4>
-              <p class="text-xs text-gray-500 mt-1">
+              <p class="text-[10px] sm:text-xs text-gray-500 mt-0.5 sm:mt-1">
                 {{ selectedOrder.isPaid ? 'Transaction verified.' : 'Pending payment receipt.' }}
               </p>
             </div>
           </div>
 
           <!-- Step 3: Courier Dispatched -->
-          <div class="flex gap-4">
+          <div class="flex gap-3 sm:gap-4">
             <div class="flex flex-col items-center">
-              <div class="w-8 h-8 rounded-full border-2 border-gray-300 bg-white text-gray-500 flex items-center justify-center text-xs font-bold shrink-0">
-                <Truck class="w-4 h-4" />
+              <div class="w-6 h-6 sm:w-8 sm:h-8 rounded-full border-2 border-gray-300 bg-white text-gray-500 flex items-center justify-center text-xs font-bold shrink-0">
+                <Truck class="w-3 h-3 sm:w-4 sm:h-4" />
               </div>
               <div
                 :class="[
-                  'w-0.5 h-full min-h-[36px]',
+                  'w-0.5 h-full min-h-[24px] sm:min-h-[36px]',
                   selectedOrder.isDelivered ? 'bg-indigo-600' : 'bg-gray-200'
                 ]"
               ></div>
             </div>
-            <div>
-              <h4 class="text-sm font-bold text-black">Dispatched via {{ selectedOrder.deliveryCompany || 'Courier' }}</h4>
-              <p class="text-xs text-gray-500 mt-1">Package handed over to delivery branch.</p>
+            <div class="pb-2">
+              <h4 class="text-xs sm:text-sm font-bold text-black">Dispatched via {{ selectedOrder.deliveryCompany || 'Courier' }}</h4>
+              <p class="text-[10px] sm:text-xs text-gray-500 mt-0.5 sm:mt-1">Package handed over to delivery branch.</p>
             </div>
           </div>
 
           <!-- Step 4: Delivered -->
-          <div class="flex gap-4">
+          <div class="flex gap-3 sm:gap-4">
             <div class="flex flex-col items-center">
               <div
                 :class="[
-                  'w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold shrink-0 border-2',
+                  'w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs font-bold shrink-0 border-2',
                   selectedOrder.isDelivered ? 'bg-indigo-600 border-indigo-600 text-white' : 'bg-white border-gray-300 text-gray-400'
                 ]"
               >
-                <CheckCircle2 class="w-4 h-4" />
+                <CheckCircle2 class="w-3 h-3 sm:w-4 sm:h-4" />
               </div>
             </div>
             <div>
-              <h4 class="text-sm font-bold text-black">
+              <h4 class="text-xs sm:text-sm font-bold text-black">
                 {{ selectedOrder.isDelivered ? 'Successfully Delivered' : 'Out For Delivery' }}
               </h4>
-              <p class="text-xs text-gray-500 mt-1">
+              <p class="text-[10px] sm:text-xs text-gray-500 mt-0.5 sm:mt-1">
                 {{ selectedOrder.isDelivered ? 'Package handed to recipient.' : 'Courier is en route.' }}
               </p>
             </div>
@@ -1430,7 +1430,7 @@ const formatDate = (dateString) => {
 
         <button
           @click="isTrackingModalOpen = false"
-          class="w-full py-3 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold transition-colors"
+          class="w-full py-2.5 sm:py-3 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-bold transition-colors"
         >
           Got It
         </button>

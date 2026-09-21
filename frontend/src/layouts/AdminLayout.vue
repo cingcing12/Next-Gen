@@ -103,11 +103,6 @@ const logout = async () => {
       <!-- Brand Logo Header -->
       <div class="h-20 flex-shrink-0 flex items-center justify-between px-6 border-b border-slate-800/80 bg-slate-950/60">
         <router-link to="/admin" class="flex items-center gap-3 group">
-          <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-indigo-500 via-purple-600 to-fuchsia-500 flex items-center justify-center text-white shadow-lg shadow-purple-500/30 group-hover:shadow-purple-500/50 group-hover:scale-105 transition-all duration-300 border border-white/20">
-            <svg viewBox="0 0 100 100" class="w-5 h-5 fill-current drop-shadow-sm" xmlns="http://www.w3.org/2000/svg">
-              <path d="M50 0 C53 38, 62 47, 100 50 C62 53, 53 62, 50 100 C47 62, 38 53, 0 50 C38 47, 47 38, 50 0 Z" />
-            </svg>
-          </div>
           <div class="flex flex-col">
             <div class="flex items-center gap-2">
               <span class="text-lg font-black tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-100 to-slate-400 uppercase" style="font-family: 'Montserrat', sans-serif;">

@@ -266,12 +266,12 @@ const clearAllFilters = () => {
     
     <!-- Breadcrumbs -->
     <div class="bg-white border-b border-slate-100">
-      <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center gap-2 text-base text-slate-500">
+      <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4 flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-sm text-slate-500">
         <router-link to="/" class="hover:text-indigo-600 transition-colors">Home</router-link>
-        <ChevronRight class="w-4 h-4 text-slate-400 mx-1" />
+        <ChevronRight class="w-3 h-3 sm:w-4 sm:h-4 text-slate-400 mx-0.5 sm:mx-1" />
         <router-link to="/shop" class="hover:text-indigo-600 transition-colors">Shop</router-link>
         <template v-if="category !== 'all'">
-          <ChevronRight class="w-4 h-4 text-slate-400 mx-1" />
+          <ChevronRight class="w-3 h-3 sm:w-4 sm:h-4 text-slate-400 mx-0.5 sm:mx-1" />
           <span
             :class="{'text-slate-900 uppercase': subCategory === 'all', 'hover:text-indigo-600 cursor-pointer capitalize': subCategory !== 'all'}"
             @click="subCategory !== 'all' && navigateToCategory(category)"
@@ -280,7 +280,7 @@ const clearAllFilters = () => {
           </span>
         </template>
         <template v-if="subCategory !== 'all'">
-          <ChevronRight class="w-4 h-4 text-slate-400 mx-1" />
+          <ChevronRight class="w-3 h-3 sm:w-4 sm:h-4 text-slate-400 mx-0.5 sm:mx-1" />
           <span class="text-slate-900 uppercase">
             {{ subCategory }}
           </span>
@@ -289,27 +289,27 @@ const clearAllFilters = () => {
     </div>
 
     <!-- Top Hero / Banner Header -->
-    <div class="bg-white border-b border-slate-200/80 py-8">
+    <div class="bg-white border-b border-slate-200/80 py-5 sm:py-8">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <!-- Category Title & Description -->
-        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-3 sm:gap-4">
           <div>
-            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200/60 mb-2">
-              <Sparkles class="w-3.5 h-3.5 text-indigo-500" />
+            <div class="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full text-[10px] sm:text-xs font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200/60 mb-2">
+              <Sparkles class="w-3 h-3 sm:w-3.5 sm:h-3.5 text-indigo-500" />
               <span>Catalog & Collections</span>
             </div>
-            <h1 class="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight capitalize">
+            <h1 class="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight capitalize">
               {{ category !== 'all' ? category : 'All Products' }}
               {{ subCategory !== 'all' ? `• ${subCategory}` : '' }}
             </h1>
-            <p class="text-sm text-slate-500 mt-1 max-w-xl">
+            <p class="text-[11px] sm:text-sm text-slate-500 mt-1 max-w-xl">
               Explore premium apparel and streetwear crafted for comfort, style, and everyday confidence.
             </p>
           </div>
 
-          <div class="flex items-center gap-2 text-xs font-bold text-slate-500">
-            <span class="px-3 py-1.5 rounded-full bg-slate-100 text-slate-800 border border-slate-200">
+          <div class="flex items-center gap-2 text-[10px] sm:text-xs font-bold text-slate-500">
+            <span class="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-slate-100 text-slate-800 border border-slate-200">
               {{ filteredProducts.length }} {{ filteredProducts.length === 1 ? 'Product' : 'Products' }} Available
             </span>
           </div>
@@ -380,20 +380,20 @@ const clearAllFilters = () => {
     </div>
 
     <!-- Main Container -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-8">
       
       <!-- Filter Toolbar Controls (Search, Sort, Mobile Filter, Grid) -->
-      <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs mb-8 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
+      <div class="bg-white p-3 sm:p-4 rounded-xl sm:rounded-2xl border border-slate-200/80 shadow-xs mb-5 sm:mb-8 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-4">
         
         <!-- Left: Search within collection & Mobile Filter Trigger -->
-        <div class="flex items-center gap-3 flex-1 max-w-md">
+        <div class="flex items-center gap-2 sm:gap-3 flex-1 max-w-md">
           <button
             @click="isMobileFilterOpen = true"
-            class="lg:hidden inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-900 text-white text-xs font-bold shadow-xs cursor-pointer"
+            class="lg:hidden inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-lg sm:rounded-xl bg-slate-900 text-white text-[11px] sm:text-xs font-bold shadow-xs cursor-pointer"
           >
-            <Filter class="w-4 h-4" />
+            <Filter class="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             <span>Filters</span>
-            <span v-if="activeFilterCount > 0" class="w-5 h-5 rounded-full bg-indigo-500 text-white text-[10px] flex items-center justify-center font-bold">
+            <span v-if="activeFilterCount > 0" class="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-indigo-500 text-white text-[9px] sm:text-[10px] flex items-center justify-center font-bold">
               {{ activeFilterCount }}
             </span>
           </button>
@@ -411,12 +411,12 @@ const clearAllFilters = () => {
           </button>
 
           <div class="relative flex-1">
-            <Search class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+            <Search class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-400 absolute left-3 sm:left-3.5 top-1/2 -translate-y-1/2" />
             <input
               v-model="searchQuery"
               type="text"
               placeholder="Search products in this collection..."
-              class="w-full pl-10 pr-8 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:border-indigo-600 outline-none transition"
+              class="w-full pl-9 sm:pl-10 pr-8 py-1.5 sm:py-2 text-[11px] sm:text-xs bg-slate-50 border border-slate-200 rounded-lg sm:rounded-xl focus:bg-white focus:border-indigo-600 outline-none transition"
             />
             <button
               v-if="searchQuery"
@@ -429,14 +429,14 @@ const clearAllFilters = () => {
         </div>
 
         <!-- Right: Sort & Grid View Toggle -->
-        <div class="flex items-center justify-between sm:justify-end gap-3">
+        <div class="flex items-center justify-between sm:justify-end gap-2 sm:gap-3">
           
           <!-- Sort Dropdown -->
-          <div class="flex items-center gap-2">
-            <span class="text-xs text-slate-500 font-semibold hidden md:inline">Sort by:</span>
+          <div class="flex items-center gap-1.5 sm:gap-2">
+            <span class="text-[11px] sm:text-xs text-slate-500 font-semibold hidden md:inline">Sort by:</span>
             <select
               v-model="sortBy"
-              class="bg-slate-50 border border-slate-200 text-slate-700 text-xs font-bold rounded-xl px-3 py-2 outline-none focus:border-indigo-600 cursor-pointer"
+              class="bg-slate-50 border border-slate-200 text-slate-700 text-[11px] sm:text-xs font-bold rounded-lg sm:rounded-xl px-2 py-1.5 sm:px-3 sm:py-2 outline-none focus:border-indigo-600 cursor-pointer"
             >
               <option value="featured">Featured</option>
               <option value="price-low">Price: Low to High</option>

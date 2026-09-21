@@ -248,7 +248,7 @@ const getColorStyle = (colorName) => {
     >
       <div
         v-if="isOpen && product"
-        class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 sm:p-6"
+        class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-6"
         @click.self="emit('close')"
       >
         <Transition
@@ -261,7 +261,7 @@ const getColorStyle = (colorName) => {
         >
           <div
             v-if="isOpen && product"
-            class="relative w-full max-w-4xl bg-white rounded-3xl shadow-2xl overflow-y-auto md:overflow-hidden border border-slate-100 max-h-[92vh] md:max-h-[90vh] flex flex-col md:flex-row"
+            class="relative w-full sm:max-w-4xl bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl overflow-y-auto md:overflow-hidden border-0 sm:border border-slate-100 max-h-[95vh] sm:max-h-[90vh] flex flex-col md:flex-row"
             @click.stop
           >
             <!-- Close Button -->
@@ -274,9 +274,9 @@ const getColorStyle = (colorName) => {
             </button>
 
             <!-- Left: Media & Gallery -->
-            <div class="md:w-1/2 p-4 sm:p-6 bg-slate-50 flex flex-col justify-between flex-shrink-0">
+            <div class="md:w-1/2 p-0 sm:p-6 bg-slate-50 flex flex-col justify-between flex-shrink-0">
               <!-- Main Image with zoom hover -->
-              <div class="relative w-full aspect-[4/3] sm:aspect-square rounded-2xl overflow-hidden bg-white shadow-inner flex items-center justify-center">
+              <div class="relative w-full aspect-[4/5] sm:aspect-square rounded-t-3xl sm:rounded-2xl overflow-hidden bg-white shadow-inner flex items-center justify-center">
                 <img
                   :src="currentImage"
                   :alt="product.name"
@@ -304,7 +304,7 @@ const getColorStyle = (colorName) => {
               </div>
 
               <!-- Thumbnails -->
-              <div v-if="images.length > 1" class="flex flex-wrap items-center gap-2 mt-3 p-1">
+              <div v-if="images.length > 1" class="flex flex-wrap items-center gap-2 mt-3 p-2 sm:p-1">
                 <button
                   v-for="(img, idx) in images"
                   :key="idx"
@@ -319,7 +319,7 @@ const getColorStyle = (colorName) => {
               </div>
 
               <!-- Trust perks -->
-              <div class="mt-3 pt-3 border-t border-slate-200/60 grid grid-cols-2 gap-2 text-xs text-slate-500">
+              <div class="mt-3 pt-3 border-t border-slate-200/60 hidden sm:grid grid-cols-2 gap-2 text-xs text-slate-500">
                 <div class="flex items-center gap-1.5">
                   <Truck class="w-4 h-4 text-indigo-500" />
                   <span>Fast Delivery</span>
@@ -332,13 +332,13 @@ const getColorStyle = (colorName) => {
             </div>
 
             <!-- Right: Product Info & Actions -->
-            <div class="md:w-1/2 p-5 sm:p-8 flex flex-col md:overflow-y-auto md:max-h-[90vh]">
+            <div class="md:w-1/2 p-4 sm:p-8 flex flex-col md:overflow-y-auto md:max-h-[90vh]">
               <!-- Title & Rating -->
-              <div class="mb-4">
-                <span class="text-xs uppercase font-bold tracking-wider text-indigo-600">
+              <div class="mb-3 sm:mb-4">
+                <span class="text-[10px] sm:text-xs uppercase font-bold tracking-wider text-indigo-600">
                   {{ product.subCategory || product.category }}
                 </span>
-                <h2 class="text-2xl font-extrabold text-slate-900 mt-1 leading-tight">
+                <h2 class="text-lg sm:text-2xl font-extrabold text-slate-900 mt-0.5 sm:mt-1 leading-tight">
                   {{ product.name }}
                 </h2>
 
@@ -351,10 +351,10 @@ const getColorStyle = (colorName) => {
                       :class="i <= Math.round(product.rating || 0) ? 'text-amber-400 fill-amber-400' : 'text-slate-200'"
                     />
                   </div>
-                  <span class="text-sm font-semibold text-slate-700">{{ Number(product.rating || 0).toFixed(1) }}</span>
-                  <span class="text-xs text-slate-400">({{ product.numReviews || 0 }} reviews)</span>
+                  <span class="text-xs sm:text-sm font-semibold text-slate-700">{{ Number(product.rating || 0).toFixed(1) }}</span>
+                  <span class="text-[10px] sm:text-xs text-slate-400">({{ product.numReviews || 0 }} reviews)</span>
                   <span
-                    class="ml-auto text-xs px-2.5 py-1 rounded-full font-semibold whitespace-nowrap"
+                    class="ml-auto text-[10px] sm:text-xs px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full font-semibold whitespace-nowrap"
                     :class="maxStockForSelection > 0 ? 'bg-emerald-50 text-emerald-700' : 'bg-rose-50 text-rose-700'"
                   >
                     {{ maxStockForSelection > 0 ? 'In Stock' : 'Out of Stock' }}
@@ -363,22 +363,22 @@ const getColorStyle = (colorName) => {
               </div>
 
               <!-- Price -->
-              <div class="flex items-baseline gap-3 mb-5 pb-5 border-b border-slate-100">
-                <span class="text-3xl font-black text-slate-900">${{ (product.discount > 0 ? product.price * (1 - product.discount / 100) : product.price)?.toFixed(2) }}</span>
-                <span v-if="product.discount > 0" class="text-lg text-slate-400 line-through">
+              <div class="flex items-baseline gap-2 sm:gap-3 mb-4 sm:mb-5 pb-3 sm:pb-5 border-b border-slate-100">
+                <span class="text-xl sm:text-3xl font-black text-slate-900">${{ (product.discount > 0 ? product.price * (1 - product.discount / 100) : product.price)?.toFixed(2) }}</span>
+                <span v-if="product.discount > 0" class="text-sm sm:text-lg text-slate-400 line-through">
                   ${{ product.price?.toFixed(2) }}
                 </span>
               </div>
 
               <!-- Description -->
-              <p class="text-sm text-slate-600 mb-6 line-clamp-3 leading-relaxed">
+              <p class="hidden sm:block text-sm text-slate-600 mb-6 line-clamp-3 leading-relaxed">
                 {{ product.description || 'Premium modern fashion piece tailored for exceptional style, comfort and daily versatility.' }}
               </p>
 
               <!-- Color Selection -->
-              <div v-if="displayColors && displayColors.length > 0" class="mb-5">
-                <div class="flex items-center justify-between mb-2">
-                  <label class="text-xs font-bold uppercase tracking-wider text-slate-700">
+              <div v-if="displayColors && displayColors.length > 0" class="mb-4 sm:mb-5">
+                <div class="flex items-center justify-between mb-1.5 sm:mb-2">
+                  <label class="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-700">
                     Color: <span class="text-indigo-600 capitalize font-medium">{{ selectedColor }}</span>
                   </label>
                 </div>
@@ -389,7 +389,7 @@ const getColorStyle = (colorName) => {
                     type="button"
                     @click="selectColor(color)"
                     :class="[
-                      'w-8 h-8 rounded-full flex items-center justify-center transition-all relative border shadow-sm',
+                      'w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center transition-all relative border shadow-sm',
                       selectedColor.toLowerCase() === color.toLowerCase()
                         ? 'ring-2 ring-indigo-600 ring-offset-2 scale-110'
                         : 'hover:scale-105 border-slate-200'
@@ -407,9 +407,9 @@ const getColorStyle = (colorName) => {
               </div>
 
               <!-- Size Selection -->
-              <div v-if="product.sizes && product.sizes.length > 0" class="mb-6">
-                <div class="flex items-center justify-between mb-2">
-                  <label class="text-xs font-bold uppercase tracking-wider text-slate-700">
+              <div v-if="product.sizes && product.sizes.length > 0" class="mb-5 sm:mb-6">
+                <div class="flex items-center justify-between mb-1.5 sm:mb-2">
+                  <label class="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-700">
                     Size: <span class="text-indigo-600 font-medium">{{ selectedSize }}</span>
                   </label>
                 </div>
@@ -420,7 +420,7 @@ const getColorStyle = (colorName) => {
                     type="button"
                     @click="selectedSize = size"
                     :class="[
-                      'min-w-[44px] h-10 px-3.5 rounded-xl font-bold text-xs uppercase tracking-wider transition-all border flex items-center justify-center',
+                      'min-w-[36px] sm:min-w-[44px] h-8 sm:h-10 px-2 sm:px-3.5 rounded-lg sm:rounded-xl font-bold text-[10px] sm:text-xs uppercase tracking-wider transition-all border flex items-center justify-center',
                       selectedSize === size
                         ? 'bg-indigo-600 text-white border-indigo-600 shadow-md shadow-indigo-600/20 scale-105'
                         : 'bg-white text-slate-700 border-slate-200 hover:border-slate-300 hover:bg-slate-50'
@@ -432,24 +432,24 @@ const getColorStyle = (colorName) => {
               </div>
 
               <!-- Quantity & Actions -->
-              <div class="mt-auto pt-4 border-t border-slate-100 space-y-4">
-                <div class="flex items-center gap-4">
+              <div class="mt-auto pt-3 sm:pt-4 border-t border-slate-100 space-y-3 sm:space-y-4">
+                <div class="flex items-center gap-2 sm:gap-4">
                   <!-- Stepper -->
-                  <div class="flex items-center border border-slate-200 rounded-xl bg-slate-50/50 p-1">
+                  <div class="flex items-center border border-slate-200 rounded-lg sm:rounded-xl bg-slate-50/50 p-0.5 sm:p-1">
                     <button
                       type="button"
                       @click="quantity = Math.max(1, quantity - 1)"
-                      class="w-8 h-8 rounded-lg bg-white shadow-sm flex items-center justify-center text-slate-700 hover:bg-slate-100 font-bold transition-colors"
+                      class="w-6 h-6 sm:w-8 sm:h-8 rounded-md sm:rounded-lg bg-white shadow-sm flex items-center justify-center text-slate-700 hover:bg-slate-100 font-bold transition-colors"
                     >
                       -
                     </button>
-                    <span class="w-10 text-center font-bold text-slate-900 text-sm">
+                    <span class="w-8 sm:w-10 text-center font-bold text-slate-900 text-[11px] sm:text-sm">
                       {{ quantity }}
                     </span>
                     <button
                       type="button"
                       @click="quantity < maxStockForSelection && quantity++"
-                      :class="['w-8 h-8 rounded-lg shadow-sm flex items-center justify-center font-bold transition-colors', quantity >= maxStockForSelection ? 'bg-slate-50 text-slate-400 cursor-not-allowed' : 'bg-white text-slate-700 hover:bg-slate-100']"
+                      :class="['w-6 h-6 sm:w-8 sm:h-8 rounded-md sm:rounded-lg shadow-sm flex items-center justify-center font-bold transition-colors', quantity >= maxStockForSelection ? 'bg-slate-50 text-slate-400 cursor-not-allowed' : 'bg-white text-slate-700 hover:bg-slate-100']"
                     >
                       +
                     </button>
@@ -459,9 +459,9 @@ const getColorStyle = (colorName) => {
                     type="button"
                     @click="handleAddToCart"
                     :disabled="isAdding || maxStockForSelection <= 0"
-                    class="flex-1 py-3.5 px-6 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white font-bold flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/25 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                    class="flex-1 py-2 sm:py-3.5 px-3 sm:px-6 rounded-lg sm:rounded-xl bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white font-bold text-[11px] sm:text-sm flex items-center justify-center gap-1.5 sm:gap-2 shadow-lg shadow-indigo-600/25 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    <ShoppingBag class="w-5 h-5" />
+                    <ShoppingBag class="w-3.5 h-3.5 sm:w-5 sm:h-5" />
                     <span>{{ maxStockForSelection <= 0 ? 'Out of Stock' : (isAdding ? 'Adding...' : 'Add to Cart') }}</span>
                   </button>
 
@@ -469,7 +469,7 @@ const getColorStyle = (colorName) => {
                   <button
                     type="button"
                     @click="toggleWishlist"
-                    class="w-12 h-12 rounded-xl border border-slate-200 flex items-center justify-center transition-colors hover:bg-rose-50 hover:border-rose-200"
+                    class="w-8 h-8 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl border border-slate-200 flex items-center justify-center transition-colors hover:bg-rose-50 hover:border-rose-200"
                     :title="isWishlisted ? 'Remove from Wishlist' : 'Add to Wishlist'"
                   >
                     <Heart
@@ -483,15 +483,15 @@ const getColorStyle = (colorName) => {
                 <button
                   type="button"
                   @click="viewFullDetails"
-                  class="w-full text-center text-xs text-slate-500 hover:text-indigo-600 font-medium py-1 flex items-center justify-center gap-1 transition-colors"
+                  class="w-full text-center text-[10px] sm:text-xs text-slate-500 hover:text-indigo-600 font-medium py-1 flex items-center justify-center gap-1 transition-colors"
                 >
                   <span>View Full Product Details</span>
-                  <ExternalLink class="w-3.5 h-3.5" />
+                  <ExternalLink class="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                 </button>
               </div>
 
               <!-- Write a Review Section -->
-              <div class="mt-8 pt-6 border-t border-slate-100">
+              <div class="mt-6 sm:mt-8 pt-5 sm:pt-6 border-t border-slate-100 hidden sm:block">
                 <div class="flex items-center justify-between mb-4">
                   <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
                     <MessageSquare class="w-4 h-4 text-indigo-500" />

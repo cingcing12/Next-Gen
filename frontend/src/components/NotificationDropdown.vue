@@ -69,17 +69,17 @@ const getIconColorClass = (type) => {
 </script>
 
 <template>
-  <div class="relative" ref="dropdownRef">
+  <div class="relative flex items-center justify-center" ref="dropdownRef">
     <!-- Bell Button -->
     <button 
       @click="toggleDropdown"
-      class="relative p-2 rounded-full hover:bg-slate-100 transition-colors duration-200 group focus:outline-none"
+      class="relative flex items-center justify-center text-slate-500 hover:text-indigo-600 transition-colors duration-200 focus:outline-none cursor-pointer"
     >
-      <Bell class="w-6 h-6 text-slate-600 group-hover:text-indigo-600 transition-colors duration-200" />
+      <Bell class="w-5 h-5" />
       <!-- Unread Badge -->
       <span 
         v-if="unreadCount > 0" 
-        class="absolute top-1 right-1 w-2.5 h-2.5 bg-rose-500 rounded-full border-2 border-white animate-pulse"
+        class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-rose-500 rounded-full border-2 border-white animate-pulse"
       ></span>
     </button>
 
@@ -94,49 +94,49 @@ const getIconColorClass = (type) => {
     >
       <div 
         v-if="isOpen" 
-        class="absolute right-0 mt-3 w-80 sm:w-96 bg-white/90 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-200/60 overflow-hidden z-50 transform origin-top-right"
+        class="absolute right-[-10px] sm:right-0 top-full mt-4 w-[280px] sm:w-80 md:w-96 bg-white/90 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-200/60 overflow-hidden z-50 transform origin-top-right"
       >
         <!-- Header -->
-        <div class="flex items-center justify-between px-4 py-3 border-b border-slate-100 bg-slate-50/50">
-          <h3 class="font-bold text-slate-900">Notifications</h3>
+        <div class="flex items-center justify-between px-3 sm:px-4 py-2.5 sm:py-3 border-b border-slate-100 bg-slate-50/50">
+          <h3 class="text-sm sm:text-base font-bold text-slate-900">Notifications</h3>
           <button 
             v-if="unreadCount > 0"
             @click="markAllAsRead"
-            class="text-xs font-semibold text-indigo-600 hover:text-indigo-800 transition-colors"
+            class="text-[10px] sm:text-xs font-semibold text-indigo-600 hover:text-indigo-800 transition-colors"
           >
             Mark all read
           </button>
         </div>
 
         <!-- Notification List -->
-        <div class="max-h-96 overflow-y-auto">
-          <div v-if="notifications.length === 0" class="p-8 text-center text-slate-500 flex flex-col items-center">
-            <Bell class="w-10 h-10 text-slate-200 mb-2" />
-            <p>No notifications yet</p>
+        <div class="max-h-80 sm:max-h-96 overflow-y-auto">
+          <div v-if="notifications.length === 0" class="p-6 sm:p-8 text-center text-slate-500 flex flex-col items-center">
+            <Bell class="w-8 h-8 sm:w-10 sm:h-10 text-slate-200 mb-2" />
+            <p class="text-xs sm:text-sm">No notifications yet</p>
           </div>
 
           <div 
             v-for="notification in notifications" 
             :key="notification._id"
             @click="handleNotificationClick(notification)"
-            class="px-4 py-3 border-b border-slate-50 last:border-0 hover:bg-slate-50 transition-colors cursor-pointer relative"
+            class="px-3 sm:px-4 py-2.5 sm:py-3 border-b border-slate-50 last:border-0 hover:bg-slate-50 transition-colors cursor-pointer relative"
             :class="{ 'bg-indigo-50/30': !notification.isRead }"
           >
             <!-- Unread Dot -->
-            <div v-if="!notification.isRead" class="absolute left-2 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-indigo-500"></div>
+            <div v-if="!notification.isRead" class="absolute left-1.5 sm:left-2 top-1/2 -translate-y-1/2 w-1 sm:w-1.5 h-1 sm:h-1.5 rounded-full bg-indigo-500"></div>
             
-            <div class="flex gap-3 ml-2">
-              <div :class="['flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center', getIconColorClass(notification.type)]">
-                <component :is="getIcon(notification.type)" class="w-5 h-5" />
+            <div class="flex gap-2 sm:gap-3 ml-1 sm:ml-2">
+              <div :class="['flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center', getIconColorClass(notification.type)]">
+                <component :is="getIcon(notification.type)" class="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
               <div class="flex-1 min-w-0">
-                <p class="text-sm font-semibold text-slate-900 truncate">
+                <p class="text-xs sm:text-sm font-semibold text-slate-900 truncate">
                   {{ notification.title }}
                 </p>
-                <p class="text-sm text-slate-500 mt-0.5 line-clamp-2">
+                <p class="text-[10px] sm:text-xs text-slate-500 mt-0.5 line-clamp-2 leading-relaxed">
                   {{ notification.message }}
                 </p>
-                <p class="text-xs text-slate-400 mt-1">
+                <p class="text-[9px] sm:text-[10px] text-slate-400 mt-1">
                   {{ notification.createdAt ? formatDistanceToNow(new Date(notification.createdAt), { addSuffix: true }) : 'Just now' }}
                 </p>
               </div>
