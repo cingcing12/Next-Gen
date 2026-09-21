@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --primary: #4F46E5; /* Indigo 600 */
+    --primary-hover: #4338CA;
+    --background: #f8fafc; /* Slate 50 */
+    --foreground: #0f172a; /* Slate 900 */
+    --surface: #ffffff;
+    --border: #e2e8f0;
+  }
+  
+  .dark {
+    --primary: #6366F1; /* Indigo 500 */
+    --primary-hover: #818CF8;
+    --background: #0f172a;
+    --foreground: #f8fafc;
+    --surface: #1e293b;
+    --border: #334155;
+  }
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+}
+
+/* Animations */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.fade-enter-active, .fade-leave-active { transition: opacity 0.5s ease; }
+.fade-enter-from, .fade-leave-to { opacity: 0; }
