@@ -74,7 +74,8 @@ const productSchema = new mongoose.Schema(
         sizeVariants: [
           {
             size: { type: String, required: true },
-            stock: { type: Number, default: 0 }
+            stock: { type: Number, default: 0 },
+            price: { type: Number, required: false }
           }
         ],
       },

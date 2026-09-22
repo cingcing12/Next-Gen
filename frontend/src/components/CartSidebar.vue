@@ -1,10 +1,23 @@
 <script setup>
+import { computed } from 'vue'
 import { useCartStore } from '../stores/cart'
 import { useUIStore } from '../stores/ui'
+import { useSystemStore } from '../stores/system'
 import { X, Trash2, ShoppingBag } from 'lucide-vue-next'
+import { useScrollLock } from '../composables/useScrollLock'
 
 const cartStore = useCartStore()
 const ui = useUIStore()
+const systemStore = useSystemStore()
+
+const freeShippingThreshold = computed(() => {
+  const bannerText = systemStore.config?.announcementBanner || ''
+  // Extract number after $ sign, e.g. "$10" -> 10
+  const match = bannerText.match(/\$(\d+(\.\d+)?)/)
+  return match ? parseFloat(match[1]) : 100
+})
+
+useScrollLock(computed(() => cartStore.isOpen))
 
 const handleUpdateQuantity = (index, newQty) => {
   const item = cartStore.items[index]
@@ -28,6 +41,8 @@ const handleRemove = async (index) => {
     <transition name="fade">
       <div v-if="cartStore.isOpen" 
            @click="cartStore.toggleCart()" 
+           @touchmove.prevent
+           @wheel.prevent
            class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-[60]"
       ></div>
     </transition>
@@ -64,7 +79,11 @@ const handleRemove = async (index) => {
             <div class="flex-grow flex flex-col justify-between">
               <div>
                 <h3 class="text-xs sm:text-sm font-bold text-slate-900">{{ item.name }}</h3>
-                <p class="text-[9px] sm:text-xs text-slate-500 mt-0.5 sm:mt-1">Size: {{ item.size || 'N/A' }} | Color: {{ item.color || 'N/A' }}</p>
+                <p class="text-[9px] sm:text-xs text-slate-500 mt-0.5 sm:mt-1">
+                  <span v-if="item.size">Size: {{ item.size }}</span>
+                  <span v-if="item.size && item.color && item.color.toLowerCase() !== 'default'"> | </span>
+                  <span v-if="item.color && item.color.toLowerCase() !== 'default'">Color: {{ item.color }}</span>
+                </p>
               </div>
               <div class="flex items-center justify-between mt-1 sm:mt-2">
                 <div class="flex items-center border border-slate-200 rounded-md sm:rounded-lg">
@@ -87,6 +106,27 @@ const handleRemove = async (index) => {
 
       <!-- Footer -->
       <div v-if="cartStore.items.length > 0" class="border-t border-slate-100 p-4 sm:p-6 bg-slate-50">
+        <!-- Free Shipping Progress -->
+        <div class="mb-4 bg-white p-3 rounded-xl border border-indigo-50 shadow-sm">
+          <p class="text-[11px] sm:text-xs font-bold text-slate-700 mb-2">
+            <span v-if="cartStore.totalPrice >= freeShippingThreshold">
+              🎉 You've unlocked <span class="text-indigo-600">Free Shipping!</span>
+            </span>
+            <span v-else>
+              You're <span class="text-indigo-600">${{ (freeShippingThreshold - cartStore.totalPrice).toFixed(2) }}</span> away from <span class="text-indigo-600">Free Shipping!</span>
+            </span>
+          </p>
+          <div class="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
+            <div 
+              class="h-full bg-indigo-500 rounded-full transition-all duration-500 ease-out relative"
+              :style="{ width: `${Math.min((cartStore.totalPrice / freeShippingThreshold) * 100, 100)}%` }"
+            >
+              <!-- Optional shimmer effect for premium feel when full -->
+              <div v-if="cartStore.totalPrice >= freeShippingThreshold" class="absolute inset-0 bg-white/30 -skew-x-12 translate-x-[-100%] animate-[shimmer_2s_infinite]"></div>
+            </div>
+          </div>
+        </div>
+
         <div class="flex justify-between items-center mb-3 sm:mb-4">
           <span class="text-xs sm:text-sm font-medium text-slate-500">Subtotal</span>
           <span class="text-base sm:text-lg font-bold text-slate-900">${{ cartStore.totalPrice.toFixed(2) }}</span>

@@ -7,6 +7,7 @@ import { useWishlistStore } from '../stores/wishlist'
 import { useUIStore } from '../stores/ui'
 import { useAuthStore } from '../stores/auth'
 import api from '../api/axios'
+import { useScrollLock } from '../composables/useScrollLock'
 
 const props = defineProps({
   isOpen: {
@@ -25,6 +26,8 @@ const cartStore = useCartStore()
 const wishlistStore = useWishlistStore()
 const ui = useUIStore()
 const authStore = useAuthStore()
+
+useScrollLock(computed(() => props.isOpen))
 
 const reviewRating = ref(5)
 const hoverRating = ref(0)
@@ -80,10 +83,13 @@ const quantity = ref(1)
 const isAdding = ref(false)
 
 const displayColors = computed(() => {
+  let colors = []
   if (props.product?.colorVariants && props.product.colorVariants.length > 0) {
-    return props.product.colorVariants.map(v => v.color)
+    colors = props.product.colorVariants.map(v => v.color)
+  } else {
+    colors = props.product?.colors || []
   }
-  return props.product?.colors || []
+  return colors.filter(c => c && c.toLowerCase() !== 'default' && c.toLowerCase() !== 'no color')
 })
 
 const currentVariant = computed(() => {
@@ -102,6 +108,21 @@ const maxStockForSelection = computed(() => {
     return currentVariant.value.stock
   }
   return props.product?.stock ?? 10
+})
+
+const currentPrice = computed(() => {
+  if (currentVariant.value && currentVariant.value.sizeVariants && selectedSize.value) {
+    const sv = currentVariant.value.sizeVariants.find(s => s.size === selectedSize.value)
+    if (sv && sv.price !== undefined && sv.price !== null && sv.price > 0) {
+      return sv.price
+    }
+  }
+  return props.product?.price || 0
+})
+
+const discountedPrice = computed(() => {
+  if (!props.product || !props.product.discount) return currentPrice.value
+  return currentPrice.value * (1 - props.product.discount / 100)
 })
 
 // Gallery images: ONLY show the active color's photos!
@@ -167,11 +188,14 @@ const toggleWishlist = async () => {
 
 const handleAddToCart = () => {
   if (!props.product) return
-  if (props.product.sizes?.length && !selectedSize.value) {
+  const hasSizes = props.product.sizes?.length > 0
+  const hasColors = displayColors.value.length > 0
+
+  if (hasSizes && !selectedSize.value) {
     ui.toast('Please select a size', 'error')
     return
   }
-  if (props.product.colors?.length && !selectedColor.value) {
+  if (hasColors && !selectedColor.value) {
     ui.toast('Please select a color', 'error')
     return
   }
@@ -364,10 +388,15 @@ const getColorStyle = (colorName) => {
 
               <!-- Price -->
               <div class="flex items-baseline gap-2 sm:gap-3 mb-4 sm:mb-5 pb-3 sm:pb-5 border-b border-slate-100">
-                <span class="text-xl sm:text-3xl font-black text-slate-900">${{ (product.discount > 0 ? product.price * (1 - product.discount / 100) : product.price)?.toFixed(2) }}</span>
-                <span v-if="product.discount > 0" class="text-sm sm:text-lg text-slate-400 line-through">
-                  ${{ product.price?.toFixed(2) }}
-                </span>
+                <span class="text-xl sm:text-3xl font-black text-slate-900">${{ discountedPrice?.toFixed(2) }}</span>
+                <template v-if="product.discount > 0">
+                  <span class="text-sm sm:text-lg text-slate-400 line-through">
+                    ${{ currentPrice?.toFixed(2) }}
+                  </span>
+                  <span class="bg-indigo-600 text-white text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full shadow-sm">
+                    -{{ product.discount }}%
+                  </span>
+                </template>
               </div>
 
               <!-- Description -->

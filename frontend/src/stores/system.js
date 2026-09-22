@@ -65,9 +65,11 @@ export const useSystemStore = defineStore('system', {
         } catch(e) {}
       });
 
-      this.sseConnection.addEventListener('shipping_updated', () => {
-        // Example: if we had a shipping store, we would fetch it.
-        // If not, we just reload the page if we are on checkout.
+      this.sseConnection.addEventListener('shipping_updated', (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          window.dispatchEvent(new CustomEvent('system:shipping_updated', { detail: data }));
+        } catch(e) {}
       });
 
       this.sseConnection.addEventListener('user_blocked', (event) => {

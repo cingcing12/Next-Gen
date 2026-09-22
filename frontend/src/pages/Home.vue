@@ -47,8 +47,45 @@ const featuredProducts = computed(() => {
 
 <template>
   <div>
+    <!-- Hero Swiper Skeleton -->
+    <div v-if="!systemStore.config?.homeSlider?.length" class="relative h-[500px] sm:h-[650px] w-full bg-slate-900 flex flex-col justify-center overflow-hidden">
+      <!-- Animated Background Glows -->
+      <div class="absolute top-1/4 -left-1/4 w-1/2 h-1/2 bg-indigo-500/20 rounded-full blur-[120px] animate-pulse"></div>
+      <div class="absolute bottom-1/4 -right-1/4 w-1/2 h-1/2 bg-slate-500/20 rounded-full blur-[120px] animate-pulse" style="animation-delay: 1s;"></div>
+      
+      <!-- Skeleton Content Container -->
+      <div class="absolute inset-0 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-center w-full z-10">
+        <div class="max-w-xl w-full space-y-6">
+          <!-- Title Skeleton -->
+          <div class="space-y-3">
+            <div class="h-10 sm:h-16 w-3/4 bg-slate-800/80 rounded-2xl animate-pulse"></div>
+            <div class="h-10 sm:h-16 w-1/2 bg-indigo-900/40 rounded-2xl animate-pulse"></div>
+          </div>
+          
+          <!-- Description Skeleton -->
+          <div class="space-y-2.5 pt-2">
+            <div class="h-4 sm:h-5 w-full max-w-sm sm:max-w-none bg-slate-800/60 rounded-lg animate-pulse" style="animation-delay: 0.1s;"></div>
+            <div class="h-4 sm:h-5 w-5/6 max-w-sm sm:max-w-none bg-slate-800/60 rounded-lg animate-pulse" style="animation-delay: 0.2s;"></div>
+          </div>
+          
+          <!-- Button Skeleton -->
+          <div class="pt-4">
+            <div class="h-11 sm:h-14 w-40 sm:w-48 bg-indigo-600/30 rounded-xl sm:rounded-2xl animate-pulse" style="animation-delay: 0.3s;"></div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Skeleton Pagination Dots -->
+      <div class="absolute bottom-8 left-0 right-0 flex justify-center items-center gap-2 z-10">
+        <div class="w-8 h-2.5 rounded-full bg-indigo-500/50 animate-pulse"></div>
+        <div class="w-2.5 h-2.5 rounded-full bg-slate-700 animate-pulse" style="animation-delay: 0.2s;"></div>
+        <div class="w-2.5 h-2.5 rounded-full bg-slate-700 animate-pulse" style="animation-delay: 0.4s;"></div>
+      </div>
+    </div>
+
     <!-- Hero Swiper Slider -->
     <swiper
+      v-else
       :modules="swiperModules"
       effect="fade"
       :autoplay="{ delay: 5000, disableOnInteraction: false }"

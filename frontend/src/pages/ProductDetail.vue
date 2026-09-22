@@ -66,6 +66,21 @@ const maxAvailableStock = computed(() => {
   return product.value?.stock || 0
 })
 
+const currentPrice = computed(() => {
+  if (currentVariant.value && currentVariant.value.sizeVariants && selectedSize.value) {
+    const sv = currentVariant.value.sizeVariants.find(s => s.size === selectedSize.value)
+    if (sv && sv.price !== undefined && sv.price !== null && sv.price > 0) {
+      return sv.price
+    }
+  }
+  return product.value?.price || 0
+})
+
+const discountedPrice = computed(() => {
+  if (!product.value || !product.value.discount) return currentPrice.value
+  return currentPrice.value * (1 - product.value.discount / 100)
+})
+
 const increaseQuantity = () => {
   if (quantity.value < maxAvailableStock.value) {
     quantity.value++
@@ -105,10 +120,13 @@ const activeGalleryImages = computed(() => {
 })
 
 const displayColors = computed(() => {
+  let colors = []
   if (product.value?.colorVariants && product.value.colorVariants.length > 0) {
-    return product.value.colorVariants.map(v => v.color)
+    colors = product.value.colorVariants.map(v => v.color)
+  } else {
+    colors = product.value?.colors || []
   }
-  return product.value?.colors || []
+  return colors.filter(c => c && c.toLowerCase() !== 'default' && c.toLowerCase() !== 'no color')
 })
 
 const selectColor = (color) => {
@@ -246,8 +264,15 @@ watch(
 const isAddingToCart = ref(false)
 const addToCart = async () => {
   if (isAddingToCart.value) return
-  if (!selectedSize.value || !selectedColor.value) {
-    ui.toast('Please select a size and color before adding to cart.', 'error')
+  const hasSizes = product.value?.sizes?.length > 0
+  const hasColors = displayColors.value.length > 0
+
+  if (hasSizes && !selectedSize.value) {
+    ui.toast('Please select a size before adding to cart.', 'error')
+    return
+  }
+  if (hasColors && !selectedColor.value) {
+    ui.toast('Please select a color before adding to cart.', 'error')
     return
   }
   if (quantity.value > maxAvailableStock.value) {
@@ -461,8 +486,8 @@ const isReviewsExpanded = ref(false)
             </div>
           <div class="mt-3 flex items-center justify-between">
             <div class="flex items-baseline gap-2 sm:gap-3">
-              <p class="text-2xl sm:text-3xl font-bold text-slate-900">${{ (product.discount > 0 ? product.price * (1 - product.discount / 100) : product.price).toFixed(2) }}</p>
-              <p v-if="product.discount > 0" class="text-lg sm:text-xl font-semibold text-slate-400 line-through decoration-rose-500/50">${{ product.price.toFixed(2) }}</p>
+              <p class="text-2xl sm:text-3xl font-bold text-slate-900">${{ discountedPrice.toFixed(2) }}</p>
+              <p v-if="product.discount > 0" class="text-lg sm:text-xl font-semibold text-slate-400 line-through decoration-rose-500/50">${{ currentPrice.toFixed(2) }}</p>
               <span v-if="product.discount > 0" class="bg-indigo-600 text-white text-[10px] sm:text-xs font-bold uppercase tracking-wider px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full shadow-sm">
                 -{{ product.discount }}%
               </span>

@@ -62,6 +62,8 @@ const form = ref({
   discount: 0,
   category: 'Men',
   subCategory: '',
+  hasVariants: true,
+  generalStock: 0,
   colorVariants: [
     { color: 'Black', hex: '#0f172a', image: '', images: [], isUploading: false, sizeVariants: [], customSizeInput: '' }
   ],
@@ -124,9 +126,11 @@ const openAddModal = () => {
     discount: 0,
     category: categoryStore.categories[0]?.name || 'Men',
     subCategory: '',
+    hasVariants: true,
+    generalStock: 0,
     colorVariants: [
-      { color: 'White', hex: '#ffffff', images: [], isUploading: false, customSizeInput: '', sizeVariants: defaultSizes.map(s => ({ size: s, stock: 0 })) },
-      { color: 'Black', hex: '#0f172a', images: [], isUploading: false, customSizeInput: '', sizeVariants: defaultSizes.map(s => ({ size: s, stock: 0 })) }
+      { color: 'White', hex: '#ffffff', images: [], isUploading: false, customSizeInput: '', sizeVariants: defaultSizes.map(s => ({ size: s, stock: 0, price: '' })) },
+      { color: 'Black', hex: '#0f172a', images: [], isUploading: false, customSizeInput: '', sizeVariants: defaultSizes.map(s => ({ size: s, stock: 0, price: '' })) }
     ],
     generalImages: []
   }
@@ -156,7 +160,7 @@ const openEditModal = (product) => {
         isUploading: false,
         sizeVariants: v.sizeVariants && v.sizeVariants.length > 0 
           ? [...v.sizeVariants] 
-          : sizes.map(size => ({ size, stock: v.stock || 0 }))
+          : sizes.map(size => ({ size, stock: v.stock || 0, price: product.price }))
       }
     })
   } else if (product.colors && product.colors.length > 0) {
@@ -168,7 +172,7 @@ const openEditModal = (product) => {
       hex: getColorHex(c),
       images: prodImages[idx] ? [prodImages[idx]] : (prodImages[0] ? [prodImages[0]] : []),
       isUploading: false,
-      sizeVariants: sizes.map(size => ({ size, stock: product.stock || 0 }))
+      sizeVariants: sizes.map(size => ({ size, stock: product.stock || 0, price: product.price }))
     }))
   } else {
     variants = [{ 
@@ -176,12 +180,14 @@ const openEditModal = (product) => {
       hex: '#0f172a', 
       images: [], 
       isUploading: false, 
-      sizeVariants: sizes.map(size => ({ size, stock: product.stock || 0 })) 
+      sizeVariants: sizes.map(size => ({ size, stock: product.stock || 0, price: product.price })) 
     }]
   }
 
   // Ensure each variant has customSizeInput
   variants = variants.map(v => ({ ...v, customSizeInput: '' }))
+
+  const hasVariants = sizes.length > 0 || (product.colors && product.colors.length > 0) || (product.colorVariants && product.colorVariants.length > 0)
 
   form.value = {
     name: product.name,
@@ -190,6 +196,8 @@ const openEditModal = (product) => {
     discount: product.discount || 0,
     category: product.category,
     subCategory: product.subCategory || '',
+    hasVariants: !!hasVariants,
+    generalStock: product.stock || 0,
     colorVariants: variants,
     generalImages: product.images || []
   }
@@ -260,6 +268,17 @@ const addColorVariant = () => {
     customSizeInput: '',
     sizeVariants: []
   })
+}
+
+const addSizesOnlyVariant = () => {
+  form.value.colorVariants = [{
+    color: 'Default',
+    hex: 'transparent',
+    images: [],
+    isUploading: false,
+    customSizeInput: '',
+    sizeVariants: []
+  }]
 }
 
 const removeColorVariant = (index) => {
@@ -351,13 +370,14 @@ const saveProduct = async () => {
   }
 
   // Filter valid color variants and map to new sizeVariants schema
-  const validVariants = form.value.colorVariants
+  const validVariants = form.value.hasVariants ? form.value.colorVariants
     .filter(v => v.color.trim())
     .map(v => {
       const imgs = v.images || (v.image ? [v.image] : [])
       const sizeVariants = (v.sizeVariants || []).map(sv => ({
         size: sv.size,
-        stock: Number(sv.stock) || 0
+        stock: Number(sv.stock) || 0,
+        price: sv.price ? Number(sv.price) : undefined
       }))
       return {
         color: v.color.trim(),
@@ -365,7 +385,7 @@ const saveProduct = async () => {
         images: imgs,
         sizeVariants
       }
-    })
+    }) : []
 
   // Aggregate all images (all variant images first, then general images)
   const allVariantImages = validVariants.flatMap(v => v.images).filter(Boolean)
@@ -377,12 +397,12 @@ const saveProduct = async () => {
   }
 
   // Total stock = sum of all size stocks across all color variants
-  const totalStock = validVariants.reduce((sum, v) => {
-    return sum + v.sizeVariants.reduce((s2, sv) => s2 + (Number(sv.stock) || 0), 0)
-  }, 0)
+  const totalStock = form.value.hasVariants 
+    ? validVariants.reduce((sum, v) => sum + v.sizeVariants.reduce((s2, sv) => s2 + (Number(sv.stock) || 0), 0), 0)
+    : (Number(form.value.generalStock) || 0)
 
   // Aggregate all sizes across all color variants (unique)
-  const allSizes = [...new Set(validVariants.flatMap(v => v.sizeVariants.map(sv => sv.size)))]
+  const allSizes = form.value.hasVariants ? [...new Set(validVariants.flatMap(v => v.sizeVariants.map(sv => sv.size)))] : []
 
   const payload = {
     name: form.value.name,
@@ -393,7 +413,7 @@ const saveProduct = async () => {
     category: form.value.category,
     subCategory: form.value.subCategory,
     sizes: allSizes,
-    colors: validVariants.map(v => v.color),
+    colors: form.value.hasVariants ? validVariants.map(v => v.color) : [],
     colorVariants: validVariants,
     images: allImages
   }
@@ -946,9 +966,35 @@ const togglePublish = async (product) => {
 
 
 
+          <!-- Toggle Has Variants -->
+          <div class="pt-4 border-t border-slate-100">
+            <label class="flex items-center gap-4 cursor-pointer p-5 bg-slate-50 border border-slate-200 rounded-2xl hover:bg-slate-100/80 transition-colors shadow-sm">
+              <div class="relative inline-flex items-center cursor-pointer shrink-0">
+                <input type="checkbox" v-model="form.hasVariants" class="sr-only peer">
+                <div class="w-12 h-6 sm:h-7 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] sm:after:top-[3px] after:left-[2px] sm:after:left-[3px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 sm:after:h-[22px] after:w-5 sm:after:w-[22px] after:transition-all peer-checked:bg-indigo-600 peer-checked:shadow-lg peer-checked:shadow-indigo-600/30"></div>
+              </div>
+              <div>
+                <h3 class="text-sm font-bold text-slate-900">Product has Variants (Colors & Sizes)</h3>
+                <p class="text-xs text-slate-500 mt-0.5">Turn off for simple products like perfumes, accessories, or electronics.</p>
+              </div>
+            </label>
+          </div>
+
+          <!-- General Stock (only if NO variants) -->
+          <div v-if="!form.hasVariants" class="pt-4 space-y-2">
+            <label class="block text-xs font-bold uppercase tracking-wider text-slate-700">
+              Total Stock Available *
+            </label>
+            <div class="relative">
+              <Layers class="w-5 h-5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+              <input v-model.number="form.generalStock" type="number" min="0" placeholder="0" class="w-full max-w-xs pl-10 pr-4 py-3 bg-white rounded-xl border border-slate-200 text-sm font-bold focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 outline-none transition-all" />
+            </div>
+            <p class="text-xs text-slate-500">Since this product has no variants, how many do you have in stock in total?</p>
+          </div>
+
           <!-- Section 3: Color Variants with Specific Photos (THE REQUESTED FEATURE) -->
-          <div class="space-y-4 pt-4 border-t border-slate-100">
-            <div class="flex items-center justify-between">
+          <div v-if="form.hasVariants" class="space-y-4 pt-4 border-t border-slate-100">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div>
                 <h3 class="text-xs uppercase font-bold tracking-wider text-indigo-600 flex items-center gap-1.5">
                   <Palette class="w-4 h-4" />
@@ -959,14 +1005,24 @@ const togglePublish = async (product) => {
                 </p>
               </div>
 
-              <button
-                type="button"
-                @click="addColorVariant"
-                class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-xs rounded-xl transition-colors"
-              >
-                <Plus class="w-4 h-4" />
-                <span>Add Color</span>
-              </button>
+              <div class="flex items-center gap-2">
+                <button
+                  type="button"
+                  @click="addSizesOnlyVariant"
+                  class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition-colors"
+                  v-if="form.colorVariants.length === 0 || (form.colorVariants.length > 0 && form.colorVariants[0].color !== 'Default')"
+                >
+                  <span>No Color (Sizes Only)</span>
+                </button>
+                <button
+                  type="button"
+                  @click="addColorVariant"
+                  class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-xs rounded-xl transition-colors"
+                >
+                  <Plus class="w-4 h-4" />
+                  <span>Add Color</span>
+                </button>
+              </div>
             </div>
 
             <!-- List of Color Variant Cards -->
@@ -979,31 +1035,37 @@ const togglePublish = async (product) => {
                 <!-- Top row: Color Indicator & Name & Presets & Upload Button & Delete -->
                 <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                   <div class="flex items-center gap-2.5 flex-1 w-full sm:w-auto">
-                    <div
-                      class="w-7 h-7 rounded-full border-2 border-white shadow-sm ring-1 ring-slate-300 flex-shrink-0"
-                      :style="{ backgroundColor: variant.hex || getColorHex(variant.color) }"
-                    ></div>
-                    <input
-                      v-model="variant.color"
-                      type="text"
-                      placeholder="Color name (e.g. Brown, Black, White)"
-                      class="flex-1 max-w-xs rounded-xl border border-slate-200 px-3.5 py-2 text-xs font-bold focus:border-indigo-500 outline-none bg-white shadow-xs"
-                      required
-                    />
-                    
-                    <!-- Quick Preset Dots -->
-                    <div class="hidden sm:flex items-center gap-1.5 flex-wrap">
-                      <span class="text-[10px] text-slate-400 font-bold uppercase">Presets:</span>
-                      <button
-                        v-for="pColor in PRESET_COLORS"
-                        :key="pColor.name"
-                        type="button"
-                        @click="selectPresetColor(variant, pColor)"
-                        class="w-4 h-4 rounded-full border border-white shadow-xs hover:scale-125 transition-transform"
-                        :style="{ backgroundColor: pColor.hex }"
-                        :title="pColor.name"
-                      ></button>
-                    </div>
+                    <!-- Hide Color Name input if it's the 'Default' non-color variant -->
+                    <template v-if="variant.color === 'Default'">
+                      <div class="px-4 py-2 bg-slate-200 rounded-xl text-xs font-bold text-slate-600 shadow-inner">Sizes & Bulk Images Only (No Color)</div>
+                    </template>
+                    <template v-else>
+                      <div
+                        class="w-7 h-7 rounded-full border-2 border-white shadow-sm ring-1 ring-slate-300 flex-shrink-0"
+                        :style="{ backgroundColor: variant.hex || getColorHex(variant.color) }"
+                      ></div>
+                      <input
+                        v-model="variant.color"
+                        type="text"
+                        placeholder="Color name (e.g. Brown, Black, White)"
+                        class="flex-1 max-w-xs rounded-xl border border-slate-200 px-3.5 py-2 text-xs font-bold focus:border-indigo-500 outline-none bg-white shadow-xs"
+                        required
+                      />
+                      
+                      <!-- Quick Preset Dots -->
+                      <div class="hidden sm:flex items-center gap-1.5 flex-wrap">
+                        <span class="text-[10px] text-slate-400 font-bold uppercase">Presets:</span>
+                        <button
+                          v-for="pColor in PRESET_COLORS"
+                          :key="pColor.name"
+                          type="button"
+                          @click="selectPresetColor(variant, pColor)"
+                          class="w-4 h-4 rounded-full border border-white shadow-xs hover:scale-125 transition-transform"
+                          :style="{ backgroundColor: pColor.hex }"
+                          :title="pColor.name"
+                        ></button>
+                      </div>
+                    </template>
                   </div>
 
                   <!-- Actions: Bulk Upload Button & Delete Variant -->
@@ -1087,9 +1149,22 @@ const togglePublish = async (product) => {
                         v-model.number="sv.stock"
                         type="number"
                         min="0"
-                        placeholder="0"
+                        placeholder="Stock"
                         class="w-14 px-2 py-1.5 text-xs font-bold focus:bg-indigo-50 focus:text-indigo-700 outline-none text-center"
+                        title="Stock for this size"
                       />
+                      <div class="border-l border-slate-200 flex items-center bg-slate-50 group focus-within:bg-indigo-50">
+                        <span class="text-[11px] text-slate-400 pl-2 font-bold group-focus-within:text-indigo-500">$</span>
+                        <input
+                          v-model.number="sv.price"
+                          type="number"
+                          min="0"
+                          step="0.01"
+                          placeholder="Price"
+                          class="w-16 px-1 py-1.5 text-xs font-bold focus:text-indigo-700 outline-none text-center bg-transparent placeholder-slate-300"
+                          title="Optional specific price. If empty, uses main price."
+                        />
+                      </div>
                       <button
                         type="button"
                         @click="removeVariantSize(variant, sIdx)"

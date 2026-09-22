@@ -25,12 +25,32 @@ onMounted(async () => {
   if (systemStore.config) {
     // Clone config for local editing
     localConfig.value = JSON.parse(JSON.stringify(systemStore.config))
+    
+    // Ensure aboutPage and values exist for older DB records
+    if (!localConfig.value.aboutPage) {
+      localConfig.value.aboutPage = {
+        heroTitle: 'About Next-Gen',
+        heroDescription: 'We believe that style is a way to say who you are without having to speak. Our mission is to provide premium, accessible fashion for both men and women, tailored for perfection.',
+        heroImage: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&q=80&w=2000'
+      }
+    }
+    if (!localConfig.value.aboutPage.values) {
+      localConfig.value.aboutPage.valuesTitle = 'Why Shop With Us?'
+      localConfig.value.aboutPage.valuesDescription = 'We are dedicated to providing the best shopping experience possible, focusing on quality, sustainability, and outstanding customer service.'
+      localConfig.value.aboutPage.values = [
+        { icon: 'Truck', title: 'Fast Delivery', description: 'Partnered with Vireak Buntham and J&T Express for rapid nationwide delivery.' },
+        { icon: 'ShieldCheck', title: 'Secure Payments', description: '100% secure payments using Bakong KHQR, the national standard.' },
+        { icon: 'RotateCcw', title: 'Easy Returns', description: 'Not happy? Return your items within 30 days for a full refund.' },
+        { icon: 'HeartHandshake', title: 'Quality Support', description: 'Our team is available 24/7 to help you with any questions or issues.' }
+      ]
+    }
   }
 })
 
 // --- Image Upload ---
 const isUploadingSlide = ref(null)
 const isUploadingAbout = ref(false)
+const isUploadingAboutPage = ref(false)
 
 const handleSlideImageUpload = async (event, index) => {
   const file = event.target.files[0]
@@ -78,6 +98,29 @@ const handleAboutImageUpload = async (event) => {
   }
 }
 
+const handleAboutPageImageUpload = async (event) => {
+  const file = event.target.files[0]
+  if (!file) return
+
+  const formData = new FormData()
+  formData.append('images', file)
+
+  isUploadingAboutPage.value = true
+  try {
+    const { data } = await api.post('/upload', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    })
+    if (data.urls && data.urls.length > 0) {
+      localConfig.value.aboutPage.heroImage = data.urls[0]
+      uiStore.toast('Image uploaded successfully', 'success')
+    }
+  } catch (error) {
+    uiStore.toast('Failed to upload image', 'error')
+  } finally {
+    isUploadingAboutPage.value = false
+  }
+}
+
 // --- Slider ---
 const addSlide = () => {
   localConfig.value.homeSlider.push({
@@ -95,6 +138,18 @@ const removeSlide = (index) => {
 const collapsedSlides = ref({})
 const toggleSlide = (index) => {
   collapsedSlides.value[index] = !collapsedSlides.value[index]
+}
+
+const addValueCard = () => {
+  localConfig.value.aboutPage.values.push({
+    icon: 'Star',
+    title: 'New Value',
+    description: 'Description goes here'
+  })
+}
+
+const removeValueCard = (index) => {
+  localConfig.value.aboutPage.values.splice(index, 1)
 }
 
 const latestProductsPreview = computed(() => {
@@ -334,6 +389,21 @@ const saveConfig = async () => {
         </div>
       </section>
 
+      <!-- ANNOUNCEMENT BANNER SECTION -->
+      <section class="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden mb-8">
+        <div class="px-6 py-5 border-b border-slate-100 bg-slate-50/50">
+          <h2 class="text-lg font-bold text-slate-900">Announcement Banner</h2>
+          <p class="text-xs text-slate-500 mt-0.5">Manage the text displayed in the top banner of the site</p>
+        </div>
+        
+        <div class="p-6">
+          <div class="space-y-1.5 max-w-2xl">
+            <label class="text-[11px] font-bold uppercase text-slate-500">Banner Text</label>
+            <input v-model="localConfig.announcementBanner" type="text" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:border-indigo-500 focus:bg-white outline-none transition" placeholder="e.g. Free shipping on orders over $100..." />
+          </div>
+        </div>
+      </section>
+
       <!-- ABOUT SHOP SECTION -->
       <section class="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
         <div class="px-6 py-5 border-b border-slate-100 bg-slate-50/50">
@@ -374,6 +444,101 @@ const saveConfig = async () => {
                   <div class="animate-spin w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full mb-2"></div>
                   <span class="text-sm font-bold text-indigo-600">Uploading...</span>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ABOUT PAGE SECTION -->
+      <section class="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden mb-8">
+        <div class="px-6 py-5 border-b border-slate-100 bg-slate-50/50">
+          <h2 class="text-lg font-bold text-slate-900">About Page Hero</h2>
+          <p class="text-xs text-slate-500 mt-0.5">Manage the hero section on the dedicated About page</p>
+        </div>
+        
+        <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="space-y-4">
+            <div class="space-y-1.5">
+              <label class="text-[11px] font-bold uppercase text-slate-500">Hero Title</label>
+              <input v-model="localConfig.aboutPage.heroTitle" type="text" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:border-indigo-500 focus:bg-white outline-none transition" />
+            </div>
+            <div class="space-y-1.5">
+              <label class="text-[11px] font-bold uppercase text-slate-500">Hero Description</label>
+              <textarea v-model="localConfig.aboutPage.heroDescription" rows="4" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:border-indigo-500 focus:bg-white outline-none transition resize-none"></textarea>
+            </div>
+          </div>
+          
+          <div class="space-y-1.5">
+            <label class="text-[11px] font-bold uppercase text-slate-500">Hero Background Image</label>
+            <input v-model="localConfig.aboutPage.heroImage" type="text" class="w-full px-3 py-2 mb-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:border-indigo-500 focus:bg-white outline-none transition" placeholder="Paste image URL or click to upload below..." />
+            
+            <div class="w-full aspect-video rounded-xl bg-slate-100 border border-slate-200 overflow-hidden relative group">
+              <img v-if="localConfig.aboutPage.heroImage" :src="localConfig.aboutPage.heroImage" class="w-full h-full object-cover" />
+              <div v-else class="absolute inset-0 flex items-center justify-center text-slate-400">
+                <ImageIcon class="w-8 h-8 opacity-50" />
+              </div>
+              
+              <label class="absolute inset-0 bg-black/50 text-white flex-col items-center justify-center cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity flex">
+                <UploadCloud class="w-8 h-8 mb-2" />
+                <span class="font-bold text-sm">Upload Image</span>
+                <input type="file" class="hidden" accept="image/*" @change="handleAboutPageImageUpload" />
+              </label>
+              
+              <div v-if="isUploadingAboutPage" class="absolute inset-0 bg-white/80 flex items-center justify-center">
+                <div class="flex flex-col items-center">
+                  <div class="animate-spin w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full mb-2"></div>
+                  <span class="text-sm font-bold text-indigo-600">Uploading...</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="md:col-span-2 border-t border-slate-100 pt-6 mt-2">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-sm font-bold text-slate-800">Values Section</h3>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+              <div class="space-y-1.5">
+                <label class="text-[11px] font-bold uppercase text-slate-500">Values Title</label>
+                <input v-model="localConfig.aboutPage.valuesTitle" type="text" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:border-indigo-500 focus:bg-white outline-none transition" />
+              </div>
+              <div class="space-y-1.5">
+                <label class="text-[11px] font-bold uppercase text-slate-500">Values Description</label>
+                <input v-model="localConfig.aboutPage.valuesDescription" type="text" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:border-indigo-500 focus:bg-white outline-none transition" />
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between mb-4">
+              <h4 class="text-xs font-bold text-slate-500 uppercase">Value Cards</h4>
+              <button @click="addValueCard" class="px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-bold text-slate-700 hover:text-indigo-600 hover:border-indigo-300 shadow-sm flex items-center gap-1.5 transition">
+                <Plus class="w-3.5 h-3.5" /> Add Card
+              </button>
+            </div>
+
+            <div class="space-y-4">
+              <div v-for="(card, index) in localConfig.aboutPage.values" :key="index" class="p-4 bg-slate-50 border border-slate-200 rounded-2xl relative">
+                <button @click="removeValueCard(index)" class="absolute top-4 right-4 w-6 h-6 rounded-md bg-white border border-slate-200 text-slate-400 hover:text-rose-500 flex items-center justify-center transition shadow-sm">
+                  <Trash2 class="w-3.5 h-3.5" />
+                </button>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pr-8">
+                  <div class="space-y-1.5">
+                    <label class="text-[11px] font-bold uppercase text-slate-500">Icon Name (Lucide)</label>
+                    <input v-model="card.icon" type="text" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:border-indigo-500 outline-none" placeholder="e.g. Truck, Star, Heart" />
+                  </div>
+                  <div class="space-y-1.5">
+                    <label class="text-[11px] font-bold uppercase text-slate-500">Title</label>
+                    <input v-model="card.title" type="text" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:border-indigo-500 outline-none" />
+                  </div>
+                  <div class="space-y-1.5 md:col-span-3">
+                    <label class="text-[11px] font-bold uppercase text-slate-500">Description</label>
+                    <input v-model="card.description" type="text" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:border-indigo-500 outline-none" />
+                  </div>
+                </div>
+              </div>
+              <div v-if="!localConfig.aboutPage.values.length" class="text-center py-6 text-slate-500 text-sm border-2 border-dashed border-slate-200 rounded-2xl">
+                No value cards added.
               </div>
             </div>
           </div>

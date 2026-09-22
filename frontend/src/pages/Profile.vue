@@ -923,28 +923,34 @@ const formatDate = (dateString) => {
       <!-- TAB 2: PERSONAL INFO -->
       <transition name="fade" mode="out-in">
       <div v-if="activeTab === 'profile'" class="space-y-6" key="profile">
-        <div class="bg-white rounded-xl p-5 sm:p-10 border border-gray-200">
-          
-          <div class="pb-4 sm:pb-6 mb-5 sm:mb-8 border-b border-gray-200">
-            <h2 class="text-lg sm:text-xl font-bold text-black tracking-tight">Personal Information</h2>
-            <p class="text-xs sm:text-sm text-gray-500 mt-1">Manage your personal identity, contact details, and account name.</p>
+        <div class="bg-white/90 backdrop-blur-xl rounded-3xl p-5 sm:p-10 border border-indigo-100/50 shadow-2xl shadow-indigo-100/40 relative overflow-hidden">
+          <!-- Decorative Background Blobs -->
+          <div class="absolute -top-40 -right-40 w-80 h-80 bg-indigo-400/10 rounded-full blur-3xl"></div>
+          <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-violet-400/10 rounded-full blur-3xl"></div>
+
+          <div class="relative z-10 pb-4 sm:pb-6 mb-5 sm:mb-8 border-b border-indigo-100/60">
+            <h2 class="text-lg sm:text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2">
+              <User class="w-6 h-6 text-indigo-600" />
+              Personal Information
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-500 mt-1.5">Manage your personal identity, contact details, and account name.</p>
           </div>
 
-          <form @submit.prevent="saveProfile" class="space-y-5 sm:space-y-6">
+          <form @submit.prevent="saveProfile" class="relative z-10 space-y-6 sm:space-y-8">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-5 sm:gap-y-6">
               
               <!-- Full Name -->
               <div class="space-y-1.5 sm:space-y-2">
-                <label class="block text-[10px] sm:text-xs font-bold uppercase tracking-widest text-gray-500">
+                <label class="block text-[10px] sm:text-xs font-bold uppercase tracking-widest text-slate-500">
                   Full Name
                 </label>
-                <div class="relative">
-                  <User class="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                <div class="relative group">
+                  <User class="w-4 h-4 sm:w-5 sm:h-5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 group-focus-within:text-indigo-600 transition-colors" />
                   <input
                     v-model="profile.fullName"
                     type="text"
-                    placeholder="e.g. John Doe"
-                    class="w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-3 bg-white rounded-lg border border-gray-300 text-xs sm:text-sm font-semibold text-black focus:border-black focus:ring-1 focus:ring-black outline-none transition-all"
+                    required
+                    class="w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-3 bg-slate-50/50 rounded-xl border border-slate-200 text-xs sm:text-sm font-semibold text-slate-900 focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all outline-none"
                   />
                 </div>
               </div>
@@ -952,83 +958,83 @@ const formatDate = (dateString) => {
               <!-- Email (Read only) -->
               <div class="space-y-1.5 sm:space-y-2">
                 <div class="flex items-center justify-between">
-                  <label class="block text-[10px] sm:text-xs font-bold uppercase tracking-widest text-gray-500">
+                  <label class="block text-[10px] sm:text-xs font-bold uppercase tracking-widest text-slate-500">
                     Email Address
                   </label>
-                  <span class="text-[9px] sm:text-[10px] font-bold text-gray-500 bg-gray-100 px-1.5 sm:px-2 py-0.5 rounded uppercase">Locked</span>
+                  <span class="text-[8px] sm:text-[10px] font-bold bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded uppercase tracking-wider">Locked</span>
                 </div>
-                <div class="relative">
-                  <Mail class="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                <div class="relative group">
+                  <Mail class="w-4 h-4 sm:w-5 sm:h-5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 group-focus-within:text-indigo-600 transition-colors" />
                   <input
                     v-model="profile.email"
                     type="email"
-                    disabled
-                    class="w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-3 bg-gray-50 rounded-lg border border-gray-200 text-gray-500 text-xs sm:text-sm font-semibold cursor-not-allowed outline-none"
+                    readonly
+                    class="w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-3 bg-slate-50 rounded-xl border border-slate-200 text-xs sm:text-sm font-semibold text-slate-600 outline-none cursor-not-allowed opacity-80"
                   />
                 </div>
               </div>
 
               <!-- Phone Number -->
               <div class="space-y-1.5 sm:space-y-2">
-                <label class="block text-[10px] sm:text-xs font-bold uppercase tracking-widest text-gray-500">
+                <label class="block text-[10px] sm:text-xs font-bold uppercase tracking-widest text-slate-500">
                   Phone Number
                 </label>
-                <div class="relative">
-                  <Phone class="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                <div class="relative group">
+                  <Phone class="w-4 h-4 sm:w-5 sm:h-5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 group-focus-within:text-indigo-600 transition-colors" />
                   <input
                     v-model="profile.phone"
                     type="tel"
                     placeholder="e.g. 012 345 678"
-                    class="w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-3 bg-white rounded-lg border border-gray-300 text-xs sm:text-sm font-semibold text-black focus:border-black focus:ring-1 focus:ring-black outline-none transition-all"
+                    class="w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-3 bg-slate-50/50 rounded-xl border border-slate-200 text-xs sm:text-sm font-semibold text-slate-900 focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all outline-none"
                   />
                 </div>
-                <p class="text-[10px] sm:text-xs text-gray-500">Used by courier drivers for delivery arrival notifications.</p>
+                <p class="text-[10px] sm:text-xs text-slate-500">Used by courier drivers for delivery arrival notifications.</p>
               </div>
 
               <!-- Telegram Username -->
               <div class="space-y-1.5 sm:space-y-2">
-                <label class="block text-[10px] sm:text-xs font-bold uppercase tracking-widest text-gray-500">
+                <label class="block text-[10px] sm:text-xs font-bold uppercase tracking-widest text-slate-500">
                   Telegram Username
                 </label>
-                <div class="relative">
-                  <Send class="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                <div class="relative group">
+                  <Send class="w-4 h-4 sm:w-5 sm:h-5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 group-focus-within:text-indigo-600 transition-colors" />
                   <input
                     v-model="profile.telegram"
                     type="text"
                     placeholder="e.g. @username"
-                    class="w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-3 bg-white rounded-lg border border-gray-300 text-xs sm:text-sm font-semibold text-black focus:border-black focus:ring-1 focus:ring-black outline-none transition-all"
+                    class="w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-3 bg-slate-50/50 rounded-xl border border-slate-200 text-xs sm:text-sm font-semibold text-slate-900 focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 transition-all outline-none"
                   />
                 </div>
-                <p class="text-[10px] sm:text-xs text-gray-500">Allows customer care to share dispatch tracking slips directly.</p>
+                <p class="text-[10px] sm:text-xs text-slate-500">Allows customer care to share dispatch tracking slips directly.</p>
               </div>
 
               <!-- Full Address -->
               <div class="md:col-span-2 space-y-1.5 sm:space-y-2">
-                <label class="block text-[10px] sm:text-xs font-bold uppercase tracking-widest text-gray-500">
+                <label class="block text-[10px] sm:text-xs font-bold uppercase tracking-widest text-slate-500">
                   Primary Delivery Address
                 </label>
-                <div class="relative">
-                  <MapPin class="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 absolute left-3 top-2.5 sm:top-3" />
+                <div class="relative group">
+                  <MapPin class="w-4 h-4 sm:w-5 sm:h-5 text-slate-400 absolute left-3 top-3.5 group-focus-within:text-indigo-600 transition-colors" />
                   <textarea
                     v-model="profile.address"
                     rows="3"
                     placeholder="Street #, Sangkat/Khan, Province or City"
-                    class="w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-3 bg-white rounded-lg border border-gray-300 text-xs sm:text-sm font-semibold text-black focus:border-black focus:ring-1 focus:ring-black outline-none transition-all resize-none"
+                    class="w-full pl-9 sm:pl-10 pr-3 sm:pr-4 py-3 bg-slate-50/50 rounded-xl border border-slate-200 text-xs sm:text-sm font-semibold text-slate-900 focus:bg-white focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 outline-none transition-all resize-none"
                   ></textarea>
                 </div>
               </div>
 
             </div>
 
-            <div class="pt-6 sm:pt-8 border-t border-gray-200 flex justify-end">
+            <div class="pt-6 sm:pt-8 border-t border-indigo-100/60 flex justify-end">
               <button
                 type="submit"
                 :disabled="isSaving"
-                class="inline-flex items-center gap-2 bg-black hover:bg-gray-800 disabled:opacity-50 text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg text-sm sm:text-base font-bold transition-all"
+                class="inline-flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 disabled:opacity-50 text-white px-8 py-3.5 rounded-xl text-sm font-bold transition-all shadow-lg shadow-indigo-600/30 hover:shadow-indigo-600/50 hover:-translate-y-0.5"
               >
-                <Loader2 v-if="isSaving" class="w-4 h-4 animate-spin" />
-                <Save v-else class="w-4 h-4" />
-                <span>{{ isSaving ? 'Saving...' : 'Save Profile' }}</span>
+                <Loader2 v-if="isSaving" class="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
+                <Save v-else class="w-4 h-4 sm:w-5 sm:h-5" />
+                <span>{{ isSaving ? 'Saving Changes...' : 'Save Profile Changes' }}</span>
               </button>
             </div>
           </form>
@@ -1039,63 +1045,69 @@ const formatDate = (dateString) => {
       <!-- TAB 3: SECURITY & 2FA -->
       <transition name="fade" mode="out-in">
       <div v-if="activeTab === 'security'" class="space-y-6" key="security">
-        <div class="bg-white rounded-xl p-5 sm:p-10 border border-gray-200">
+        <div class="bg-white/90 backdrop-blur-xl rounded-3xl p-5 sm:p-10 border border-indigo-100/50 shadow-2xl shadow-indigo-100/40 relative overflow-hidden">
+          <!-- Decorative Background Blobs -->
+          <div class="absolute -top-40 -right-40 w-80 h-80 bg-indigo-400/10 rounded-full blur-3xl"></div>
+          <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-violet-400/10 rounded-full blur-3xl"></div>
 
-          <div class="pb-4 sm:pb-6 mb-5 sm:mb-8 border-b border-gray-200">
-            <h2 class="text-lg sm:text-xl font-bold text-black tracking-tight">Account Security</h2>
-            <p class="text-xs sm:text-sm text-gray-500 mt-1">Protect your account and purchases with multi-factor verification.</p>
+          <div class="relative z-10 pb-4 sm:pb-6 mb-5 sm:mb-8 border-b border-indigo-100/60">
+            <h2 class="text-lg sm:text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2">
+              <Shield class="w-6 h-6 text-indigo-600" />
+              Account Security
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-500 mt-1.5">Protect your account and purchases with multi-factor verification.</p>
           </div>
 
           <!-- 2FA Card -->
-          <div class="p-5 sm:p-8 bg-white border border-gray-200 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6 mb-4 sm:mb-6">
+          <div class="relative z-10 p-5 sm:p-8 bg-white/60 border border-indigo-100/60 shadow-lg shadow-indigo-100/20 backdrop-blur-md rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6 mb-4 sm:mb-6 hover:-translate-y-1 transition-all duration-300">
             <div class="flex items-start gap-4 sm:gap-5 w-full sm:w-auto">
               <div :class="[
-                'w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center shrink-0 border',
-                is2FAEnabled ? 'bg-green-50 border-green-200 text-green-600' : 'bg-gray-50 border-gray-200 text-gray-500'
+                'w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center shrink-0 border-2 transition-colors duration-500 shadow-inner',
+                is2FAEnabled ? 'bg-emerald-50 border-emerald-400 text-emerald-600' : 'bg-slate-50 border-slate-200 text-slate-400'
               ]">
                 <ShieldCheck v-if="is2FAEnabled" class="w-5 h-5 sm:w-6 sm:h-6" />
                 <ShieldAlert v-else class="w-5 h-5 sm:w-6 sm:h-6" />
               </div>
               <div class="flex-1">
-                <div class="flex flex-wrap items-center gap-2 sm:gap-3 mb-1">
-                  <h3 class="text-sm sm:text-base font-bold text-black">Two-Factor Authentication (2FA)</h3>
+                <div class="flex flex-wrap items-center gap-2 sm:gap-3 mb-1.5">
+                  <h3 class="text-sm sm:text-base font-bold text-slate-900">Two-Factor Authentication (2FA)</h3>
                   <span
                     :class="[
-                      'px-1.5 sm:px-2 py-0.5 rounded text-[9px] sm:text-[10px] font-bold uppercase tracking-widest',
-                      is2FAEnabled ? 'bg-black text-white' : 'bg-gray-200 text-gray-600'
+                      'px-2 py-0.5 rounded text-[9px] sm:text-[10px] font-bold uppercase tracking-widest shadow-sm',
+                      is2FAEnabled ? 'bg-emerald-500 text-white shadow-emerald-500/30' : 'bg-slate-200 text-slate-600'
                     ]"
                   >
                     {{ is2FAEnabled ? 'Enabled' : 'Disabled' }}
                   </span>
                 </div>
-                <p class="text-[11px] sm:text-sm text-gray-500 max-w-xl">
+                <p class="text-[11px] sm:text-sm text-slate-500 max-w-xl leading-relaxed">
                   Require a dynamic one-time verification token on login attempts to keep your payment details and order deliveries protected.
                 </p>
               </div>
             </div>
 
-            <!-- Toggle switch (Classic monochrome styling) -->
+            <!-- Toggle switch (Vibrant styling) -->
             <label class="relative inline-flex items-center cursor-pointer shrink-0 self-end sm:self-auto mt-2 sm:mt-0">
               <input type="checkbox" v-model="is2FAEnabled" @change="saveProfile" class="sr-only peer">
-              <div class="w-10 sm:w-11 h-5 sm:h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 sm:after:h-5 after:w-4 sm:after:w-5 after:transition-all peer-checked:bg-black"></div>
+              <div class="w-11 sm:w-14 h-6 sm:h-7 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] sm:after:top-[3px] after:left-[2px] sm:after:left-[3px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 sm:after:h-[22px] after:w-5 sm:after:w-[22px] after:transition-all peer-checked:bg-indigo-600 peer-checked:shadow-lg peer-checked:shadow-indigo-600/30"></div>
             </label>
           </div>
 
           <!-- Password Info -->
-          <div class="p-5 sm:p-8 bg-gray-50 rounded-xl border border-gray-200 flex flex-wrap items-center justify-between gap-4">
+          <div class="relative z-10 p-5 sm:p-8 bg-gradient-to-r from-slate-50 to-indigo-50/30 rounded-2xl border border-indigo-100/50 flex flex-wrap items-center justify-between gap-4 shadow-sm">
             <div class="flex items-center gap-3 sm:gap-4">
-              <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-white border border-gray-200 flex items-center justify-center text-gray-700 shrink-0">
-                <Key class="w-4 h-4" />
+              <div class="w-8 h-8 sm:w-12 sm:h-12 rounded-xl bg-white border border-indigo-100 shadow-sm flex items-center justify-center text-indigo-600 shrink-0">
+                <Key class="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
               <div>
-                <h4 class="text-xs sm:text-sm font-bold text-black">Authentication Method</h4>
-                <p class="text-[10px] sm:text-xs text-gray-500 mt-0.5">
+                <h4 class="text-xs sm:text-sm font-bold text-slate-900">Authentication Method</h4>
+                <p class="text-[10px] sm:text-xs text-slate-500 mt-1">
                   Securely authenticated via Email or Google Sign-In.
                 </p>
               </div>
             </div>
-            <span class="inline-flex items-center gap-1.5 text-[10px] sm:text-xs font-bold px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-md bg-white border border-gray-200 text-black">
-              <div class="w-1.5 h-1.5 rounded-full bg-green-500"></div>
+            <span class="inline-flex items-center gap-1.5 text-[10px] sm:text-xs font-bold px-3 py-1.5 rounded-lg bg-white border border-emerald-100 text-slate-700 shadow-sm">
+              <div class="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)] animate-pulse"></div>
               Active Session
             </span>
           </div>
@@ -1106,61 +1118,77 @@ const formatDate = (dateString) => {
       <!-- TAB 4: SHIPPING ADDRESS -->
       <transition name="fade" mode="out-in">
       <div v-if="activeTab === 'address'" class="space-y-6" key="address">
-        <div class="bg-white rounded-xl p-5 sm:p-10 border border-gray-200">
+        <div class="bg-white/90 backdrop-blur-xl rounded-3xl p-5 sm:p-10 border border-indigo-100/50 shadow-2xl shadow-indigo-100/40 relative overflow-hidden">
           
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 sm:pb-6 mb-5 sm:mb-8 border-b border-gray-200 gap-3 sm:gap-4">
+          <!-- Decorative Background Blobs -->
+          <div class="absolute -top-40 -right-40 w-80 h-80 bg-indigo-400/10 rounded-full blur-3xl"></div>
+          <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-violet-400/10 rounded-full blur-3xl"></div>
+
+          <div class="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between pb-4 sm:pb-6 mb-5 sm:mb-8 border-b border-indigo-100/60 gap-3 sm:gap-4">
             <div>
-              <h2 class="text-lg sm:text-xl font-bold text-black tracking-tight">Default Shipping Address</h2>
-              <p class="text-xs sm:text-sm text-gray-500 mt-1">Used as your default destination for fast deliveries.</p>
+              <h2 class="text-lg sm:text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2">
+                <MapPin class="w-6 h-6 text-indigo-600" />
+                Default Shipping Address
+              </h2>
+              <p class="text-xs sm:text-sm text-slate-500 mt-1.5">Used as your default destination for fast deliveries.</p>
             </div>
             <button
               @click="activeTab = 'profile'"
-              class="inline-flex items-center gap-1.5 sm:gap-2 bg-white border border-gray-300 hover:bg-gray-50 text-black text-xs sm:text-sm font-bold px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg transition-colors w-max"
+              class="inline-flex items-center gap-1.5 sm:gap-2 bg-white border border-indigo-100 hover:border-indigo-300 hover:bg-indigo-50 text-indigo-600 text-xs sm:text-sm font-bold px-4 py-2 rounded-xl transition-colors shadow-sm w-max"
             >
-              <Edit3 class="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+              <Edit3 class="w-4 h-4" />
               <span>Edit Address</span>
             </button>
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+          <div class="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
             <!-- Address Card -->
-            <div class="p-5 sm:p-8 rounded-xl border-2 border-black bg-white relative">
-              <span class="absolute top-3 right-3 sm:top-4 sm:right-4 px-1.5 sm:px-2 py-0.5 sm:py-1 bg-black text-white rounded text-[8px] sm:text-[10px] font-bold uppercase tracking-widest">
-                Primary
-              </span>
-              <div class="flex items-center gap-2 sm:gap-3 text-black font-bold text-base sm:text-lg mb-2 sm:mb-3">
-                <MapPin class="w-4 h-4 sm:w-5 sm:h-5 text-gray-500" />
-                <span>{{ profile.fullName || 'Default Contact' }}</span>
-              </div>
-              <p class="text-xs sm:text-sm text-gray-600 mb-4 sm:mb-6 whitespace-pre-line leading-relaxed min-h-[3rem]">
-                {{ profile.address || 'No full address specified yet. Click Edit Address to set your location.' }}
-              </p>
-              <div class="pt-4 sm:pt-5 border-t border-gray-200 flex flex-wrap items-center gap-4 sm:gap-6 text-xs sm:text-sm font-bold text-black">
-                <span class="flex items-center gap-1.5 sm:gap-2">
-                  <Phone class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-500" />
-                  {{ profile.phone || 'No phone set' }}
+            <div class="p-5 sm:p-8 rounded-2xl bg-gradient-to-br from-indigo-600 to-violet-700 border-2 border-indigo-400 shadow-xl shadow-indigo-600/30 relative overflow-hidden group">
+              <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay"></div>
+              <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+              
+              <div class="relative z-10">
+                <span class="absolute top-0 right-0 sm:top-2 sm:right-2 px-2 py-1 bg-white/20 backdrop-blur-md text-white border border-white/20 rounded-md text-[9px] sm:text-[10px] font-bold uppercase tracking-widest shadow-sm">
+                  Primary
                 </span>
-                <span v-if="profile.telegram" class="flex items-center gap-1.5 sm:gap-2">
-                  <Send class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-500" />
-                  @{{ profile.telegram.replace('@', '') }}
-                </span>
+                <div class="flex items-center gap-2 sm:gap-3 text-white font-black text-base sm:text-xl mb-3 sm:mb-4">
+                  <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-md">
+                    <MapPin class="w-4 h-4 text-white" />
+                  </div>
+                  <span>{{ profile.fullName || 'Default Contact' }}</span>
+                </div>
+                <p class="text-xs sm:text-sm text-indigo-100 mb-6 sm:mb-8 whitespace-pre-line leading-relaxed min-h-[3rem] font-medium">
+                  {{ profile.address || 'No full address specified yet. Click Edit Address to set your location.' }}
+                </p>
+                <div class="pt-5 border-t border-indigo-400/50 flex flex-wrap items-center gap-4 sm:gap-6 text-xs sm:text-sm font-bold text-white">
+                  <span class="flex items-center gap-2 bg-black/20 px-3 py-1.5 rounded-lg backdrop-blur-md">
+                    <Phone class="w-4 h-4 text-indigo-200" />
+                    {{ profile.phone || 'No phone set' }}
+                  </span>
+                  <span v-if="profile.telegram" class="flex items-center gap-2 bg-black/20 px-3 py-1.5 rounded-lg backdrop-blur-md">
+                    <Send class="w-4 h-4 text-indigo-200" />
+                    @{{ profile.telegram.replace('@', '') }}
+                  </span>
+                </div>
               </div>
             </div>
 
             <!-- Courier Info Box -->
-            <div class="p-5 sm:p-8 rounded-xl border border-gray-200 bg-gray-50 flex flex-col justify-between">
+            <div class="p-5 sm:p-8 rounded-2xl border border-indigo-100/60 bg-white/60 shadow-lg shadow-indigo-100/20 backdrop-blur-md flex flex-col justify-between hover:shadow-xl hover:shadow-indigo-100/40 transition-all duration-300">
               <div>
-                <div class="flex items-center gap-2 sm:gap-3 text-black font-bold text-base sm:text-lg mb-2 sm:mb-3">
-                  <Truck class="w-4 h-4 sm:w-5 sm:h-5 text-gray-500" />
+                <div class="flex items-center gap-3 text-slate-900 font-black text-base sm:text-lg mb-3">
+                  <div class="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600">
+                    <Truck class="w-5 h-5" />
+                  </div>
                   <span>Express Dispatch Ready</span>
                 </div>
-                <p class="text-xs sm:text-sm text-gray-600 leading-relaxed">
+                <p class="text-xs sm:text-sm text-slate-500 leading-relaxed font-medium">
                   Orders are packaged and dispatched within 24 hours across all 25 provinces via Vireak Buntham & J&T Express.
                 </p>
               </div>
-              <div class="mt-4 sm:mt-6 pt-4 sm:pt-5 border-t border-gray-200 flex items-center justify-between">
-                <span class="text-[9px] sm:text-xs font-bold uppercase tracking-widest text-gray-500">Standard Delivery Rate</span>
-                <span class="font-bold text-black text-xs sm:text-sm">
+              <div class="mt-6 pt-5 border-t border-indigo-100/60 flex items-center justify-between">
+                <span class="text-[9px] sm:text-xs font-bold uppercase tracking-widest text-slate-400">Standard Delivery Rate</span>
+                <span class="font-black text-indigo-600 text-xs sm:text-sm bg-indigo-50 px-3 py-1.5 rounded-lg border border-indigo-100">
                   $1.50 (PP) / $2.00 (Prov)
                 </span>
               </div>
@@ -1259,7 +1287,7 @@ const formatDate = (dateString) => {
                         <div>
                           <p class="font-bold text-slate-900 text-sm">{{ item.name }}</p>
                           <p class="text-[11px] font-semibold text-slate-500 mt-1" v-if="item.size || item.color">
-                            {{ [item.size ? `Size: ${item.size}` : '', item.color ? `Color: ${item.color}` : ''].filter(Boolean).join(' • ') }}
+                            {{ [item.size ? `Size: ${item.size}` : '', (item.color && item.color.toLowerCase() !== 'default') ? `Color: ${item.color}` : ''].filter(Boolean).join(' • ') }}
                           </p>
                         </div>
                       </div>

@@ -27,6 +27,8 @@ import { useAuthStore } from '../stores/auth'
 import { useCategoryStore } from '../stores/category'
 import { useWishlistStore } from '../stores/wishlist'
 import { useUIStore } from '../stores/ui'
+import { useSystemStore } from '../stores/system'
+import { useScrollLock } from '../composables/useScrollLock'
 
 const router = useRouter()
 const cartStore = useCartStore()
@@ -34,6 +36,7 @@ const authStore = useAuthStore()
 const categoryStore = useCategoryStore()
 const wishlistStore = useWishlistStore()
 const uiStore = useUIStore()
+const systemStore = useSystemStore()
 
 const handleLogout = async () => {
   if (await uiStore.confirm('Logout', 'Are you sure you want to sign out?')) {
@@ -44,6 +47,9 @@ const handleLogout = async () => {
 const isMobileNavOpen = ref(false)
 const showSearchModal = ref(false)
 const searchQuery = ref('')
+
+useScrollLock(isMobileNavOpen)
+useScrollLock(showSearchModal)
 
 const handleSearch = () => {
   if (searchQuery.value.trim()) {
@@ -59,6 +65,9 @@ onMounted(() => {
   if (authStore.isAuthenticated) {
     wishlistStore.fetchWishlist()
   }
+  if (!systemStore.config) {
+    systemStore.fetchConfig()
+  }
 })
 </script>
 
@@ -66,10 +75,10 @@ onMounted(() => {
   <div class="min-h-screen flex flex-col bg-slate-50 text-slate-900 overflow-x-clip print:overflow-visible">
     
     <!-- Top Micro Announcement Banner -->
-    <div class="bg-indigo-600 text-white text-[11px] font-medium py-2 px-4">
-      <div class="max-w-7xl mx-auto flex items-center justify-center sm:justify-between">
+    <div v-if="systemStore.config?.announcementBanner" class="bg-indigo-600 text-white text-[11px] font-medium py-2">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-center sm:justify-between">
         <div class="text-center sm:text-left flex-1">
-          Free shipping on orders over $100 across Cambodia
+          {{ systemStore.config.announcementBanner }}
         </div>
         <div class="hidden sm:flex items-center gap-4">
           <router-link v-if="authStore.isAdmin" to="/admin" class="hover:text-indigo-200 transition-colors">
@@ -248,6 +257,8 @@ onMounted(() => {
       v-if="isMobileNavOpen"
       class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm lg:hidden transition-opacity"
       @click="isMobileNavOpen = false"
+      @touchmove.prevent
+      @wheel.prevent
     ></div>
 
     <aside
@@ -398,6 +409,8 @@ onMounted(() => {
       v-if="showSearchModal"
       class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-start justify-center pt-16 sm:pt-24 px-4"
       @click="showSearchModal = false"
+      @touchmove.prevent
+      @wheel.prevent
     >
       <div
         class="bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-6 shadow-2xl border border-slate-100 w-full max-w-xl"

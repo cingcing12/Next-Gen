@@ -16,6 +16,8 @@ export const useCartStore = defineStore('cart', {
     },
     addToCart(product, qty = 1, size = null, color = null) {
       let maxStock = product.stock || 0;
+      let basePrice = product.price;
+
       if (color && product.colorVariants) {
         const variant = product.colorVariants.find(v => v.color.toLowerCase() === color.toLowerCase());
         if (variant) {
@@ -23,6 +25,9 @@ export const useCartStore = defineStore('cart', {
             // New schema: per-size stock
             const sv = variant.sizeVariants.find(s => s.size === size);
             maxStock = sv ? sv.stock : 0;
+            if (sv && sv.price !== undefined && sv.price !== null && sv.price > 0) {
+              basePrice = sv.price;
+            }
           } else if (variant.stock !== undefined) {
             // Old schema fallback
             maxStock = variant.stock;
@@ -34,6 +39,8 @@ export const useCartStore = defineStore('cart', {
         throw new Error(`This variant is currently out of stock`);
       }
 
+      let price = product.discount > 0 ? basePrice * (1 - product.discount / 100) : basePrice;
+      
       let qtyToTrack = qty;
       const existingItem = this.items.find(
         (item) => item.product === product._id && item.size === size && item.color === color
@@ -49,14 +56,14 @@ export const useCartStore = defineStore('cart', {
         }
         existingItem.maxStock = maxStock;
         // Update price to the latest in case it changed
-        existingItem.price = product.discount > 0 ? product.price * (1 - product.discount / 100) : product.price;
+        existingItem.price = price;
       } else {
         qtyToTrack = qty > maxStock ? maxStock : qty;
         this.items.push({
           product: product._id,
           name: product.name,
           image: (product.images && product.images.length > 0) ? product.images[0] : (product.image || 'https://via.placeholder.com/300'),
-          price: product.discount > 0 ? product.price * (1 - product.discount / 100) : product.price,
+          price: price,
           qty: qtyToTrack,
           size,
           color,

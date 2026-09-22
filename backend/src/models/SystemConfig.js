@@ -40,7 +40,28 @@ const systemConfigSchema = new mongoose.Schema({
       default: 'Next-Gen was born out of a desire to create clothing that looks good and feels incredible. We use sustainable materials and ethical manufacturing to bring you the best in modern fashion.' 
     },
     image: { type: String, default: 'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&q=80&w=2070' },
-  }
+  },
+  aboutPage: {
+    heroTitle: { type: String, default: 'About Next-Gen' },
+    heroDescription: { type: String, default: 'We believe that style is a way to say who you are without having to speak. Our mission is to provide premium, accessible fashion for both men and women, tailored for perfection.' },
+    heroImage: { type: String, default: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&q=80&w=2000' },
+    valuesTitle: { type: String, default: 'Why Shop With Us?' },
+    valuesDescription: { type: String, default: 'We are dedicated to providing the best shopping experience possible, focusing on quality, sustainability, and outstanding customer service.' },
+    values: {
+      type: [{
+        icon: { type: String, default: 'HeartHandshake' },
+        title: { type: String, required: true },
+        description: { type: String, required: true }
+      }],
+      default: [
+        { icon: 'Truck', title: 'Fast Delivery', description: 'Partnered with Vireak Buntham and J&T Express for rapid nationwide delivery.' },
+        { icon: 'ShieldCheck', title: 'Secure Payments', description: '100% secure payments using Bakong KHQR, the national standard.' },
+        { icon: 'RotateCcw', title: 'Easy Returns', description: 'Not happy? Return your items within 30 days for a full refund.' },
+        { icon: 'HeartHandshake', title: 'Quality Support', description: 'Our team is available 24/7 to help you with any questions or issues.' }
+      ]
+    }
+  },
+  announcementBanner: { type: String, default: '' }
 }, { timestamps: true });
 
 const SystemConfig = mongoose.model('SystemConfig', systemConfigSchema);

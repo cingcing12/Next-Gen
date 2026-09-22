@@ -1,8 +1,12 @@
 <script setup>
+import { computed } from 'vue'
 import { useUIStore } from '../stores/ui'
 import { HelpCircle, AlertTriangle } from 'lucide-vue-next'
+import { useScrollLock } from '../composables/useScrollLock'
 
 const ui = useUIStore()
+
+useScrollLock(computed(() => ui.confirmDialog.isOpen))
 
 const handleConfirm = () => {
   ui.resolveConfirm(true)
@@ -26,7 +30,7 @@ const isDanger = () => ui.confirmDialog.type === 'danger'
   >
     <div v-if="ui.confirmDialog.isOpen" class="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6">
       <!-- Backdrop -->
-      <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity" @click="handleCancel"></div>
+      <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity" @click="handleCancel" @touchmove.prevent @wheel.prevent></div>
       
       <!-- Dialog -->
       <Transition

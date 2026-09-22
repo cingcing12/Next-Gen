@@ -48,6 +48,7 @@ import SystemConfig from '../models/SystemConfig.js';
 // @access  Public
 export const getSystemConfig = async (req, res) => {
   try {
+    res.setHeader('Cache-Control', 'no-store');
     let config = await SystemConfig.findOne().populate('featuredProducts');
     
     if (!config) {
@@ -66,7 +67,7 @@ export const getSystemConfig = async (req, res) => {
 // @access  Private/Admin
 export const updateSystemConfig = async (req, res) => {
   try {
-    const { homeSlider, featuredProducts, featuredProductCount, aboutShop } = req.body;
+    const { homeSlider, featuredProducts, featuredProductCount, aboutShop, aboutPage, announcementBanner } = req.body;
 
     let config = await SystemConfig.findOne();
 
@@ -78,6 +79,8 @@ export const updateSystemConfig = async (req, res) => {
     if (featuredProducts) config.featuredProducts = featuredProducts;
     if (featuredProductCount !== undefined) config.featuredProductCount = featuredProductCount;
     if (aboutShop) config.aboutShop = aboutShop;
+    if (aboutPage !== undefined) config.aboutPage = aboutPage;
+    if (announcementBanner !== undefined) config.announcementBanner = announcementBanner;
 
     const updatedConfig = await config.save();
     

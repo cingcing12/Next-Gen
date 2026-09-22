@@ -6,6 +6,7 @@ import { useCartStore } from '../stores/cart'
 import { useAuthStore } from '../stores/auth'
 import { useUIStore } from '../stores/ui'
 import { useShippingStore } from '../stores/shipping'
+import { useSystemStore } from '../stores/system'
 import api from '../api/axios'
 
 const router = useRouter()
@@ -13,6 +14,13 @@ const cartStore = useCartStore()
 const authStore = useAuthStore()
 const ui = useUIStore()
 const shippingStore = useShippingStore()
+const systemStore = useSystemStore()
+
+const freeShippingThreshold = computed(() => {
+  const bannerText = systemStore.config?.announcementBanner || ''
+  const match = bannerText.match(/\$(\d+(\.\d+)?)/)
+  return match ? parseFloat(match[1]) : 100
+})
 
 const form = ref({
   fullName: authStore.user?.fullName || '',
@@ -27,19 +35,38 @@ const form = ref({
 const shippingLoading = ref(false)
 const selectedMethod = ref(null)  // full method object
 
-onMounted(async () => {
-  shippingLoading.value = true
+const loadShippingMethods = async () => {
   try {
     const methods = await shippingStore.fetchActiveMethods()
     if (methods && methods.length > 0) {
-      selectedMethod.value = methods[0]
-      form.value.deliveryCompany = methods[0].name
+      if (selectedMethod.value) {
+        const stillExists = methods.find(m => m._id === selectedMethod.value._id)
+        if (stillExists) {
+          selectShipping(stillExists)
+        } else {
+          selectShipping(methods[0])
+        }
+      } else {
+        selectShipping(methods[0])
+      }
+    } else {
+      selectedMethod.value = null
+      form.value.deliveryCompany = ''
     }
   } catch {
     // fallback silently
-  } finally {
-    shippingLoading.value = false
   }
+}
+
+const handleShippingUpdated = async () => {
+  await loadShippingMethods()
+}
+
+onMounted(async () => {
+  window.addEventListener('system:shipping_updated', handleShippingUpdated)
+  shippingLoading.value = true
+  await loadShippingMethods()
+  shippingLoading.value = false
 })
 
 const selectShipping = (method) => {
@@ -67,7 +94,12 @@ const countdownFormatted = computed(() => {
   return `${m}:${s}`
 })
 
-const shippingCost = computed(() => selectedMethod.value?.price ?? 0)
+const shippingCost = computed(() => {
+  if (cartStore.totalPrice >= freeShippingThreshold.value) {
+    return 0
+  }
+  return selectedMethod.value?.price ?? 0
+})
 const orderTotal = computed(() => cartStore.totalPrice + shippingCost.value)
 
 const clearTimers = () => {
@@ -77,7 +109,10 @@ const clearTimers = () => {
   pollInterval = null
 }
 
-onUnmounted(() => clearTimers())
+onUnmounted(() => {
+  clearTimers()
+  window.removeEventListener('system:shipping_updated', handleShippingUpdated)
+})
 
 // Step 1: Create the order in backend, then generate real Bakong QR
 const proceedToPayment = async () => {
@@ -469,8 +504,11 @@ const cancelPayment = () => {
                     <h4 class="text-xs sm:text-sm font-bold text-white line-clamp-1 mb-0.5 sm:mb-1">{{ item.name }}</h4>
                     <div class="flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs text-slate-400 font-medium">
                       <span>Qty: {{ item.qty }}</span>
-                      <span v-if="item.size || item.color">•</span>
-                      <span v-if="item.size || item.color" class="uppercase">{{ item.color }} {{ item.size }}</span>
+                      <span v-if="item.size || (item.color && item.color.toLowerCase() !== 'default')">•</span>
+                      <span v-if="item.size || (item.color && item.color.toLowerCase() !== 'default')" class="uppercase">
+                        <template v-if="item.color && item.color.toLowerCase() !== 'default'">{{ item.color }} </template>
+                        {{ item.size }}
+                      </span>
                     </div>
                   </div>
                   <div class="flex flex-col items-end justify-center">
@@ -494,8 +532,16 @@ const cancelPayment = () => {
                 <span class="text-white">${{ cartStore.totalPrice.toFixed(2) }}</span>
               </div>
               <div class="flex justify-between text-xs sm:text-sm text-slate-300 font-medium">
-                <span>Shipping <span class="text-[9px] sm:text-[10px] bg-white/10 px-1.5 py-0.5 rounded ml-1">{{ form.deliveryCompany.split(' ')[0] }}</span></span>
-                <span class="text-white">${{ shippingCost.toFixed(2) }}</span>
+                <span>Shipping <span v-if="form.deliveryCompany" class="text-[9px] sm:text-[10px] bg-white/10 px-1.5 py-0.5 rounded ml-1">{{ form.deliveryCompany.split(' ')[0] }}</span></span>
+                <span class="text-white">
+                  <template v-if="shippingCost === 0 && selectedMethod?.price > 0">
+                    <span class="line-through text-slate-500 mr-2">${{ selectedMethod.price.toFixed(2) }}</span>
+                    <span class="text-emerald-400 font-bold">FREE</span>
+                  </template>
+                  <template v-else>
+                    ${{ shippingCost.toFixed(2) }}
+                  </template>
+                </span>
               </div>
               
               <div class="flex justify-between items-end pt-4 sm:pt-6 border-t border-white/10">
