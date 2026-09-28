@@ -96,10 +96,16 @@ watch([maxAvailableStock], ([newMax]) => {
   }
 })
 
+watch(selectedSize, () => {
+  selectedImage.value = 0
+})
+
 // Gallery images: ONLY show the active color's photos!
 const activeGalleryImages = computed(() => {
   if (!product.value) return []
   
+  let images = []
+
   // 1. If active color has its own photos, show ONLY this color's photos!
   if (currentVariant.value) {
     const varImgs = (currentVariant.value.images && currentVariant.value.images.length > 0)
@@ -107,16 +113,28 @@ const activeGalleryImages = computed(() => {
       : (currentVariant.value.image ? [currentVariant.value.image] : [])
     
     if (varImgs.length > 0) {
-      return varImgs
+      images = [...varImgs]
     }
   }
 
   // 2. Otherwise fallback to general product images
-  if (product.value.images && product.value.images.length > 0) {
-    return product.value.images
+  if (images.length === 0 && product.value.images && product.value.images.length > 0) {
+    images = [...product.value.images]
   }
 
-  return [product.value.image || 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&q=80&w=1480']
+  if (images.length === 0) {
+    images = [product.value.image || 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&q=80&w=1480']
+  }
+
+  // 3. If selected size has specific images, show ONLY those images!
+  if (currentVariant.value && currentVariant.value.sizeVariants && selectedSize.value) {
+    const sv = currentVariant.value.sizeVariants.find(s => s.size === selectedSize.value)
+    if (sv && sv.images && sv.images.length > 0) {
+      return [...sv.images]
+    }
+  }
+
+  return images
 })
 
 const displayColors = computed(() => {
@@ -216,10 +234,15 @@ const fetchRelatedProducts = async () => {
     const currentId = String(product.value._id)
     const currentCat = (product.value.category || '').toLowerCase()
 
-    // 1. Same category first
-    const sameCat = list.filter(p => String(p._id) !== currentId && (p.category || '').toLowerCase() === currentCat)
-    // 2. Different category to fill up to 4 items
-    const diffCat = list.filter(p => String(p._id) !== currentId && (p.category || '').toLowerCase() !== currentCat)
+    // 1. Same category first (randomized)
+    const sameCat = list
+      .filter(p => String(p._id) !== currentId && (p.category || '').toLowerCase() === currentCat)
+      .sort(() => Math.random() - 0.5)
+      
+    // 2. Different category to fill up to 4 items (randomized)
+    const diffCat = list
+      .filter(p => String(p._id) !== currentId && (p.category || '').toLowerCase() !== currentCat)
+      .sort(() => Math.random() - 0.5)
 
     relatedProducts.value = [...sameCat, ...diffCat].slice(0, 4)
   } catch (err) {
@@ -505,12 +528,12 @@ const isReviewsExpanded = ref(false)
 
           <div class="mt-4 sm:mt-6">
             <h3 class="sr-only">Description</h3>
-            <p class="text-sm sm:text-base text-slate-600 leading-relaxed">{{ product.description }}</p>
+            <p class="text-sm sm:text-base text-slate-600 leading-relaxed whitespace-pre-wrap">{{ product.description }}</p>
           </div>
 
           <div class="mt-6 sm:mt-8 border-t border-slate-100 pt-6 sm:pt-8">
             <!-- Colors -->
-            <div class="mb-5 sm:mb-6">
+            <div v-if="displayColors && displayColors.length > 0" class="mb-5 sm:mb-6">
               <div class="flex items-center justify-between mb-2">
                 <h3 class="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-900">
                   Color: <span class="text-indigo-600 font-semibold capitalize">{{ selectedColor }}</span>

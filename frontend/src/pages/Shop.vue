@@ -110,7 +110,14 @@ const fetchProducts = async () => {
     
     const response = await api.get(url)
     const data = response.data
-    rawProducts.value = Array.isArray(data) ? data : (data.products || [])
+    let products = Array.isArray(data) ? data : (data.products || [])
+    
+    // Assign a random weight to each product for consistent random sorting
+    products.forEach(p => {
+      p._randomWeight = Math.random()
+    })
+    
+    rawProducts.value = products
   } catch (err) {
     error.value = err.response?.data?.message || 'Failed to fetch products'
   } finally {
@@ -220,7 +227,9 @@ const filteredProducts = computed(() => {
   }
 
   // 7. Sorting
-  if (sortBy.value === 'price-low') {
+  if (sortBy.value === 'featured') {
+    list.sort((a, b) => (a._randomWeight || 0) - (b._randomWeight || 0))
+  } else if (sortBy.value === 'price-low') {
     list.sort((a, b) => a.price - b.price)
   } else if (sortBy.value === 'price-high') {
     list.sort((a, b) => b.price - a.price)

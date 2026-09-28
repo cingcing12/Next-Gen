@@ -40,7 +40,8 @@ onMounted(async () => {
 const featuredProducts = computed(() => {
   const count = systemStore.config?.featuredProductCount || 4
   return [...productStore.products]
-    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+    .filter(p => p.isPublished !== false)
+    .sort(() => Math.random() - 0.5)
     .slice(0, count)
 })
 </script>

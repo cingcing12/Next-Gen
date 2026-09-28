@@ -129,6 +129,8 @@ const discountedPrice = computed(() => {
 const images = computed(() => {
   if (!props.product) return []
   
+  let finalImages = []
+
   // 1. If active color has its own photos, show ONLY this color's photos!
   if (currentVariant.value) {
     const variantImgs = (currentVariant.value.images && currentVariant.value.images.length > 0)
@@ -136,16 +138,28 @@ const images = computed(() => {
       : (currentVariant.value.image ? [currentVariant.value.image] : [])
     
     if (variantImgs.length > 0) {
-      return variantImgs
+      finalImages = [...variantImgs]
     }
   }
 
   // 2. Otherwise fallback to general product images
-  if (props.product.images && props.product.images.length > 0) {
-    return props.product.images
+  if (finalImages.length === 0 && props.product.images && props.product.images.length > 0) {
+    finalImages = [...props.product.images]
   }
 
-  return [props.product.image || 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&q=80&w=1480']
+  if (finalImages.length === 0) {
+    finalImages = [props.product.image || 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&q=80&w=1480']
+  }
+
+  // 3. If selected size has specific images, show ONLY those images!
+  if (currentVariant.value && currentVariant.value.sizeVariants && selectedSize.value) {
+    const sv = currentVariant.value.sizeVariants.find(s => s.size === selectedSize.value)
+    if (sv && sv.images && sv.images.length > 0) {
+      return [...sv.images]
+    }
+  }
+
+  return finalImages
 })
 
 const currentImage = computed(() => {

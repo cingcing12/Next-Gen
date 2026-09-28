@@ -110,6 +110,39 @@ export const checkTransaction = async (req, res) => {
           id: txn.hash || md5,
           status: 'SUCCESS',
         };
+        for (const item of order.orderItems) {
+          const product = await Product.findById(item.product);
+          if (product) {
+            const cColor = item.color || (product.colors && product.colors[0]);
+            const cSize = item.size || (product.sizes && product.sizes[0]);
+
+            if (cColor && product.colorVariants) {
+              const variant = product.colorVariants.find(v => v.color.toLowerCase() === cColor.toLowerCase());
+              if (variant) {
+                if (variant.sizeVariants && cSize) {
+                  const sv = variant.sizeVariants.find(s => s.size === cSize);
+                  if (sv) sv.stock = Math.max(0, sv.stock - item.qty);
+                } else if (variant.stock !== undefined) {
+                  variant.stock = Math.max(0, variant.stock - item.qty);
+                }
+              }
+            }
+            product.stock = Math.max(0, product.stock - item.qty);
+
+            if (product.colorVariants && product.colorVariants.length > 0) {
+              product.stock = product.colorVariants.reduce((total, v) => {
+                if (v.sizeVariants && v.sizeVariants.length > 0) {
+                  return total + v.sizeVariants.reduce((s, sv) => s + (Number(sv.stock) || 0), 0);
+                }
+                return total + (Number(v.stock) || 0);
+              }, 0);
+            }
+            
+            await product.save();
+            import('../events/systemEvents.js').then(({ systemEvents }) => systemEvents.emit('product_updated', product));
+          }
+        }
+
         await order.save();
         return res.json({ success: true, message: 'Payment verified successfully' });
       } else {

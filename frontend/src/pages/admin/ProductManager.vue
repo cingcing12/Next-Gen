@@ -159,8 +159,8 @@ const openEditModal = (product) => {
         images: varImgs,
         isUploading: false,
         sizeVariants: v.sizeVariants && v.sizeVariants.length > 0 
-          ? [...v.sizeVariants] 
-          : sizes.map(size => ({ size, stock: v.stock || 0, price: product.price }))
+          ? v.sizeVariants.map(sv => ({ ...sv, images: sv.images || (sv.image ? [sv.image] : []) }))
+          : sizes.map(size => ({ size, stock: v.stock || 0, price: product.price, images: [] }))
       }
     })
   } else if (product.colors && product.colors.length > 0) {
@@ -172,7 +172,7 @@ const openEditModal = (product) => {
       hex: getColorHex(c),
       images: prodImages[idx] ? [prodImages[idx]] : (prodImages[0] ? [prodImages[0]] : []),
       isUploading: false,
-      sizeVariants: sizes.map(size => ({ size, stock: product.stock || 0, price: product.price }))
+      sizeVariants: sizes.map(size => ({ size, stock: product.stock || 0, price: product.price, images: [] }))
     }))
   } else {
     variants = [{ 
@@ -180,7 +180,7 @@ const openEditModal = (product) => {
       hex: '#0f172a', 
       images: [], 
       isUploading: false, 
-      sizeVariants: sizes.map(size => ({ size, stock: product.stock || 0, price: product.price })) 
+      sizeVariants: sizes.map(size => ({ size, stock: product.stock || 0, price: product.price, images: [] })) 
     }]
   }
 
@@ -239,7 +239,7 @@ const toggleVariantSize = (variant, size) => {
   if (!variant.sizeVariants) variant.sizeVariants = []
   const idx = variant.sizeVariants.findIndex(s => s.size === size)
   if (idx === -1) {
-    variant.sizeVariants.push({ size, stock: 0 })
+    variant.sizeVariants.push({ size, stock: 0, images: [] })
   } else {
     variant.sizeVariants.splice(idx, 1)
   }
@@ -249,7 +249,7 @@ const addVariantCustomSize = (variant) => {
   const trimmed = (variant.customSizeInput || '').trim().toUpperCase()
   if (trimmed && !variant.sizeVariants?.find(s => s.size === trimmed)) {
     if (!variant.sizeVariants) variant.sizeVariants = []
-    variant.sizeVariants.push({ size: trimmed, stock: 0 })
+    variant.sizeVariants.push({ size: trimmed, stock: 0, images: [] })
     variant.customSizeInput = ''
   }
 }
@@ -322,6 +322,39 @@ const removeVariantImage = (variant, index) => {
   variant.images.splice(index, 1)
 }
 
+const uploadSizeImage = async (sv, event) => {
+  const files = event.target.files
+  if (!files || files.length === 0) return
+
+  sv.isUploading = true
+  const formData = new FormData()
+  for (let i = 0; i < files.length; i++) {
+    formData.append('images', files[i])
+  }
+
+  try {
+    const res = await api.post('/upload', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    })
+    if (res.data.urls && res.data.urls.length > 0) {
+      if (!sv.images) sv.images = []
+      sv.images = [...sv.images, ...res.data.urls]
+      ui.toast(`Uploaded ${res.data.urls.length} photos for size ${sv.size}!`, 'success')
+    }
+  } catch (err) {
+    ui.toast('Failed to upload size images', 'error')
+  } finally {
+    sv.isUploading = false
+    event.target.value = ''
+  }
+}
+
+const removeSizeImage = (sv, index) => {
+  if (sv.images) {
+    sv.images.splice(index, 1)
+  }
+}
+
 // Upload general images
 const isUploadingGeneral = ref(false)
 const generalFileInputRef = ref(null)
@@ -377,7 +410,8 @@ const saveProduct = async () => {
       const sizeVariants = (v.sizeVariants || []).map(sv => ({
         size: sv.size,
         stock: Number(sv.stock) || 0,
-        price: sv.price ? Number(sv.price) : undefined
+        price: sv.price ? Number(sv.price) : undefined,
+        images: sv.images || []
       }))
       return {
         color: v.color.trim(),
@@ -389,7 +423,9 @@ const saveProduct = async () => {
 
   // Aggregate all images (all variant images first, then general images)
   const allVariantImages = validVariants.flatMap(v => v.images).filter(Boolean)
-  const allImages = [...new Set([...allVariantImages, ...form.value.generalImages])]
+  // Gather size images too
+  const allSizeImages = validVariants.flatMap(v => v.sizeVariants.flatMap(sv => sv.images || [])).filter(Boolean)
+  const allImages = [...new Set([...allVariantImages, ...allSizeImages, ...form.value.generalImages])]
 
   if (allImages.length === 0) {
     ui.toast('Please upload at least one image (for a color or in general gallery)', 'error')
@@ -643,9 +679,9 @@ const togglePublish = async (product) => {
 
               <!-- Color Variants Preview -->
               <td class="py-4 px-6">
-                <div v-if="product.colorVariants && product.colorVariants.length > 0" class="flex items-center gap-1.5 flex-wrap">
+                <div v-if="product.colorVariants && product.colorVariants.filter(cv => cv.color && cv.color.toLowerCase() !== 'default' && cv.color.toLowerCase() !== 'no color').length > 0" class="flex items-center gap-1.5 flex-wrap">
                   <div
-                    v-for="cv in product.colorVariants"
+                    v-for="cv in product.colorVariants.filter(cv => cv.color && cv.color.toLowerCase() !== 'default' && cv.color.toLowerCase() !== 'no color')"
                     :key="cv.color"
                     class="relative group/color"
                   >
@@ -663,12 +699,12 @@ const togglePublish = async (product) => {
                     </div>
                   </div>
                   <span class="text-[11px] text-slate-400 font-medium ml-1">
-                    ({{ product.colorVariants.length }} colors)
+                    ({{ product.colorVariants.filter(cv => cv.color && cv.color.toLowerCase() !== 'default' && cv.color.toLowerCase() !== 'no color').length }} colors)
                   </span>
                 </div>
-                <div v-else-if="product.colors && product.colors.length > 0" class="flex items-center gap-1">
+                <div v-else-if="product.colors && product.colors.filter(c => c && c.toLowerCase() !== 'default' && c.toLowerCase() !== 'no color').length > 0" class="flex items-center gap-1">
                   <div
-                    v-for="c in product.colors"
+                    v-for="c in product.colors.filter(c => c && c.toLowerCase() !== 'default' && c.toLowerCase() !== 'no color')"
                     :key="c"
                     class="w-4 h-4 rounded-full border border-white shadow-sm ring-1 ring-slate-200"
                     :style="{ backgroundColor: getColorHex(c) }"
@@ -1165,6 +1201,27 @@ const togglePublish = async (product) => {
                           title="Optional specific price. If empty, uses main price."
                         />
                       </div>
+                      
+                      <!-- Image Upload for Size -->
+                      <div class="border-l border-slate-200 flex items-center bg-white px-2 py-1 relative min-w-[32px] gap-1 overflow-x-auto max-w-[120px] hide-scrollbar">
+                        <template v-if="sv.images && sv.images.length > 0">
+                          <div v-for="(img, idx) in sv.images" :key="idx" class="relative group/simg flex-shrink-0">
+                            <img :src="img" class="w-6 h-6 object-cover rounded border border-slate-200" />
+                            <button
+                              type="button"
+                              @click="removeSizeImage(sv, idx)"
+                              class="absolute -top-1 -right-1 w-3 h-3 bg-rose-600 text-white rounded-full flex items-center justify-center text-[8px] opacity-0 group-hover/simg:opacity-100 transition-opacity"
+                              title="Remove"
+                            >×</button>
+                          </div>
+                        </template>
+                        <label class="cursor-pointer text-slate-400 hover:text-indigo-600 transition-colors flex-shrink-0 ml-1" title="Upload specific images for this size">
+                          <Loader2 v-if="sv.isUploading" class="w-4 h-4 animate-spin text-indigo-500" />
+                          <ImageIcon v-else class="w-4 h-4" />
+                          <input type="file" multiple accept="image/*" class="hidden" @change="uploadSizeImage(sv, $event)" :disabled="sv.isUploading" />
+                        </label>
+                      </div>
+
                       <button
                         type="button"
                         @click="removeVariantSize(variant, sIdx)"

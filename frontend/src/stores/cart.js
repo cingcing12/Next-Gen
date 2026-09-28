@@ -18,6 +18,7 @@ export const useCartStore = defineStore('cart', {
       let maxStock = product.stock || 0;
       let basePrice = product.price;
 
+      let variantImage = '';
       if (color && product.colorVariants) {
         const variant = product.colorVariants.find(v => v.color.toLowerCase() === color.toLowerCase());
         if (variant) {
@@ -28,9 +29,18 @@ export const useCartStore = defineStore('cart', {
             if (sv && sv.price !== undefined && sv.price !== null && sv.price > 0) {
               basePrice = sv.price;
             }
+            if (sv && sv.images && sv.images.length > 0) {
+              variantImage = sv.images[0];
+            } else if (sv && sv.image) {
+              variantImage = sv.image;
+            }
           } else if (variant.stock !== undefined) {
             // Old schema fallback
             maxStock = variant.stock;
+          }
+          if (!variantImage) {
+            if (variant.images && variant.images.length > 0) variantImage = variant.images[0];
+            else if (variant.image) variantImage = variant.image;
           }
         }
       }
@@ -57,12 +67,14 @@ export const useCartStore = defineStore('cart', {
         existingItem.maxStock = maxStock;
         // Update price to the latest in case it changed
         existingItem.price = price;
+        // Update image just in case
+        existingItem.image = variantImage || existingItem.image;
       } else {
         qtyToTrack = qty > maxStock ? maxStock : qty;
         this.items.push({
           product: product._id,
           name: product.name,
-          image: (product.images && product.images.length > 0) ? product.images[0] : (product.image || 'https://via.placeholder.com/300'),
+          image: variantImage || ((product.images && product.images.length > 0) ? product.images[0] : (product.image || 'https://via.placeholder.com/300')),
           price: price,
           qty: qtyToTrack,
           size,

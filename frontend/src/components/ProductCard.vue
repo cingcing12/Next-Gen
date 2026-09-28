@@ -45,10 +45,13 @@ const currentStock = computed(() => {
 })
 
 const displayColors = computed(() => {
+  let colors = []
   if (props.product.colorVariants && props.product.colorVariants.length > 0) {
-    return props.product.colorVariants.map(v => v.color)
+    colors = props.product.colorVariants.map(v => v.color)
+  } else {
+    colors = props.product.colors || []
   }
-  return props.product.colors || []
+  return colors.filter(c => c && c.toLowerCase() !== 'default' && c.toLowerCase() !== 'no color')
 })
 
 const primaryImage = computed(() => {
@@ -276,7 +279,7 @@ const getColorStyle = (colorName) => {
       </h3>
 
       <!-- Short Description -->
-      <p class="hidden sm:block text-xs text-slate-500 line-clamp-1 mb-3">
+      <p class="hidden sm:line-clamp-2 text-xs text-slate-500 mb-3" :title="product.description">
         {{ product.description || 'Premium quality modern style.' }}
       </p>
 
